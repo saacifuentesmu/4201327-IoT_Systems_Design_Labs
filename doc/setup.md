@@ -104,7 +104,7 @@ west packages pip --install
 # Instalar solo el toolchain necesario para ESP32-C6 (RISC-V)
 cd ~/zephyrproject/zephyr
 west blobs fetch hal_espressif
-west sdk install --toolchains riscv64-unknown-elf
+west sdk install --toolchains riscv64-zephyr-elf
 
 ```
 
