@@ -1,0 +1,13 @@
+# editors
+*.swp
+*~
+
+# python
+.venv
+
+# build
+/build*
+/twister-out*
+
+__pycache__/
+.vscode/
