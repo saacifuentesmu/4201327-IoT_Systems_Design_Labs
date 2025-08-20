@@ -61,6 +61,7 @@ python3 -m venv ~/zephyrproject/.venv
 
 # Activar entorno virtual
 source ~/zephyrproject/.venv/bin/activate
+cd ~/zephyrproject
 ```
 
 > ⚠️ **Importante**: Siempre activa el entorno virtual (`source ~/zephyrproject/.venv/bin/activate`) antes de usar `west` o herramientas de Zephyr.
