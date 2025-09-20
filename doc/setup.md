@@ -178,3 +178,46 @@ source .venv/bin/activate
 cd 4100901-IoT_Course
 # ... seguir instrucciones del laboratorio correspondiente
 ```
+
+---
+
+## Smoke Test: Thread CLI + CoAP (Validación Rápida)
+
+Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que la pila OpenThread y CoAP funcionan en tu entorno.
+
+### 1) Compilar y flashear el proyecto base (`lab_base`)
+```bash
+cd ~/zephyrproject/4201327-IoT_Systems_Design_Labs/lab_base
+west build -p auto -b esp32c6_devkitc/esp32c6/hpcore -d build-lab-base
+west flash
+west espressif monitor
+```
+
+En la consola (shell OpenThread):
+```
+ot dataset init new
+ot dataset commit active
+ot ifconfig up
+ot thread start
+state   # Debe mostrar: leader o child tras unos segundos
+```
+
+Apunta las direcciones IPv6:
+```
+ipaddr
+```
+
+### 2) Preparar segundo nodo (misma app base)
+Conecta otra placa y repite el build/flash usando un nuevo directorio de build:
+```bash
+west build -p auto -b esp32c6_devkitc/esp32c6/hpcore -d build-lab-base-node2
+west flash
+west espressif monitor
+```
+Forma la red igual que el primer nodo. (Los endpoints CoAP se implementarán en el Lab 1; por ahora solo validamos Thread.)
+
+### 3) (Opcional) Captura Rápida
+Inicia tu sniffer 802.15.4 en el canal asignado y guarda un pcap de 30 s para usarlo en el Lab 2.
+
+---
+
