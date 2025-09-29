@@ -17,63 +17,45 @@ Lab 2 — PHY/MAC + Sniffing
 - **Herramienta**: Configurador SDK (GUI) para IEEE 802.15.4 + Wireshark  
 - **Práctica**: Captura de tramas 802.15.4/6LoWPAN, CCA y canal, filtros, análisis  
 - **Entregable**: PCAP anotado + comparativa de CCA/canales
-## FASE 2: DESARROLLO PROPIO - CONCEPTOS IoT PROFUNDOS (Semanas 4-8)
+## FASE 2: REDES MESH Y COMUNICACIÓN (Labs 3-4)
 
-Semana 4 — Capa física y análisis de tráfico IoT
-- **Concepto IoT**: Espectro electromagnético, interferencia, coexistencia de protocolos (WiFi/BLE/802.15.4)
-- **Proyecto**: Desarrollar analizador de espectro simple, medir RSSI, caracterizar entorno RF
-- **Herramientas**: Sniffer 802.15.4, Wireshark, mediciones de campo
-- **Entregable**: Mapa RF del laboratorio + recomendaciones de despliegue
+Lab 3 — 6LoWPAN + Routing & Resiliencia
+- **Concepto IoT**: 6LoWPAN, routing Thread, resiliencia de red
+- **Proyecto**: Implementar routing 6LoWPAN, observar fragmentación, evaluar re-attach y cambio de roles
+- **Herramientas**: ESP-IDF + OpenThread
+- **Entregable**: Logs de routing, análisis de fragmentación
 
-Semana 5 — Capa MAC y eficiencia energética
-- **Concepto IoT**: Duty cycling, sleep modes, energy harvesting, lifetime estimation
-- **Proyecto**: Implementar nodo sensor con gestión inteligente de energía
-- **Base**: Expandir ejemplos `samples/sensor/` con power management
-- **Entregable**: Nodo sensor con >1 año de vida estimada en batería
+Lab 4 — Border Router + Patrones de Aplicación
+- **Concepto IoT**: Border routers, patrones pub/sub, CoAP observe
+- **Proyecto**: Implementar Border Router RCP, CoAP observe para notificaciones en tiempo real
+- **Herramientas**: OTBR, CoAP client
+- **Entregable**: Border Router funcional, demo de observe
 
-Semana 6 — Internetworking y direccionamiento
-- **Concepto IoT**: IPv6 para IoT, 6LoWPAN, address assignment, mobility
-- **Proyecto**: Gateway multi-protocolo (Thread ↔ WiFi ↔ Ethernet)  
-- **Base**: `samples/net/openthread/border_router` como punto de partida
-- **Entregable**: Gateway funcional + análisis de latencia end-to-end
+## FASE 3: APLICACIONES Y OPTIMIZACIÓN (Labs 5-8)
 
-Semana 7 — Tolerancia a fallos y escalabilidad
-- **Concepto IoT**: Network partitions, self-healing, leader election, scalability limits
-- **Proyecto**: Red mesh resiliente, simulación de fallas, métricas de recuperación
-- **Enfoque**: Arquitecturas distribuidas, consensus algorithms aplicados a IoT
-- **Entregable**: Red de 10+ nodos con tolerancia a fallas demostrada
+Lab 5 — Sensores + Dashboard Inicial
+- **Concepto IoT**: Integración sensores, dashboards IoT
+- **Proyecto**: Sensor físico o mock, dashboard web con control y monitoreo
+- **Herramientas**: Flask/Django, sensores I2C
+- **Entregable**: Dashboard funcional con datos en tiempo real
 
-Semana 8 — Observabilidad y métricas
-- **Concepto IoT**: Monitoring distribuido, telemetría, anomaly detection
-- **Proyecto**: Sistema de telemetría completo (recolección → procesamiento → visualización)
-- **Stack**: MQTT/InfluxDB/Grafana como infraestructura de monitoring
-- **Entregable**: Dashboard de métricas IoT + alertas automáticas + **Examen Parcial**
+Lab 6 — Seguridad & OTA
+- **Concepto IoT**: Seguridad IoT, actualizaciones OTA seguras
+- **Proyecto**: Implementar MCUboot, firma de imágenes, actualización v1→v2
+- **Herramientas**: MCUboot, imgtool
+- **Entregable**: Firmware actualizado de forma segura, logs de verificación
 
-## FASE 3: INTEGRACIÓN Y APLICACIONES REALES (Semanas 9-8)
+Lab 7 — Observabilidad & Optimización
+- **Concepto IoT**: Métricas de rendimiento, caching, rate limiting
+- **Proyecto**: Recolectar métricas, implementar caching y rate limiting
+- **Herramientas**: ESP-IDF logging, CoAP
+- **Entregable**: Métricas recolectadas, demo de optimizaciones
 
-Semana 9 — Patrones de comunicación avanzados
-- **Concepto IoT**: Pub/Sub vs Request/Response, event-driven architectures, QoS
-- **Proyecto**: Implementar MQTT-SN o CoAP observe para notificaciones asíncronas
-- **Aplicación**: Smart building con sensores distribuidos y actuadores
-- **Entregable**: Sistema reactivo con eventos en tiempo real
-
-Semana 10 — Edge computing e integración de sensores
-- **Concepto IoT**: Edge vs Cloud processing, latency requirements, data fusion
-- **Proyecto**: Nodo edge que procesa múltiples sensores, machine learning básico
-- **Aplicación**: Predictive maintenance o environmental monitoring  
-- **Entregable**: Sistema edge con processing local + optimizaciones de ancho de banda
-
-Semana 11 — Seguridad IoT y actualizaciones OTA
-- **Concepto IoT**: Threat models para IoT, secure boot, credential management, firmware updates
-- **Proyecto**: Implementar pipeline seguro de OTA usando MCUboot + firma digital
-- **Enfoque**: Device identity, commissioning seguro, defense in depth
-- **Entregable**: Sistema con OTA seguro + análisis de security posture
-
-Semana 8 — Sistemas completos e integración cloud
-- **Concepto IoT**: Cloud connectivity, digital twins, API design, deployment patterns
-- **Proyecto Final**: Sistema IoT completo (sensors → edge → cloud → dashboard → mobile)
-- **Tecnologías**: REST APIs, cloud functions, database integration
-- **Entregable**: Demo final + documentación completa + deployment guide
+Lab 8 — Consolidación & Hardening
+- **Concepto IoT**: Pruebas end-to-end, hardening de seguridad, documentación
+- **Proyecto**: Tests automatizados, mini pentest, documentación completa
+- **Herramientas**: Scripts Python, Wireshark
+- **Entregable**: Suite de tests, reporte de hardening, documentación final
 
 ## Notas Metodológicas
 - **DDRs**: Documentar decisiones técnicas y trade-offs en cada fase
