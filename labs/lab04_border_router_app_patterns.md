@@ -6,35 +6,44 @@
 - Añadir CoAP Observe al recurso `/sensor`.
 - (Opcional) Introducir MQTT (broker local) como comparación pub/sub.
 
+## Contexto
+Extendiendo el conocimiento en clase de border routers y patrones de aplicación, este laboratorio implementa un Border Router Thread y demuestra patrones publish-subscribe usando CoAP Observe para streaming de datos IoT en tiempo real.
+
 ## Orden Pedagógico
-1. RCP build + OTBR docker / nativo.
+1. Construir RCP + OTBR docker / nativo.
 2. Ver conectividad LAN→Thread.
 3. CoAP Observe flujo (registro + notificaciones).
 4. Métricas entrega (ratio y latencia notificación).
 5. (Opcional) MQTT bridging.
 
-## Miércoles (2h)
-- (25m) Arquitectura gateway.
-- (45m) RCP + OTBR operativo.
-- (30m) Implementar observe `/sensor` (timer incrementa valor).
-- (20m) Medir latencia notificación.
+## Setup del Proyecto
 
-## Trabajo Autónomo
-- Script Python suscriptor observe (aiocoap) registrando timestamps.
-- DDR: D-006 (Elección Observe vs polling), D-007 (Gateway deployment).
+### 1. Crear proyecto desde ejemplo ESP-IDF
+```bash
+idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_rcp" lab04
+cd lab04
+```
 
-## Viernes (1h)
-- (30m) Validación notificaciones.
-- (20m) Discusión MQTT vs CoAP observe.
-- (10m) Preparar sensor físico.
+### 2. Configurar para modo RCP (sin código adicional, RCP no ejecuta aplicación)
 
-## Entregables Core
-- Gateway funcional (log OTBR + ping desde host).
-- Serie de 5+ notificaciones observe con timestamps.
+El RCP (Radio Co-Processor) no ejecuta código de aplicación; solo maneja la radio Thread.
+El CoAP server con observe corre en los nodos CLI (de Labs anteriores).
 
-## Métricas
-- Latencia notificación promedio.
-- Tasa entrega (recibidas / enviadas).
+### 3. Configurar settings
 
-## Opcionales
-- MQTT publish cada X segundos y comparación jitter.
+**Configurar sdkconfig para RCP:**
+```bash
+# El ejemplo ot_rcp ya tiene configuraciones base
+# Ajustar si necesario:
+idf.py menuconfig
+# Verificar: CONFIG_OPENTHREAD_RCP=y
+# Deshabilitar CLI y FTD ya que es RCP puro
+```
+
+**Build y flash:**
+```bash
+idf.py set-target esp32c6
+idf.py build
+idf.py flash
+# Este dispositivo actuará como RCP para OTBR corriendo en el host
+```

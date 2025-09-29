@@ -3,8 +3,8 @@
 Esta guía te llevará paso a paso para configurar el entorno completo de desarrollo necesario para el curso. La configuración se divide en tres partes principales:
 
 1. **WSL2 (Ubuntu)** - Preparación del entorno Linux en Windows
-2. **Python, pip y west** - Instalación de herramientas de desarrollo
-3. **Workspace setup** - Configuración del workspace Zephyr basado en este repositorio
+2. **ESP-IDF** - Instalación del framework de desarrollo
+3. **Workspace setup** - Configuración del workspace basado en este repositorio
 4. **IDE setup** - Configuración de VS Code y USB
 
 ---
@@ -33,9 +33,9 @@ wsl --install Ubuntu
 
 ```
 
-## Parte 2: Python, pip y west (en WSL2)
+## Parte 2: ESP-IDF (en WSL2)
 
-Una vez dentro de WSL2 Ubuntu, configurar las herramientas de desarrollo de Python.
+Una vez dentro de WSL2 Ubuntu, instalar ESP-IDF.
 
 ### 2.1) Actualizar sistema e instalar dependencias
 
@@ -43,78 +43,52 @@ Una vez dentro de WSL2 Ubuntu, configurar las herramientas de desarrollo de Pyth
 # Actualizar Ubuntu
 sudo apt update && sudo apt upgrade -y
 
-# Instalar dependencias básicas para Zephyr
-sudo apt install --no-install-recommends git cmake ninja-build gperf ccache \
-  dfu-util device-tree-compiler wget python3-pip python3-dev python3-venv \
-  xz-utils file make gcc gcc-multilib g++-multilib libsdl2-dev libmagic1
+# Instalar dependencias básicas para ESP-IDF
+sudo apt install git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
 
 # add user to the dialout group for later USB access
 sudo usermod -a -G dialout $USER
 
 ```
 
-### 2.2) Crear y activar entorno virtual de Python
+### 2.2) Instalar ESP-IDF
 
 ```bash
-# Crear directorio y entorno virtual para el workspace
-python3 -m venv ~/zephyrproject/.venv
+# Clonar ESP-IDF
+cd ~
+git clone -b v5.1 --recursive https://github.com/espressif/esp-idf.git
 
-# Activar entorno virtual
-source ~/zephyrproject/.venv/bin/activate
-cd ~/zephyrproject
+# Instalar herramientas
+cd esp-idf
+./install.sh esp32c6
+
+# Configurar entorno
+. ./export.sh
 ```
 
-> ⚠️ **Importante**: Siempre activa el entorno virtual (`source ~/zephyrproject/.venv/bin/activate`) antes de usar `west` o herramientas de Zephyr.
-
-### 2.3) Instalar west
-
-```bash
-# Con el venv activado, instalar west
-pip install west
-```
+> ⚠️ **Importante**: Siempre ejecuta `. ~/esp-idf/export.sh` en cada sesión antes de usar idf.py.
 
 ---
 
-## Parte 3: Workspace Setup basado en este repositorio (manifest)
+## Parte 3: Workspace Setup basado en este repositorio
 
-### 3.1) Inicializar workspace Zephyr desde el manifiesto de este repo
+### 3.1) Clonar el repositorio del curso
 
 ```bash
-# Asegúrate de estar en el directorio correcto con venv activado
-cd ~/zephyrproject
-source .venv/bin/activate
-
-# Inicializar el workspace apuntando a este repo como manifiesto
-west init -m https://github.com/saacifuentesmu/4201327-IoT_Systems_Design_Labs ~/zephyrproject
-
-# Entrar al workspace y sincronizar proyectos (Zephyr y módulos)
-cd ~/zephyrproject
-west update
-
-# Exportar el paquete CMake de Zephyr
-west zephyr-export
-
-# Instalar dependencias adicionales de Python de los paquetes
-west packages pip --install
+# Clonar el repositorio
+cd ~
+git clone https://github.com/saacifuentesmu/4201327-IoT_Systems_Design_Labs.git
+cd 4201327-IoT_Systems_Design_Labs
 
 ```
 
-### 3.2) Instalar Zephyr SDK
+### 3.2) Verificar configuración
 
 ```bash
-# Instalar solo el toolchain necesario para ESP32-C6 (RISC-V)
-cd ~/zephyrproject/zephyr
-west blobs fetch hal_espressif
-west sdk install --toolchains riscv64-zephyr-elf
-
-```
-
-### 3.3) Verificar configuración
-
-```bash
-# Probar build de ejemplo básico (Hello World)
-cd ~/zephyrproject/zephyr
-west build -p auto -b esp32c6_devkitc/esp32c6/hpcore samples/hello_world
+# Probar build del proyecto base
+cd lab_base
+idf.py set-target esp32c6
+idf.py build
 
 ```
 
@@ -170,12 +144,12 @@ Para trabajar en el curso cada día:
 # 1. Conectar ESP32-C6 en Windows (PowerShell Admin)
 usbipd attach --wsl --busid 3-2 --auto-attach
 
-# 2. En WSL, activar entorno (venv) cada sesión
-cd ~/zephyrproject
-source .venv/bin/activate
+# 2. En WSL, activar entorno ESP-IDF cada sesión
+cd ~/esp-idf
+. ./export.sh
 
 # 3. Trabajar con los laboratorios
-cd 4100901-IoT_Course
+cd ~/4201327-IoT_Systems_Design_Labs
 # ... seguir instrucciones del laboratorio correspondiente
 ```
 
@@ -187,10 +161,11 @@ Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar 
 
 ### 1) Compilar y flashear el proyecto base (`lab_base`)
 ```bash
-cd ~/zephyrproject/4201327-IoT_Systems_Design_Labs/lab_base
-west build -p auto -b esp32c6_devkitc/esp32c6/hpcore -d build-lab-base
-west flash
-west espressif monitor
+cd ~/4201327-IoT_Systems_Design_Labs/lab_base
+idf.py set-target esp32c6
+idf.py build
+idf.py flash
+idf.py monitor
 ```
 
 En la consola (shell OpenThread):
@@ -208,11 +183,11 @@ ipaddr
 ```
 
 ### 2) Preparar segundo nodo (misma app base)
-Conecta otra placa y repite el build/flash usando un nuevo directorio de build:
+Conecta otra placa y repite el build/flash:
 ```bash
-west build -p auto -b esp32c6_devkitc/esp32c6/hpcore -d build-lab-base-node2
-west flash
-west espressif monitor
+idf.py build
+idf.py flash
+idf.py monitor
 ```
 Forma la red igual que el primer nodo. (Los endpoints CoAP se implementarán en el Lab 1; por ahora solo validamos Thread.)
 

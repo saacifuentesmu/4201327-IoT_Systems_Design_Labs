@@ -5,39 +5,42 @@
 - Capturar y clasificar Beacon, Data, Ack, MAC Command.
 - Evaluar impacto de CCA threshold y backoff.
 
+## Contexto
+Aplicando conceptos teóricos de las capas PHY y MAC de IEEE 802.15.4, este laboratorio demuestra análisis práctico de tramas y gestión de canales en redes de sensores inalámbricas.
+
 ## Orden Pedagógico
 1. Revisión rápida pcap Lab 1.
 2. Espectro y canales (canal elegido vs interferencia).
 3. Sniffing y clasificación de tramas.
 4. Escaneos energy/active y tabla comparativa.
-5. Ajuste `CONFIG_IEEE802154_ESP32_CCA_THRESHOLD` y nueva captura.
+5. Ajuste `CONFIG_OPENTHREAD_RADIO_CCA_THRESHOLD` en sdkconfig y rebuild.
 
-## Miércoles (2h)
-- (25m) Teoría PHY/MAC.
-- (35m) Captura base (red ya formada).
-- (30m) Escaneos (`ot scan energy`, `ot scan active`).
-- (20m) Cambiar threshold y rebuild.
-- (10m) Captura comparativa.
+## Setup del Proyecto
 
-## Trabajo Autónomo
-- Anotar RSSI medio y variabilidad (5 distancias).
-- Tabla antes/después CCA (nº retransmisiones / tramas fallidas si observable).
-- DDR: D-003 (Threshold CCA decisión).
+### 1. Crear proyecto desde ejemplo ESP-IDF
+```bash
+idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_cli" lab02
+cd lab02
+```
 
-## Viernes (1h)
-- (20m) Revisión capturas.
-- (30m) Discusión interferencia y mitigación.
-- (10m) Avance lectura 6LoWPAN fragmentación.
+### 2. Añadir código base CoAP (igual que Lab 1)
+Sigue los pasos 2 de Lab 1 para añadir el servidor CoAP básico.
 
-## Entregables Core
-- pcap anotado (mín 30 s) + lista de tramas.
-- Tabla escaneos energy/active.
-- Comparación threshold (texto breve).
+### 3. Configurar settings para sniffing
 
-## Métricas
-- RSSI medio por distancia.
-- Diferencia frames perdidos (si medible) antes/después.
+**Actualizar `sdkconfig`** con configuraciones base (igual que Lab 1), luego configurar CCA threshold:
+```bash
+# Después del setup base, ajustar CCA threshold
+idf.py menuconfig
+# Navegar a: Component config → OpenThread → Radio Settings
+# Ajustar CONFIG_OPENTHREAD_RADIO_CCA_THRESHOLD (valor por defecto: -75 dBm)
+# Recomendado: probar -70 o -80 para comparación
+```
 
-## Opcionales
-- Gráfico RSSI vs distancia.
-- Script parse pcap (tshark) para contar tipos de tramas.
+**Build y flash:**
+```bash
+idf.py set-target esp32c6
+idf.py build
+idf.py flash
+idf.py monitor
+```

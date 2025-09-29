@@ -1,3 +1,0 @@
-name: iot_lab_base
-boards:
-  - esp32c6_devkitc/esp32c6/hpcore
