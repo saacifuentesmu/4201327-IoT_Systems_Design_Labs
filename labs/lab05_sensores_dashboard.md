@@ -10,13 +10,17 @@
 Conectar conceptos teóricos de integración de sensores y gestión de energía con la implementación práctica de adquisición de datos de sensores, exposición de API JSON y dashboards de monitoreo basados en web para dispositivos IoT.
 
 ## Orden Pedagógico
-1. Driver / sensor mock.
+1. Driver / mock sensor.
 2. Endpoint `/sensor` JSON estable.
 3. PM básico (sleep) y logs timestamps.
 4. Servicio recolector (polling o observe ya existente) → almacenar histórico.
 5. Dashboard: tabla + último valor + toggle.
 
 ## Setup del Proyecto
+
+> ### Inicio Rápido GUI
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF
 ```bash

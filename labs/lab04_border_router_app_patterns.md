@@ -10,13 +10,17 @@
 Extendiendo el conocimiento en clase de border routers y patrones de aplicación, este laboratorio implementa un Border Router Thread y demuestra patrones publish-subscribe usando CoAP Observe para streaming de datos IoT en tiempo real.
 
 ## Orden Pedagógico
-1. Construir RCP + OTBR docker / nativo.
+1. RCP build + OTBR docker / nativo.
 2. Ver conectividad LAN→Thread.
 3. CoAP Observe flujo (registro + notificaciones).
 4. Métricas entrega (ratio y latencia notificación).
 5. (Opcional) MQTT bridging.
 
 ## Setup del Proyecto
+
+> ### Inicio Rápido GUI
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Usar ejemplo: `$IDF_PATH/examples/openthread/ot_rcp`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF
 ```bash

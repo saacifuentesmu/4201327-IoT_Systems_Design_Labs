@@ -17,6 +17,10 @@ Introduciendo los fundamentos de Thread y CoAP, este laboratorio establece las b
 
 ## Setup del Proyecto
 
+> ### Inicio Rápido GUI
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
+
 ### 1. Crear proyecto desde ejemplo ESP-IDF
 ```bash
 idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_cli" lab01

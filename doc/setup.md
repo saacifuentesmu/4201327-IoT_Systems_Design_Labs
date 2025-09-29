@@ -125,6 +125,20 @@ usbipd attach --wsl --busid <x-y> --auto-attach
 ```
 
 ---
+---
+
+## Inicio Rápido GUI con Extensión ESP-IDF
+
+Para cada laboratorio, puedes usar la interfaz gráfica de la extensión ESP-IDF de VS Code en lugar de comandos de terminal:
+
+1. Abrir VS Code → **Paleta de Comandos** → **ESP‑IDF: Mostrar Ejemplos** → seleccionar el ejemplo apropiado (ver instrucciones del laboratorio para el ejemplo específico, ej. `$IDF_PATH/examples/openthread/ot_cli`)
+2. **ESP‑IDF: Establecer Objetivo** → `esp32c6`
+3. **Editor de Configuración SDK de ESP-IDF** (GUI) para ajustar configuraciones específicas del laboratorio cuando se indique en los pasos.
+4. Usar **Construir Proyecto ESP-IDF**, **Flashear Dispositivo** y **Monitorear Dispositivo** desde la barra de herramientas de la extensión.
+
+_Tip:_ Los comandos de terminal se mantienen como alternativas en cada laboratorio; la GUI refleja las mismas acciones.
+
+---
 
 ## Configuración Completa ✅
 

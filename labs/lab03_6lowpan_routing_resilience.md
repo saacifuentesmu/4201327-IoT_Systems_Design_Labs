@@ -16,6 +16,10 @@ Traduciendo el entendimiento teórico de la capa de adaptación 6LoWPAN y los pr
 
 ## Setup del Proyecto
 
+> ### Inicio Rápido GUI
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
+
 ### 1. Crear proyecto desde ejemplo ESP-IDF
 ```bash
 idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_cli" lab03

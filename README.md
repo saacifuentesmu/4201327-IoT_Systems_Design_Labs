@@ -21,8 +21,8 @@ Estas herramientas permiten explorar conceptos IoT reales sin la complejidad de 
 ## Documentación del Curso
 
 - 📋 **[Programa Detallado](doc/syllabus.md)** - Cronograma semanal y objetivos de aprendizaje
-- ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (WSL2, Python, Zephyr)
-- 🧪 **[Laboratorios](labs/)** - 12 laboratorios prácticos paso a paso
+- ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (WSL2, Python, ESP‑IDF + VS Code Extension)
+- 🧪 **[Laboratorios](labs/)** - **8 laboratorios** prácticos paso a paso
 
 ## Objetivos de Aprendizaje IoT
 - Arquitecturas de sistemas IoT distribuidos
