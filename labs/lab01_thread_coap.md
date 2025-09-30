@@ -249,3 +249,24 @@ idf.py flash
 idf.py monitor
 ```
 
+### 4. Probar CoAP con cliente Python
+
+**Instalar dependencias en el host:**
+```bash
+pip install aiocoap
+```
+
+**Uso del cliente Python (alternativa a coap-client):**
+```bash
+# Obtener estado del sensor
+python tools/coap_client.py --host [IPv6 del nodo] get /sensor
+
+# Obtener estado de la luz
+python tools/coap_client.py --host [IPv6 del nodo] get /light
+
+# Cambiar estado de la luz (0=off, 1=on)
+python tools/coap_client.py --host [IPv6 del nodo] put /light 1
+```
+
+**Nota:** Reemplaza `[IPv6 del nodo]` con la dirección IPv6 obtenida del comando `ipaddr` en la CLI de Thread.
+

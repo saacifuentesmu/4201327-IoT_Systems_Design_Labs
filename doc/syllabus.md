@@ -1,6 +1,7 @@
 # Programa de 8 laboratorios: Fundamentos de IoT - Ejemplos Prácticos
 
 **Enfoque**: Conceptos fundamentales de IoT usando herramientas modernas (ESP-IDF, OpenThread, ESP32‑C6)
+
 **Metodología**: Fundamentos (labs 1‑2) → Redes mesh (labs 3‑4) → Aplicaciones (labs 5‑6) → Optimización (labs 7‑8)
 
 Cada lab: 3 h presenciales + ~3 h de tarea. Los entregables son incrementales.

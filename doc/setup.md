@@ -1,169 +1,130 @@
 # Configuración del Entorno - Curso de IoT con ESP32‑C6
 
-Esta guía te llevará paso a paso para configurar el entorno completo de desarrollo necesario para el curso. La configuración se divide en tres partes principales:
+Esta guía te llevará paso a paso para configurar el entorno completo de desarrollo necesario para el curso usando Windows nativo y las herramientas gráficas de VS Code con la extensión ESP-IDF. La configuración se divide en tres partes principales:
 
-1. **WSL2 (Ubuntu)** - Preparación del entorno Linux en Windows
-2. **ESP-IDF** - Instalación del framework de desarrollo
+1. **Prerrequisitos** - Instalación de Python y Git en Windows
+2. **IDE y ESP-IDF** - Instalación de VS Code, extensión ESP-IDF e instalación del framework
 3. **Workspace setup** - Configuración del workspace basado en este repositorio
-4. **IDE setup** - Configuración de VS Code y USB
 
 ---
 
-## Parte 1: WSL2 (Ubuntu) - Preparación del Entorno Windows
+## Parte 1: Prerrequisitos en Windows
 
-### Prerrequisitos
-- Windows 11 (actualizado)
-- Acceso de administrador
-- Conectividad a Internet
+### 1.1) Instalar Python 3.8 o superior
 
-### 1.1) Habilitar WSL2 e instalar Ubuntu
+Descarga e instala Python desde [python.org](https://www.python.org/downloads/). Asegúrate de marcar la opción "Add Python to PATH" durante la instalación.
 
-```powershell
-# Habilitar características de WSL (PowerShell Admin)
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux
-
+Verifica la instalación:
+```cmd
+python --version
+pip --version
 ```
 
-**Reiniciar el sistema**, luego instalar Ubuntu:
+### 1.2) Instalar Git
 
-```powershell
-# Instalar Ubuntu (PowerShell)
-wsl --install Ubuntu
+Descarga e instala Git desde [git-scm.com](https://git-scm.com/download/win).
 
+Verifica la instalación:
+```cmd
+git --version
 ```
 
-## Parte 2: ESP-IDF (en WSL2)
+## Parte 2: IDE y ESP-IDF
 
-Una vez dentro de WSL2 Ubuntu, instalar ESP-IDF.
+### 2.1) Instalar y configurar VS Code
 
-### 2.1) Actualizar sistema e instalar dependencias
+1. Instalar [VS Code](https://code.visualstudio.com/download).
+2. Instalar la extensión [ESP-IDF](https://marketplace.visualstudio.com/items?itemName=espressif.esp-idf-extension) desde el marketplace de VS Code.
 
-```bash
-# Actualizar Ubuntu
-sudo apt update && sudo apt upgrade -y
+### 2.2) Instalar ESP-IDF a través de la extensión
 
-# Instalar dependencias básicas para ESP-IDF
-sudo apt install git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
+La extensión ESP-IDF puede instalar y configurar ESP-IDF automáticamente:
 
-# add user to the dialout group for later USB access
-sudo usermod -a -G dialout $USER
+1. Abre VS Code.
+2. Presiona `Ctrl+Shift+P` para abrir la paleta de comandos.
+3. Busca y ejecuta `ESP-IDF: Install ESP-IDF`.
+4. Selecciona la versión v5.1.
+5. Elige la ubicación de instalación (por defecto está bien).
+6. Espera a que se complete la instalación.
 
-```
+### 2.3) Configurar la extensión ESP-IDF
 
-### 2.2) Instalar ESP-IDF
-
-```bash
-# Clonar ESP-IDF
-cd ~
-git clone -b v5.1 --recursive https://github.com/espressif/esp-idf.git
-
-# Instalar herramientas
-cd esp-idf
-./install.sh esp32c6
-
-# Configurar entorno
-. ./export.sh
-```
-
-> ⚠️ **Importante**: Siempre ejecuta `. ~/esp-idf/export.sh` en cada sesión antes de usar idf.py.
+1. En VS Code, ejecuta `ESP-IDF: Configure ESP-IDF extension`.
+2. Selecciona la instalación de ESP-IDF que acabas de instalar.
+3. Elige `esp32c6` como target por defecto.
 
 ---
 
 ## Parte 3: Workspace Setup basado en este repositorio
 
-### 3.1) Clonar el repositorio del curso
+### 3.1) Crear un fork del repositorio
 
-```bash
-# Clonar el repositorio
-cd ~
-git clone https://github.com/saacifuentesmu/4201327-IoT_Systems_Design_Labs.git
+Para tener tu propia copia del repositorio donde puedas guardar tus cambios y entregas:
+
+1. Ve al repositorio original: [https://github.com/saacifuentesmu/4201327-IoT_Systems_Design_Labs](https://github.com/saacifuentesmu/4201327-IoT_Systems_Design_Labs)
+2. Haz clic en el botón **"Fork"** en la esquina superior derecha
+3. Selecciona tu cuenta de GitHub como destino del fork
+4. Espera a que se complete el fork
+
+### 3.2) Clonar tu fork
+
+```cmd
+# Clonar tu fork (elige una ubicación conveniente, ej. Documents)
+cd %USERPROFILE%\Documents
+git clone https://github.com/TU_USUARIO/4201327-IoT_Systems_Design_Labs.git
 cd 4201327-IoT_Systems_Design_Labs
-
 ```
 
-### 3.2) Verificar configuración
+> **Nota:** Reemplaza `TU_USUARIO` con tu nombre de usuario de GitHub.
 
-```bash
+### 3.3) Verificar configuración
+
+```cmd
 # Probar build del proyecto base
 cd lab_base
 idf.py set-target esp32c6
 idf.py build
-
 ```
 
----
-
-## Parte 4: IDE Setup (VS Code)
-
-### 4.1) Configurar VS Code
-
-- Instalar [VS Code](https://code.visualstudio.com/download).
-- Instalar [WSL Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl).
-
-En VS Code, hacer clic en el ícono azul `><` (esquina inferior izquierda) y seleccionar "Connect to WSL".
-
-### 4.2) Configurar USB passthrough
-
-Para poder flashear la ESP32-C6 desde WSL, necesitas configurar USB passthrough:
-
-```powershell
-# Instalar usbipd-win (PowerShell como Admin)
-winget install --id=dorssel.usbipd-win -e
-```
-
-**Configuración por dispositivo** (hacer una vez por ESP32-C6):
-```powershell
-# Listar dispositivos USB
-usbipd list
-
-# Vincular el dispositivo ESP32-C6 (reemplazar BUSID como <x-y>)
-usbipd bind --busid <x-y>
-
-# Conectar a WSL (hacer cada vez que conectes la placa)
-usbipd attach --wsl --busid <x-y> --auto-attach
-```
 
 ---
 ---
 
 ## Inicio Rápido GUI con Extensión ESP-IDF
 
-Para cada laboratorio, puedes usar la interfaz gráfica de la extensión ESP-IDF de VS Code en lugar de comandos de terminal:
+Para cada laboratorio, puedes usar la interfaz gráfica de la extensión ESP-IDF de VS Code en lugar de comandos de terminal. Esto simplifica el proceso y permite enfocarte en los conceptos de IoT:
 
-1. Abrir VS Code → **Paleta de Comandos** → **ESP‑IDF: Mostrar Ejemplos** → seleccionar el ejemplo apropiado (ver instrucciones del laboratorio para el ejemplo específico, ej. `$IDF_PATH/examples/openthread/ot_cli`)
+1. Abrir VS Code → **Paleta de Comandos** (`Ctrl+Shift+P`) → **ESP‑IDF: Mostrar Ejemplos** → seleccionar el ejemplo apropiado (ver instrucciones del laboratorio para el ejemplo específico, ej. `esp-idf/examples/openthread/ot_cli`)
 2. **ESP‑IDF: Establecer Objetivo** → `esp32c6`
 3. **Editor de Configuración SDK de ESP-IDF** (GUI) para ajustar configuraciones específicas del laboratorio cuando se indique en los pasos.
 4. Usar **Construir Proyecto ESP-IDF**, **Flashear Dispositivo** y **Monitorear Dispositivo** desde la barra de herramientas de la extensión.
 
-_Tip:_ Los comandos de terminal se mantienen como alternativas en cada laboratorio; la GUI refleja las mismas acciones.
+_Tip:_ Los comandos de terminal se mantienen como alternativas en cada laboratorio; la GUI refleja las mismas acciones y es más intuitiva para principiantes.
 
 ---
 
 ## Configuración Completa ✅
 
 Una vez completados todos los pasos, tendrás:
-- ✅ WSL2 Ubuntu funcionando
-- ✅ Python virtual environment con west
+- ✅ Python 3.8+ instalado
+- ✅ Git instalado
+- ✅ ESP-IDF v5.1 instalado y configurado
 - ✅ Repositorio del curso clonado
-- ✅ Zephyr SDK instalado
-- ✅ VS Code con Remote WSL
-- ✅ USB passthrough configurado
+- ✅ VS Code con extensión ESP-IDF
+- ✅ Drivers USB configurados (si necesario)
 
 ## Workflow diario
 
 Para trabajar en el curso cada día:
 
-```bash
-# 1. Conectar ESP32-C6 en Windows (PowerShell Admin)
-usbipd attach --wsl --busid 3-2 --auto-attach
+```cmd
+# 1. Conectar la ESP32-C6 al puerto USB
+# (Los drivers se instalan automáticamente o manualmente como en Parte 2.4)
 
-# 2. En WSL, activar entorno ESP-IDF cada sesión
-cd ~/esp-idf
-. ./export.sh
+# 2. Abrir VS Code en el directorio de tu fork
+code %USERPROFILE%\Documents\4201327-IoT_Systems_Design_Labs
 
-# 3. Trabajar con los laboratorios
-cd ~/4201327-IoT_Systems_Design_Labs
+# 3. Trabajar con los laboratorios usando la GUI de la extensión ESP-IDF
 # ... seguir instrucciones del laboratorio correspondiente
 ```
 
@@ -171,16 +132,16 @@ cd ~/4201327-IoT_Systems_Design_Labs
 
 ## Smoke Test: Thread CLI + CoAP (Validación Rápida)
 
-Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que la pila OpenThread y CoAP funcionan en tu entorno.
+Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que la pila OpenThread y CoAP funcionan en tu entorno usando la GUI de VS Code.
 
 ### 1) Compilar y flashear el proyecto base (`lab_base`)
-```bash
-cd ~/4201327-IoT_Systems_Design_Labs/lab_base
-idf.py set-target esp32c6
-idf.py build
-idf.py flash
-idf.py monitor
-```
+
+1. Abre VS Code en el directorio de tu fork `4201327-IoT_Systems_Design_Labs`.
+2. Abre la carpeta `lab_base`.
+3. En la barra de herramientas ESP-IDF, haz clic en **ESP-IDF: Establecer Objetivo** y selecciona `esp32c6`.
+4. Haz clic en **ESP-IDF: Construir Proyecto**.
+5. Conecta la ESP32-C6 y haz clic en **ESP-IDF: Flashear Dispositivo**.
+6. Haz clic en **ESP-IDF: Monitorear Dispositivo**.
 
 En la consola (shell OpenThread):
 ```
@@ -197,13 +158,7 @@ ipaddr
 ```
 
 ### 2) Preparar segundo nodo (misma app base)
-Conecta otra placa y repite el build/flash:
-```bash
-idf.py build
-idf.py flash
-idf.py monitor
-```
-Forma la red igual que el primer nodo. (Los endpoints CoAP se implementarán en el Lab 1; por ahora solo validamos Thread.)
+Conecta otra placa y repite los pasos de build/flash desde VS Code. Forma la red igual que el primer nodo. (Los endpoints CoAP se implementarán en el Lab 1; por ahora solo validamos Thread.)
 
 ### 3) (Opcional) Captura Rápida
 Inicia tu sniffer 802.15.4 en el canal asignado y guarda un pcap de 30 s para usarlo en el Lab 2.

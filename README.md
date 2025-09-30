@@ -12,16 +12,16 @@ El curso progresa a través de fases estructuradas:
 - **Labs 7-8**: Observabilidad y consolidación
 
 ### ¿Por qué estas herramientas?
+- **ESP32-C6**: SoC moderno con múltiples radios (WiFi, BLE, 802.15.4)
 - **ESP-IDF**: Framework oficial de Espressif para ESP32, con soporte completo para Thread
 - **OpenThread**: Implementación open-source de Thread (protocolo usado en Matter/Google)
-- **ESP32-C6**: SoC moderno con múltiples radios (WiFi, BLE, 802.15.4)
 
 Estas herramientas permiten explorar conceptos IoT reales sin la complejidad de implementar protocolos desde cero.
 
 ## Documentación del Curso
 
 - 📋 **[Programa Detallado](doc/syllabus.md)** - Cronograma semanal y objetivos de aprendizaje
-- ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (WSL2, Python, ESP‑IDF + VS Code Extension)
+- ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (Windows nativo, Python, VS Code Extension + ESP‑IDF)
 - 🧪 **[Laboratorios](labs/)** - **8 laboratorios** prácticos paso a paso
 
 ## Objetivos de Aprendizaje IoT
@@ -42,16 +42,17 @@ Estas herramientas permiten explorar conceptos IoT reales sin la complejidad de 
 Estas herramientas permiten explorar conceptos IoT sin la complejidad de implementar protocolos desde cero.
 
 ## Prerrequisitos de software
-- Host Linux (Ubuntu 22.04+ recomendado)
+- Host Windows 10/11
 - ESP-IDF v5.1+ (con toolchain RISC-V)
 - Python 3.8+, pip
 - Git
 - Opcional: Wireshark + disector 802.15.4 para sniffing
 
 Configuración rápida (alto nivel)
-1) Instalar ESP-IDF desde la documentación oficial.
-2) Configurar el entorno de ESP-IDF.
-3) Verificar que la placa `esp32c6` esté soportada.
+1) Instalar Python y Git en Windows.
+2) Instalar VS Code y la extensión ESP-IDF.
+3) Usar la extensión para instalar ESP-IDF v5.1.
+4) Verificar que la placa `esp32c6` esté soportada.
 
 ## Placas y ejemplos
 Placa objetivo: `esp32c6`. Ver documentación de ESP-IDF para ESP32-C6.
