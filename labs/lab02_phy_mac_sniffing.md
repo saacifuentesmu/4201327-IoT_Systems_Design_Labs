@@ -1,4 +1,4 @@
-# Lab 2 — PHY + MAC + Sniffing (Fusión Labs 04 + 05)
+# Lab 2 — PHY + MAC + Sniffing
 
 ## Objetivos
 - Comprender canalización 2.4 GHz y tramas 802.15.4.
@@ -18,7 +18,7 @@ Aplicando conceptos teóricos de las capas PHY y MAC de IEEE 802.15.4, este labo
 ## Setup del Proyecto
 
 > ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
 > Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF

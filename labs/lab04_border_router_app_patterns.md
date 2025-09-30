@@ -1,4 +1,4 @@
-# Lab 4 — Border Router + Patrones de Aplicación (Fusión Labs 09 + 08 parcial)
+# Lab 4 — Border Router + Patrones de Aplicación
 
 ## Objetivos
 - Implementar un Border Router (OTBR) con RCP ESP32-C6.
@@ -19,7 +19,7 @@ Extendiendo el conocimiento en clase de border routers y patrones de aplicación
 ## Setup del Proyecto
 
 > ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
 > Usar ejemplo: `$IDF_PATH/examples/openthread/ot_rcp`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF

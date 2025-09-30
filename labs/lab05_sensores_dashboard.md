@@ -1,4 +1,4 @@
-# Lab 5 — Sensores + Dashboard Inicial (Fusión Lab 10 + parte Lab 12)
+# Lab 5 — Sensores + Dashboard Inicial
 
 ## Objetivos
 - Integrar sensor físico (I2C) o mock estructurado.
@@ -19,7 +19,7 @@ Conectar conceptos teóricos de integración de sensores y gestión de energía 
 ## Setup del Proyecto
 
 > ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
 > Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF

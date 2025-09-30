@@ -42,16 +42,11 @@ La extensión ESP-IDF puede instalar y configurar ESP-IDF automáticamente:
 
 1. Abre VS Code.
 2. Presiona `Ctrl+Shift+P` para abrir la paleta de comandos.
-3. Busca y ejecuta `ESP-IDF: Install ESP-IDF`.
-4. Selecciona la versión v5.1.
+3. Busca y ejecuta `ESP-IDF: Configure ESP-IDF Extension`.
+4. Selecciona "Express", luego la versión v5.5.1.
 5. Elige la ubicación de instalación (por defecto está bien).
-6. Espera a que se complete la instalación.
-
-### 2.3) Configurar la extensión ESP-IDF
-
-1. En VS Code, ejecuta `ESP-IDF: Configure ESP-IDF extension`.
-2. Selecciona la instalación de ESP-IDF que acabas de instalar.
-3. Elige `esp32c6` como target por defecto.
+6. Presiona el botón "Install" y espera a que se complete la instalación.
+7. Elige `esp32c6` como target por defecto.
 
 ---
 
@@ -71,35 +66,23 @@ Para tener tu propia copia del repositorio donde puedas guardar tus cambios y en
 ```cmd
 # Clonar tu fork (elige una ubicación conveniente, ej. Documents)
 cd %USERPROFILE%\Documents
-git clone https://github.com/TU_USUARIO/4201327-IoT_Systems_Design_Labs.git
+git clone https://github.com/<TU_USUARIO>/4201327-IoT_Systems_Design_Labs.git
 cd 4201327-IoT_Systems_Design_Labs
 ```
 
-> **Nota:** Reemplaza `TU_USUARIO` con tu nombre de usuario de GitHub.
-
-### 3.3) Verificar configuración
-
-```cmd
-# Probar build del proyecto base
-cd lab_base
-idf.py set-target esp32c6
-idf.py build
-```
-
+> **Nota:** Reemplaza `<TU_USUARIO>` con tu nombre de usuario de GitHub.
 
 ---
 ---
 
-## Inicio Rápido GUI con Extensión ESP-IDF
+## Inicio Rápido con Extensión ESP-IDF
 
-Para cada laboratorio, puedes usar la interfaz gráfica de la extensión ESP-IDF de VS Code en lugar de comandos de terminal. Esto simplifica el proceso y permite enfocarte en los conceptos de IoT:
+Para cada laboratorio, puedes usar la interfaz gráfica de la extensión ESP-IDF de VS Code:
 
 1. Abrir VS Code → **Paleta de Comandos** (`Ctrl+Shift+P`) → **ESP‑IDF: Mostrar Ejemplos** → seleccionar el ejemplo apropiado (ver instrucciones del laboratorio para el ejemplo específico, ej. `esp-idf/examples/openthread/ot_cli`)
 2. **ESP‑IDF: Establecer Objetivo** → `esp32c6`
 3. **Editor de Configuración SDK de ESP-IDF** (GUI) para ajustar configuraciones específicas del laboratorio cuando se indique en los pasos.
-4. Usar **Construir Proyecto ESP-IDF**, **Flashear Dispositivo** y **Monitorear Dispositivo** desde la barra de herramientas de la extensión.
-
-_Tip:_ Los comandos de terminal se mantienen como alternativas en cada laboratorio; la GUI refleja las mismas acciones y es más intuitiva para principiantes.
+4. Usar **Construir Proyecto ESP-IDF**, **Flashear Dispositivo** y **Monitorear Dispositivo** desde la barra de herramientas del IDE.
 
 ---
 
@@ -108,10 +91,9 @@ _Tip:_ Los comandos de terminal se mantienen como alternativas en cada laborator
 Una vez completados todos los pasos, tendrás:
 - ✅ Python 3.8+ instalado
 - ✅ Git instalado
-- ✅ ESP-IDF v5.1 instalado y configurado
+- ✅ ESP-IDF v5.5.1 instalado y configurado
 - ✅ Repositorio del curso clonado
 - ✅ VS Code con extensión ESP-IDF
-- ✅ Drivers USB configurados (si necesario)
 
 ## Workflow diario
 
@@ -132,9 +114,9 @@ code %USERPROFILE%\Documents\4201327-IoT_Systems_Design_Labs
 
 ## Smoke Test: Thread CLI + CoAP (Validación Rápida)
 
-Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que la pila OpenThread y CoAP funcionan en tu entorno usando la GUI de VS Code.
+Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que el ejemplo de OpenThread funciona en tu entorno usando la GUI de VS Code.
 
-### 1) Compilar y flashear el proyecto base (`lab_base`)
+### Compilar y flashear el proyecto base (`lab_base`)
 
 1. Abre VS Code en el directorio de tu fork `4201327-IoT_Systems_Design_Labs`.
 2. Abre la carpeta `lab_base`.
@@ -157,11 +139,6 @@ Apunta las direcciones IPv6:
 ipaddr
 ```
 
-### 2) Preparar segundo nodo (misma app base)
-Conecta otra placa y repite los pasos de build/flash desde VS Code. Forma la red igual que el primer nodo. (Los endpoints CoAP se implementarán en el Lab 1; por ahora solo validamos Thread.)
-
-### 3) (Opcional) Captura Rápida
-Inicia tu sniffer 802.15.4 en el canal asignado y guarda un pcap de 30 s para usarlo en el Lab 2.
 
 ---
 

@@ -1,4 +1,4 @@
-# Lab 6 — Seguridad & OTA (Lab 11)
+# Lab 6 — Seguridad & OTA
 
 ## Objetivos
 - Threat model básico (activos, amenazas, controles iniciales).
@@ -19,7 +19,7 @@ Aplicando principios de seguridad y mecanismos de actualización over-the-air ap
 ## Setup del Proyecto
 
 > ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
 > Usar ejemplo: `$IDF_PATH/examples/protocols/https_server/advanced_https_ota`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF con OTA

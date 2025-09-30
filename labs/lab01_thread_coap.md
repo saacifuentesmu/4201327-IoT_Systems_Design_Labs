@@ -1,4 +1,4 @@
-# Lab 1 — Thread CLI + CoAP Base (Fusión Labs 02 + 03)
+# Lab 1 — Thread CLI + CoAP Base
 
 ## Objetivos
 - Formar una red Thread mínima (roles, dataset, direccionamiento básico).
@@ -18,7 +18,7 @@ Introduciendo los fundamentos de Thread y CoAP, este laboratorio establece las b
 ## Setup del Proyecto
 
 > ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
 > Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF

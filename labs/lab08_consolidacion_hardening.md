@@ -19,7 +19,7 @@ Sintetizando todo el conocimiento teórico y práctico anterior, este laboratori
 ## Setup del Proyecto
 
 > ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-gui-con-extension-esp-idf) para pasos de configuración GUI.
+> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
 > Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
 
 ### 1. Crear proyecto desde ejemplo ESP-IDF
