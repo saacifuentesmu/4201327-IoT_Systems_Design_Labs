@@ -1,35 +1,22 @@
-# Lab 1 — Thread CLI + CoAP Base
+# Lab 3 — Thread/CoAP Basic
 
 ## Objetivos
-- Formar una red Thread mínima (roles, dataset, direccionamiento básico).
-- Implementar endpoints `/light` (GET/PUT) y `/sensor` (GET mock JSON) sobre CoAP.
+- Implementar endpoints `/light` (GET/PUT) y `/sensor` (GET mock JSON) sobre CoAP en red Thread existente.
 - Comprender CoAP vs HTTP (overhead, métodos, códigos respuesta).
+- Probar comunicación CoAP básica usando CLI Thread.
 
 ## Contexto
-Introduciendo los fundamentos de Thread y CoAP, este laboratorio establece las bases para el desarrollo de aplicaciones IoT mediante la formación de redes Thread y la implementación de servicios RESTful ligeros usando CoAP.
-
-## Orden Pedagógico
-1. Roles y dataset de Thread.
-2. Direcciones IPv6 rápidas (solo listar `ipaddr`).
-3. Introducción CoAP (modelo REST reducido).
-4. Implementación recursos (servidor) en `lab_base`.
-5. Cliente CoAP usando CLI en segundo nodo.
+Construyendo sobre las redes Thread establecidas en Lab 2, este laboratorio introduce CoAP como protocolo de aplicación ligero para IoT, implementando servicios RESTful sobre IPv6/6LoWPAN y comparando con HTTP tradicional.
 
 ## Setup del Proyecto
 
-> ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
-> Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
-
 ### 1. Crear proyecto desde ejemplo ESP-IDF
 ```bash
-idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_cli" lab01
-cd lab01
+idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_cli" lab03
+cd lab03
 ```
 
 ### 2. Añadir código CoAP incrementalmente
-
-**Nota:** ESP-IDF incluye un ejemplo de servidor CoAP en `$IDF_PATH/examples/protocols/coap_server`, pero no integra OpenThread. Por lo tanto, mantenemos `ot_cli` como base y añadimos CoAP paso a paso para mayor claridad.
 
 **Modificar `main/main.c`** (añadir llamada al servidor CoAP):
 ```c
@@ -48,7 +35,7 @@ static const char *TAG = "iot_lab_base";
 void start_coap_server(void);
 ```
 
-**Crear `main/coap_demo.c`** de forma incremental:
+**Crear `main/coap_demo.c`**:
 
 **Paso 1: Añadir includes y setup básico de CoAP**
 ```c
@@ -134,9 +121,9 @@ finish:
 **Paso 3: Añadir handler /light**
 ```c
 static void handle_light(coap_context_t *ctx, coap_resource_t *resource,
-                         coap_session_t *session, coap_pdu_t *request,
-                         coap_binary_t *token, coap_string_t *query,
-                         coap_pdu_t *response)
+                          coap_session_t *session, coap_pdu_t *request,
+                          coap_binary_t *token, coap_string_t *query,
+                          coap_pdu_t *response)
 {
     const char *response_data;
     size_t response_data_len;
@@ -147,9 +134,9 @@ static void handle_light(coap_context_t *ctx, coap_resource_t *resource,
         response_data = light_on ? "1" : "0";
         response_data_len = strlen(response_data);
         coap_add_data_blocked_response(resource, session, request, response,
-                                       token, COAP_MEDIATYPE_TEXT_PLAIN, 0,
-                                       response_data_len,
-                                       (const uint8_t *)response_data);
+                                        token, COAP_MEDIATYPE_TEXT_PLAIN, 0,
+                                        response_data_len,
+                                        (const uint8_t *)response_data);
         break;
     case COAP_REQUEST_PUT:
         if (request->data && request->data->length == 1 &&
@@ -182,9 +169,9 @@ coap_add_resource(ctx, light_resource);
 **Paso 4: Añadir handler /sensor**
 ```c
 static void handle_sensor(coap_context_t *ctx, coap_resource_t *resource,
-                          coap_session_t *session, coap_pdu_t *request,
-                          coap_binary_t *token, coap_string_t *query,
-                          coap_pdu_t *response)
+                           coap_session_t *session, coap_pdu_t *request,
+                           coap_binary_t *token, coap_string_t *query,
+                           coap_pdu_t *response)
 {
     char payload[32];
     size_t len;
@@ -198,8 +185,8 @@ static void handle_sensor(coap_context_t *ctx, coap_resource_t *resource,
     len = snprintf(payload, sizeof(payload), "{\"val\":%u}", sensor_counter);
     response->code = COAP_RESPONSE_CODE_CONTENT;
     coap_add_data_blocked_response(resource, session, request, response,
-                                   token, COAP_MEDIATYPE_APPLICATION_JSON, 0,
-                                   len, (const uint8_t *)payload);
+                                    token, COAP_MEDIATYPE_APPLICATION_JSON, 0,
+                                    len, (const uint8_t *)payload);
 }
 ```
 
@@ -217,8 +204,8 @@ coap_add_resource(ctx, sensor_resource);
 **Modificar `main/CMakeLists.txt`** para incluir CoAP:
 ```cmake
 idf_component_register(SRCS "main.c" "coap_demo.c"
-                       INCLUDE_DIRS "."
-                       REQUIRES openthread libcoap esp_openthread_cli)
+                        INCLUDE_DIRS "."
+                        REQUIRES openthread libcoap esp_openthread_cli)
 ```
 
 ### 3. Configurar settings
@@ -249,24 +236,27 @@ idf.py flash
 idf.py monitor
 ```
 
-### 4. Probar CoAP con cliente Python
+### 4. Probar CoAP usando CLI
 
-**Instalar dependencias en el host:**
+Para este laboratorio, las pruebas CoAP se realizan directamente desde la CLI de Thread en un segundo nodo ESP32. Conecta un segundo dispositivo y únete a la red Thread del primer nodo.
+
+**En el segundo nodo (cliente):**
 ```bash
-pip install aiocoap
+# Obtener dataset del líder (en el primer dispositivo)
+# dataset active -x
+
+# Copiar el dataset hexadecimal al segundo dispositivo
+dataset set active <dataset_hex_del_líder>
+ifconfig up
+thread start
+
+# Una vez unido, probar CoAP desde CLI
+coap get [IPv6 del servidor] /sensor
+coap put [IPv6 del servidor] /light 1
 ```
 
-**Uso del cliente Python (alternativa a coap-client):**
-```bash
-# Obtener estado del sensor
-python tools/coap_client.py --host [IPv6 del nodo] get /sensor
-
-# Obtener estado de la luz
-python tools/coap_client.py --host [IPv6 del nodo] get /light
-
-# Cambiar estado de la luz (0=off, 1=on)
-python tools/coap_client.py --host [IPv6 del nodo] put /light 1
-```
-
-**Nota:** Reemplaza `[IPv6 del nodo]` con la dirección IPv6 obtenida del comando `ipaddr` en la CLI de Thread.
-
+## Entregables
+- Capturas de CLI mostrando formación de red Thread (de Lab 2)
+- Logs de servidor CoAP con requests GET/PUT a `/light` y `/sensor`
+- Comparación CoAP vs HTTP (overhead, métodos, códigos de respuesta)
+- Documentación de endpoints implementados y su funcionalidad

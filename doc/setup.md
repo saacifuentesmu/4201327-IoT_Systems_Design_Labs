@@ -112,32 +112,21 @@ code %USERPROFILE%\Documents\4201327-IoT_Systems_Design_Labs
 
 ---
 
-## Smoke Test: Thread CLI + CoAP (Validación Rápida)
+## Smoke Test: Hello World (Validación Rápida)
 
-Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que el ejemplo de OpenThread funciona en tu entorno usando la GUI de VS Code.
+Antes del primer laboratorio formal, realiza esta prueba mínima para confirmar que ESP-IDF funciona correctamente en tu entorno usando la GUI de VS Code.
 
-### Compilar y flashear el proyecto base (`lab_base`)
+### Compilar y flashear el ejemplo Hello World
 
 1. Abre VS Code en el directorio de tu fork `4201327-IoT_Systems_Design_Labs`.
-2. Abre la carpeta `lab_base`.
-3. En la barra de herramientas ESP-IDF, haz clic en **ESP-IDF: Establecer Objetivo** y selecciona `esp32c6`.
-4. Haz clic en **ESP-IDF: Construir Proyecto**.
-5. Conecta la ESP32-C6 y haz clic en **ESP-IDF: Flashear Dispositivo**.
-6. Haz clic en **ESP-IDF: Monitorear Dispositivo**.
+2. Presiona `Ctrl+Shift+P` para abrir la paleta de comandos.
+3. Busca y ejecuta `ESP-IDF: Show Examples` → selecciona `get-started/hello_world`.
+4. En la barra de herramientas ESP-IDF, haz clic en **ESP-IDF: Establecer Objetivo** y selecciona `esp32c6`.
+5. Haz clic en **ESP-IDF: Construir Proyecto**.
+6. Conecta la ESP32-C6 y haz clic en **ESP-IDF: Flashear Dispositivo**.
+7. Haz clic en **ESP-IDF: Monitorear Dispositivo**.
 
-En la consola (shell OpenThread):
-```
-ot dataset init new
-ot dataset commit active
-ot ifconfig up
-ot thread start
-state   # Debe mostrar: leader o child tras unos segundos
-```
-
-Apunta las direcciones IPv6:
-```
-ipaddr
-```
+Deberías ver el mensaje "Hello world!" repetidamente en la consola, confirmando que el entorno está configurado correctamente.
 
 
 ---

@@ -9,24 +9,11 @@
 ## Contexto
 Construyendo sobre conceptos de observabilidad, este laboratorio optimiza el rendimiento del sistema IoT mediante recolección de métricas, estrategias de caching y rate limiting para asegurar manejo de datos confiable y eficiente.
 
-## Orden Pedagógico
-1. Métricas definiciones y colección.
-2. Capa caching (memoria) + invalidación.
-3. Rate limiting (ej: 1 req/s por IP).
-4. Streaming opcional.
-5. Autenticación con token.
-
 ## Setup del Proyecto
 
-> ### Inicio Rápido GUI
-> Ver [Inicio Rápido GUI con Extensión ESP-IDF](../doc/setup.md#inicio-rapido-con-extension-esp-idf) para pasos de configuración GUI.
-> Usar ejemplo: `$IDF_PATH/examples/openthread/ot_cli`.
+### 1. Continuar con el proyecto de Lab 3
 
-### 1. Crear proyecto desde ejemplo ESP-IDF
-```bash
-idf.py create-project-from-example "$IDF_PATH/examples/openthread/ot_cli" lab07
-cd lab07
-```
+Este laboratorio continúa desarrollando el proyecto iniciado en Lab 3. Asegúrate de tener el proyecto `lab03` (o equivalente) abierto en VS Code.
 
 ### 2. Añadir código base CoAP + sensor + observabilidad features
 
@@ -178,3 +165,131 @@ idf.py build
 idf.py flash
 idf.py monitor
 ```
+
+### 4. Streaming opcional con WebSocket/SSE
+
+**Añadir WebSocket al dashboard** (opcional):
+
+**Modificar `dashboard.py`:**
+```python
+from flask import Flask, render_template_string, request
+from flask_socketio import SocketIO, emit
+import subprocess
+import json
+
+app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# ... código anterior ...
+
+@socketio.on('connect')
+def handle_connect():
+    emit('sensor_update', get_sensor_data())
+
+def stream_sensor_data():
+    while True:
+        data = get_sensor_data()
+        socketio.emit('sensor_update', data)
+        socketio.sleep(5)
+
+socketio.start_background_task(stream_sensor_data)
+
+@app.route('/')
+def dashboard():
+    return render_template_string('''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>IoT Lab Dashboard</title>
+        <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    </head>
+    <body>
+        <h1>IoT Sensor Dashboard</h1>
+        <div id="sensor-data">Loading...</div>
+        <h2>Control Luz</h2>
+        <button onclick="controlLight(1)">Encender</button>
+        <button onclick="controlLight(0)">Apagar</button>
+        
+        <script>
+        const socket = io();
+        socket.on('sensor_update', function(data) {
+            document.getElementById('sensor-data').innerHTML = data;
+        });
+        
+        function controlLight(state) {
+            fetch('/control_light', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({state: state})
+            });
+        }
+        </script>
+    </body>
+    </html>
+    ''')
+
+# ... resto del código ...
+```
+
+**Añadir autenticación con token simple:**
+
+**Modificar dashboard para incluir token:**
+```python
+@app.route('/')
+def dashboard():
+    # Incluir token en requests
+    return render_template_string('''
+    ...
+    <script>
+    const TOKEN = 'iotlab2024'; // En producción usar variable de entorno
+    
+    function getSensorData() {
+        return fetch('/api/sensor', {
+            headers: {'Authorization': 'Bearer ' + TOKEN}
+        }).then(r => r.json());
+    }
+    ...
+    </script>
+    ''')
+```
+
+### 5. Medir métricas de rendimiento
+
+**Script para mediciones automáticas:**
+```python
+import time
+import subprocess
+import statistics
+
+def measure_latency(host, endpoint, num_requests=10):
+    latencies = []
+    for i in range(num_requests):
+        start = time.time()
+        result = subprocess.run([
+            "python", "tools/coap_client.py",
+            "--host", host, "get", endpoint
+        ], capture_output=True)
+        end = time.time()
+        if result.returncode == 0:
+            latencies.append((end - start) * 1000)  # ms
+    
+    return {
+        'avg_latency': statistics.mean(latencies),
+        'min_latency': min(latencies),
+        'max_latency': max(latencies),
+        'success_rate': len(latencies) / num_requests
+    }
+
+# Medir latencia del sensor con/sin cache
+print("Sin cache:", measure_latency(NODE_IP, "/sensor"))
+# Forzar sin cache cambiando parámetro o reiniciando
+print("Con cache:", measure_latency(NODE_IP, "/sensor"))
+```
+
+## Entregables
+- Métricas recolectadas (latencia, pérdida, throughput notificaciones)
+- Endpoint `/metrics` funcional con uptime, heap, estado luz
+- Implementación de caching (5s TTL) y rate limiting (1 req/s por IP)
+- Logs de optimizaciones (cache hits/misses, rate limit violations)
+- Autenticación con token simple (hardcoded para demo)
+- (Opcional) Streaming con WebSocket/SSE mostrando actualizaciones push

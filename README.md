@@ -6,16 +6,19 @@ Este es un curso práctico de 8 laboratorios centrado en los **fundamentos de Io
 
 ### Metodología de Aprendizaje
 El curso progresa a través de fases estructuradas:
-- **Labs 1-2**: Fundamentos de Thread y CoAP
-- **Labs 3-4**: Redes mesh y patrones de comunicación
-- **Labs 5-6**: Sensores, seguridad y OTA
+- **Labs 1-2**: Capas físicas y de enlace (IEEE 802.15.4, 6LoWPAN)
+- **Labs 3-4**: Redes mesh y comunicación básica (Thread/CoAP, sensores)
+- **Labs 5-6**: Aplicaciones avanzadas (Border Router, seguridad/OTA)
 - **Labs 7-8**: Observabilidad y consolidación
 
 ## Documentación del Curso
 
 - 📋 **[Programa Detallado](doc/syllabus.md)** - Cronograma semanal y objetivos de aprendizaje
+- 📅 **[Plan de Laboratorios](doc/labs_overview_8w.md)** - Organización semanal de los 8 labs
 - ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (Windows nativo, Python, VS Code Extension + ESP‑IDF)
 - 🧪 **[Laboratorios](labs/)** - **8 laboratorios** prácticos paso a paso
+- 🛠️ **[Herramientas](tools/)** - Scripts auxiliares (CoAP client, test stubs)
+- 📝 **[Plantillas](templates/)** - Templates para DDRs y entregables
 
 ## Objetivos de Aprendizaje IoT
 - Arquitecturas de sistemas IoT distribuidos
@@ -36,12 +39,7 @@ El curso progresa a través de fases estructuradas:
 Estas herramientas permiten explorar conceptos IoT sin la complejidad de implementar protocolos desde cero.
 
 ## Prerrequisitos de software
-- ESP-IDF v5.1+ (con toolchain RISC-V)
-- Python 3.8+, pip
-- Git
-- Opcional: Wireshark + disector 802.15.4 para sniffing
 
-Configuración rápida (alto nivel)
 1) Instalar Python y Git.
 2) Instalar VS Code y la extensión ESP-IDF.
 3) Usar la extensión para instalar ESP-IDF v5.1.
@@ -50,25 +48,9 @@ Configuración rápida (alto nivel)
 Placa objetivo: `esp32c6`. Ver documentación de ESP-IDF para ESP32-C6.
 
 Ejemplos utilizados:
+- IEEE 802.15.4 CLI
 - OpenThread CLI y CoAP en ESP-IDF
 - Border Router con ESP-IDF
 - Sniffing 802.15.4
 
-## Flujo del curso (conceptos IoT)
-**Labs 1-2 - Fundamentos:**
-1) Thread CLI + CoAP Base → Formación de red Thread y recursos CoAP básicos
-2) PHY + MAC + Sniffing → Análisis de tráfico 802.15.4 y ajustes de CCA
-
-**Labs 3-4 - Redes y Comunicación:**
-3) 6LoWPAN + Routing/Resiliencia → Direccionamiento IPv6 y resiliencia de red
-4) Border Router + App Patterns → Border Router y patrones observe/pub-sub
-
-**Labs 5-6 - Aplicaciones y Seguridad:**
-5) Sensores + Dashboard Inicial → Integración de sensores y dashboard básico
-6) Seguridad & OTA → Secure boot, firma y actualizaciones OTA
-
-**Labs 7-8 - Optimización y Consolidación:**
-7) Observabilidad & Optimización → Métricas, caching y optimización
-8) Consolidación & Hardening → Testing E2E, performance y documentación
-
-Ver `doc/labs_overview_8w.md` para resumen de labs y `labs/` para ejercicios detallados. Setup en `doc/setup.md`.
+Ver [`doc/syllabus.md`](doc/syllabus.md) para el programa detallado de laboratorios y [`doc/labs_overview_8w.md`](doc/labs_overview_8w.md) para el plan semanal. Los ejercicios detallados están en `labs/`. Setup en `doc/setup.md`.
