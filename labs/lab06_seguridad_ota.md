@@ -79,34 +79,16 @@ idf.py monitor
 
 ### 4. Configurar servidor HTTPS OTA
 
-**Crear servidor HTTPS simple** (para demo, usar HTTP en producción usar HTTPS):
+**Usar el servidor OTA desde `tools/ota_server.py`** (ya incluido en el repositorio).
 
 **Instalar dependencias:**
 ```bash
 pip install flask
 ```
 
-**Crear `ota_server.py`:**
-```python
-from flask import Flask, send_file
-import os
-
-app = Flask(__name__)
-
-@app.route('/firmware/<version>')
-def serve_firmware(version):
-    filename = f"build/iot_lab_base_{version}_signed.bin"
-    if os.path.exists(filename):
-        return send_file(filename, as_attachment=True)
-    return "Firmware not found", 404
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
-```
-
 **Ejecutar servidor:**
 ```bash
-python ota_server.py
+python tools/ota_server.py
 ```
 
 ### 5. Implementar cliente OTA en dispositivo

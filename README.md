@@ -17,7 +17,7 @@ El curso progresa a través de fases estructuradas:
 - 📅 **[Plan de Laboratorios](doc/labs_overview_8w.md)** - Organización semanal de los 8 labs
 - ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (Windows nativo, Python, VS Code Extension + ESP‑IDF)
 - 🧪 **[Laboratorios](labs/)** - **8 laboratorios** prácticos paso a paso
-- 🛠️ **[Herramientas](tools/)** - Scripts auxiliares (CoAP client, test stubs)
+- 🛠️ **[Herramientas](tools/)** - Scripts auxiliares (CoAP client, dashboard, OTA server, pruebas E2E)
 - 📝 **[Plantillas](templates/)** - Templates para DDRs y entregables
 
 ## Objetivos de Aprendizaje IoT
