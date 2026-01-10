@@ -1,56 +1,180 @@
-# Curso de IoT - Fundamentos Prácticos
+# IoT Systems Design Course / Curso de Diseño de Sistemas IoT
 
-## Resumen del Curso
+**ESP32-C6 • OpenThread • ISO/IEC 30141:2024**
 
-Este es un curso práctico de 8 laboratorios centrado en los **fundamentos de IoT** usando ejemplos reales con ESP-IDF. Utiliza ESP32-C6 DevKitC y OpenThread como herramientas prácticas para explorar conceptos clave de IoT: conectividad mesh, protocolos de aplicación, gestión de energía, y sistemas distribuidos.
+---
 
-### Metodología de Aprendizaje
-El curso progresa a través de fases estructuradas:
-- **Labs 1-2**: Capas físicas y de enlace (IEEE 802.15.4, 6LoWPAN)
-- **Labs 3-4**: Redes mesh y comunicación básica (Thread/CoAP, sensores)
-- **Labs 5-6**: Aplicaciones avanzadas (Border Router, seguridad/OTA)
-- **Labs 7-8**: Observabilidad y consolidación
+## 🇬🇧 English
 
-## Documentación del Curso
+### [📚 Start the Course →](en/)
 
-- 📋 **[Programa Detallado](doc/syllabus.md)** - Cronograma semanal y objetivos de aprendizaje
-- 📅 **[Plan de Laboratorios](doc/labs_overview_8w.md)** - Organización semanal de los 8 labs
-- ⚙️ **[Configuración del Entorno](doc/setup.md)** - Guía completa de instalación (Windows nativo, Python, VS Code Extension + ESP‑IDF)
-- 🧪 **[Laboratorios](labs/)** - **8 laboratorios** prácticos paso a paso
-- 🛠️ **[Herramientas](tools/)** - Scripts auxiliares (CoAP client, dashboard, OTA server, pruebas E2E)
-- 📝 **[Plantillas](templates/)** - Templates para DDRs y entregables
+**8 hands-on labs** building a Thread mesh IoT system, aligned with **ISO/IEC 30141:2024** standard.
 
-## Objetivos de Aprendizaje IoT
-- Arquitecturas de sistemas IoT distribuidos
-- Protocolos de comunicación para dispositivos constreñidos
-- Gestión de energía en dispositivos embebidos
-- Interoperabilidad y escalabilidad en redes mesh
-- Seguridad en sistemas IoT
-- Integración con infrastructure cloud/edge
+**What you'll build:**
+- Thread mesh sensor network
+- CoAP application protocol
+- Secure border router gateway
+- Complete dashboard integration
 
-## Herramientas y Tecnologías
-**Tecnologías base:** ESP32-C6, ESP-IDF, OpenThread
+**Technologies:** ESP32-C6, OpenThread, CoAP, CBOR, DTLS
 
-**Por qué estas herramientas:**
-- **ESP32-C6**: SoC moderno con múltiples radios (WiFi, BLE, 802.15.4)
-- **ESP-IDF**: Framework oficial de Espressif, con soporte completo para Thread
-- **OpenThread**: Implementación open-source de Thread (usado en Matter/Google)
+---
 
-Estas herramientas permiten explorar conceptos IoT sin la complejidad de implementar protocolos desde cero.
+### Quick Navigation (English)
 
-## Prerrequisitos de software
+| Document | Description |
+|----------|-------------|
+| [📖 Course Overview](en/README.md) | Start here - complete course introduction |
+| [⚙️ Setup Guide](en/0_setup.md) | Install ESP-IDF and configure environment |
+| [🎯 Project Scenario](en/1_project_scenario.md) | GreenField Technologies - your role as IoT engineer |
+| [🏗️ ISO Architecture](en/2_iso_architecture.md) | ISO/IEC 30141:2024 reference architecture guide |
+| [📝 Templates](en/3_deliverables_template.md) | DDR and ADR templates for deliverables |
+| [🔍 Quick References](en/references.md) | CoAP, Thread, ESP-IDF cheat sheets |
+| [🧪 Labs 1-8](en/labs/) | Weekly lab guides with role-based context |
+| [📐 Detailed Guides](en/labs/implementacion/) | Step-by-step implementation references |
 
-1) Instalar Python y Git.
-2) Instalar VS Code y la extensión ESP-IDF.
-3) Usar la extensión para instalar ESP-IDF v5.1.
+---
 
-## Placas y ejemplos
-Placa objetivo: `esp32c6`. Ver documentación de ESP-IDF para ESP32-C6.
+## 🇪🇸 Español
 
-Ejemplos utilizados:
-- IEEE 802.15.4 CLI
-- OpenThread CLI y CoAP en ESP-IDF
-- Border Router con ESP-IDF
-- Sniffing 802.15.4
+### [📚 Ir al Curso →](es/)
 
-Ver [`doc/syllabus.md`](doc/syllabus.md) para el programa detallado de laboratorios y [`doc/labs_overview_8w.md`](doc/labs_overview_8w.md) para el plan semanal. Los ejercicios detallados están en `labs/`. Setup en `doc/setup.md`.
+**8 laboratorios prácticos** construyendo un sistema IoT con redes mesh Thread, alineado con el estándar **ISO/IEC 30141:2024**.
+
+**Lo que construirás:**
+- Red de sensores mesh con Thread
+- Protocolo de aplicación CoAP
+- Gateway border router seguro
+- Integración completa con dashboard
+
+**Tecnologías:** ESP32-C6, OpenThread, CoAP, CBOR, DTLS
+
+---
+
+### Navegación Rápida (Español)
+
+| Documento | Descripción |
+|-----------|-------------|
+| [📖 Vista General del Curso](es/README.md) | Empieza aquí - introducción completa |
+| [⚙️ Guía de Instalación](es/0_preparacion.md) | Instalar ESP-IDF y configurar entorno |
+| [🎯 Escenario del Proyecto](es/1_escenario_proyecto.md) | GreenField Technologies - tu rol como ingeniero IoT |
+| [🏗️ Arquitectura ISO](es/2_arquitectura_iso.md) | Guía de arquitectura de referencia ISO/IEC 30141:2024 |
+| [📝 Plantillas](es/3_plantilla_entregables.md) | Plantillas DDR y ADR para entregables |
+| [🔍 Referencias Rápidas](es/referencias.md) | Hojas de referencia CoAP, Thread, ESP-IDF |
+| [🧪 Labs 1-8](es/labs/) | Guías de laboratorio semanales con contexto de roles |
+| [📐 Guías Detalladas](es/labs/implementacion/) | Referencias de implementación paso a paso |
+
+---
+
+## 📊 Course Structure / Estructura del Curso
+
+```
+Week/Semana 1-2:  Physical/Link Layer       →  SCD Domain
+Week/Semana 3-4:  Mesh Network & CoAP       →  SCD + ASD Domains
+Week/Semana 5-6:  Border Router & Security  →  SCD + OMD + RAID
+Week/Semana 7-8:  Dashboard & Integration   →  All 6 ISO Domains
+```
+
+### ISO/IEC 30141:2024 Six Domains / Seis Dominios
+
+| Domain / Dominio | Abbr. | Focus / Enfoque |
+|------------------|-------|-----------------|
+| Physical Entity | PED | Sensed/controlled objects / Objetos sensados/controlados |
+| Sensing & Controlling | SCD | Sensors, actuators, gateways / Sensores, actuadores, gateways |
+| Application & Service | ASD | Core functions, services / Funciones core, servicios |
+| Operation & Management | OMD | Device lifecycle, monitoring / Ciclo de vida, monitoreo |
+| User | UD | Human/digital users, HMI / Usuarios humanos/digitales, HMI |
+| Resource Access & Interchange | RAID | Authentication, API / Autenticación, API |
+
+---
+
+## 🛠️ Tools / Herramientas
+
+**Common tools for both languages / Herramientas comunes para ambos idiomas:**
+
+| Tool | Description |
+|------|-------------|
+| [tools/coap_client.py](tools/coap_client.py) | CoAP client for testing |
+| [tools/dashboard.py](tools/dashboard.py) | Simple dashboard server |
+| [tools/ota_server.py](tools/ota_server.py) | OTA update server |
+| [tools/test_e2e.py](tools/test_e2e.py) | End-to-end system tests |
+
+---
+
+## 📖 Reference / Referencia
+
+**ISO/IEC 30141:2024 Standard:**
+[ISO_IEC_30141_2024(en).pdf](ISO_IEC_30141_2024(en).pdf) - Internet of Things (IoT) Reference Architecture
+
+---
+
+## 🎓 What You'll Learn / Lo Que Aprenderás
+
+✅ Design ISO-compliant IoT systems / Diseñar sistemas IoT compatibles con ISO
+✅ Implement Thread mesh networks / Implementar redes mesh Thread
+✅ Use CoAP protocol for constrained devices / Usar protocolo CoAP para dispositivos restringidos
+✅ Secure IoT communications / Asegurar comunicaciones IoT
+✅ Build complete sensor-to-dashboard systems / Construir sistemas completos sensor-a-dashboard
+✅ Document architectural decisions / Documentar decisiones arquitectónicas
+
+---
+
+## 🚀 Getting Started / Comenzar
+
+### English Course
+1. Go to [en/](en/)
+2. Read [en/README.md](en/README.md)
+3. Follow [en/0_setup.md](en/0_setup.md)
+4. Start [en/labs/lab1.md](en/labs/lab1.md)
+
+### Curso en Español
+1. Ir a [es/](es/)
+2. Leer [es/README.md](es/README.md)
+3. Seguir [es/0_preparacion.md](es/0_preparacion.md)
+4. Comenzar [es/labs/lab1.md](es/labs/lab1.md)
+
+---
+
+## 📂 Repository Structure / Estructura del Repositorio
+
+```
+4201327-IoT_Systems_Design_Labs/
+│
+├── README.md                    (This file / Este archivo)
+├── ISO_IEC_30141_2024(en).pdf  (Standard / Estándar)
+│
+├── en/                          🇬🇧 English Course
+│   ├── README.md                   Course overview
+│   ├── 0_setup.md                  Environment setup
+│   ├── 1_project_scenario.md       GreenField project
+│   ├── 2_iso_architecture.md       ISO/IEC 30141 guide
+│   ├── 3_deliverables_template.md  DDR & ADR templates
+│   ├── references.md               Quick references
+│   └── labs/                       8 lab guides
+│       ├── lab1.md - lab8.md
+│       └── implementacion/         Detailed guides
+│
+├── es/                          🇪🇸 Curso en Español
+│   ├── README.md                   Vista general del curso
+│   ├── 0_preparacion.md            Instalación del entorno
+│   ├── 1_escenario_proyecto.md     Proyecto GreenField
+│   ├── 2_arquitectura_iso.md       Guía ISO/IEC 30141
+│   ├── 3_plantilla_entregables.md  Plantillas DDR y ADR
+│   ├── referencias.md              Referencias rápidas
+│   └── labs/                       8 guías de laboratorio
+│       ├── lab1.md - lab8.md
+│       └── implementacion/         Guías detalladas
+│
+└── tools/                       🛠️ Utilities (language-agnostic)
+    ├── coap_client.py
+    ├── dashboard.py
+    ├── ota_server.py
+    └── test_e2e.py
+```
+
+---
+
+**Ready to build professional IoT systems?**
+**¿Listo para construir sistemas IoT profesionales?**
+
+→ [English Course](en/) | [Curso en Español](es/)
