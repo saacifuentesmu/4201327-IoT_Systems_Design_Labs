@@ -30,8 +30,6 @@ This device will bridge our IEEE 802.15.4 mesh to the IPv6 Internet (WiFi/Ethern
 
 — Samuel
 
----\
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
@@ -41,10 +39,33 @@ This device will bridge our IEEE 802.15.4 mesh to the IPv6 Internet (WiFi/Ethern
 
 ---
 
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph LR
+    subgraph SCD [Field Domain]
+        Sensor[Sensor Node]
+    end
+    subgraph RAID [Edge Domain]
+        BR[Border Router]
+    end
+    subgraph ASD [Cloud Domain]
+        Cloud[Cloud Dashboard]
+    end
+    Sensor -->|Thread| BR
+    BR -->|WiFi/IPv6| Cloud
+    
+    style SCD fill:#bbf,stroke:#333,stroke-width:2px
+    style RAID fill:#f9f,stroke:#333,stroke-width:2px
+    style ASD fill:#dfd,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## 2. Theory Preamble (15 min)
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 5: Border Router*
-
-
 
 * **The Edge Gateway:** The most critical component in ISO 30141. It sits between the **Sensing Domain** (Local) and the **Application Domain** (Cloud).
 * **NAT64:** Most of the internet is IPv4. The OTBR translates our Thread IPv6 packets into IPv4 so we can talk to cloud servers.
@@ -81,3 +102,24 @@ This device will bridge our IEEE 802.15.4 mesh to the IPv6 Internet (WiFi/Ethern
 
 * **System Diagram:** Update your **Construction View**. Draw the path from Sensor to Cloud.
 * **Latency Baseline:** Record the "Edge-to-Cloud" latency in your DDR.
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (40 points)
+* [ ] Border Router (OTBR) operational and accessible via Web GUI (15 pts)
+* [ ] End-to-End connectivity (Sensor -> Cloud) verified (15 pts)
+* [ ] Latency audit (Local vs Cloud) recorded (10 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+* [ ] Gateway Pattern implementation explained (15 pts)
+* [ ] Construction View updated with correct connectivity (15 pts)
+
+### Analysis (20 points)
+* [ ] Reflection on the role of Edge Computing (10 pts)
+* [ ] Comparison of Thread Mesh vs WiFi direct connection (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+* [ ] **Sustainability**: System works locally without cloud? (Does the local mesh survive if the internet is cut?).
+* [ ] **Security**: Is the Border Router password protected? (Don't leave default credentials).

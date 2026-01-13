@@ -64,6 +64,27 @@ Document your findings in a DDR with proper ISO/IEC 30141 domain mapping. This i
 - Hands-on: Building and deploying ESP32-C6 hardware
 - Understanding: How physical layer choices affect higher layers
 
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    subgraph PED [Physical Entity Domain]
+        Air[RF Medium / Air]
+        Interference[WiFi Signals / Noise]
+    end
+
+    subgraph SCD [Sensing & Controlling Domain]
+        Antenna[Antenna]
+        Radio[IEEE 802.15.4 Radio]
+        MCU[ESP32-C6 MCU]
+    end
+
+    Air <-->|Propagation| Antenna
+    Interference -->|Noise| Antenna
+    Antenna <-->|Signal| Radio
+    Radio <-->|Data| MCU
+```
+
 ---
 
 ## Learning Objectives
@@ -364,6 +385,10 @@ Update your [DDR Template](../3_deliverables_template.md):
 
 **Section 10**: Performance Baselines (create table from Task 3.3)
 
+**SOP Integration (Mandatory)**:
+- Include findings from [SOP-01](sops/sop01_advanced_mac.md) (Experiments A, B, C) in your DDR.
+- Document the "Paranoid Radio" and "Ghost Packet" results in the **Experimental Log** section.
+
 ---
 
 ### 2. Performance Report
@@ -433,6 +458,10 @@ Create a troubleshooting guide:
 - [ ] Stakeholder summaries written for Samuel and Maria (5 pts)
 - [ ] Performance report clear and actionable for James (3 pts)
 - [ ] Troubleshooting guide practical for field use (2 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+- [ ] **Interference Check**: Did you verify your scans didn't disrupt legitimate WiFi users? (Spectrum scanning is passive, but active jamming is unethical).
+- [ ] **Resource Usage**: Did you turn off your radios when not testing to save shared spectrum?
 
 ---
 

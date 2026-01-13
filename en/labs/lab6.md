@@ -27,8 +27,6 @@ We need **Defense in Depth**. You must implement **DTLS (Datagram Transport Laye
 
 — Alex
 
----\
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
@@ -39,10 +37,31 @@ We need **Defense in Depth**. You must implement **DTLS (Datagram Transport Laye
 
 ---
 
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    subgraph Trustworthiness [Trustworthiness Viewpoint]
+        Confidentiality[Encryption (DTLS)]
+        Integrity[Message Integrity]
+        Availability[DoS Protection]
+    end
+    subgraph RAID [Communication]
+        Client --"Encrypted Channel (DTLS)"--> Server
+    end
+    Confidentiality -.-> Client
+    Integrity -.-> Server
+    
+    style Trustworthiness fill:#f9f,stroke:#333,stroke-width:2px
+    style RAID fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## 2. Theory Preamble (15 min)
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 6: Security & Trustworthiness*
-
-
 
 * **STRIDE Model:** Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation of Privilege.
 * **The Cost of Security:** A DTLS handshake requires ~6 flights of packets. It is "expensive" in energy. We must minimize how often we handshake.
@@ -95,3 +114,24 @@ Security is the technical foundation of privacy. Your DTLS implementation protec
 3. **User transparency**: Does Emma know her data is encrypted? Should she?
 
 **Remember**: Encryption protects data *in transit*. Consider: Is Emma's data also encrypted *at rest* on the dashboard server?
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (40 points)
+* [ ] CoAPS (DTLS) server running on port 5684 (15 pts)
+* [ ] Handshake successful with PSK (10 pts)
+* [ ] Packet sniffing verifies payload is encrypted (15 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+* [ ] Trustworthiness Viewpoint addressed (15 pts)
+* [ ] Threat Model (STRIDE) completed (15 pts)
+
+### Analysis (20 points)
+* [ ] ADR-006 (Encryption) justification (10 pts)
+* [ ] Handshake latency measurement (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+* [ ] **Privacy**: Encryption enabled (Privacy protection).
+* [ ] **Transparency**: Did you document the security limitations (e.g., PSK management) so stakeholders are aware?

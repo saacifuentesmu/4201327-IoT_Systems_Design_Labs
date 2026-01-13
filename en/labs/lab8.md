@@ -34,13 +34,33 @@ Good luck.
 
 — Samuel
 
----\
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
 | **Everyone** | "Does it actually work?" | This is the Final Acceptance Test (FAT). |
+
+---
+
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    SCD[Sensing] --> RAID[Network]
+    RAID --> ASD[Application]
+    OMD[Operations] -.-> RAID
+    Trustworthiness[Security] -.-> SCD
+    Trustworthiness -.-> RAID
+    Trustworthiness -.-> ASD
+    
+    style SCD fill:#bbf,stroke:#333,stroke-width:2px
+    style RAID fill:#f9f,stroke:#333,stroke-width:2px
+    style ASD fill:#dfd,stroke:#333,stroke-width:2px
+    style OMD fill:#ddd,stroke:#333,stroke-width:2px
+    style Trustworthiness fill:#faa,stroke:#333,stroke-width:2px
+```
 
 ---
 
@@ -85,6 +105,28 @@ Perform these tests yourself before submitting:
     * Dashboard updating.
     * Node disconnection & recovery.
 4.  **Ethics Assessment:** Completed Section 11 of your DDR.
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (50 points)
+* [ ] **The Stress Test**: System recovers automatically (0 intervention) (20 pts)
+* [ ] **Feature Complete**: All Lab 1-7 features present (10 pts)
+* [ ] **Code Quality**: Clean, commented, no hardcoded secrets (10 pts)
+* [ ] **Video Demo**: Clearly demonstrates functionality (10 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+* [ ] **DDR Final**: All ADRs and Viewpoints completed (15 pts)
+* [ ] **System View**: Clear understanding of how domains interact (15 pts)
+
+### Ethics & Sustainability (20 points)
+* [ ] **Final Ethics Assessment**: Thoughtful answers to the reflection questions (10 pts)
+* [ ] **Sustainability Check**: End-of-Life plan and low-power verification (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+* [ ] **Responsible Engineering**: Do you stand by this system? Would you let your family use it?
+* [ ] **Safety**: Verified that failure modes fail safe (e.g., valve closes on loss of signal).
 
 ---
 

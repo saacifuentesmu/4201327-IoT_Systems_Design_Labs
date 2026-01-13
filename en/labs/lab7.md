@@ -29,8 +29,6 @@ Don't just send me "Soil Moisture." Send me "Battery Voltage", "RSSI", and "Upti
 
 — Maria
 
----
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
@@ -41,10 +39,30 @@ Don't just send me "Soil Moisture." Send me "Battery Voltage", "RSSI", and "Upti
 
 ---
 
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    subgraph OMD [Operations & Management Domain]
+        Health[Health Monitor]
+        Battery[Battery Level]
+        RSSI[Signal Strength]
+    end
+    subgraph UD [User Domain]
+        Dashboard[Ops Dashboard]
+    end
+    Health --> Dashboard
+    
+    style OMD fill:#f9f,stroke:#333,stroke-width:2px
+    style UD fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## 2. Theory Preamble (15 min)
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 7: Operations & Observability*
-
-
 
 * **Telemetry vs. Business Data:**
     * *Business Data:* "Soil Moisture is 40%" (For Emma).
@@ -83,3 +101,24 @@ Create `/sys/health`.
 * **Dashboard Screenshot:** Show the Battery/RSSI graph.
 * **ADR-007 (Telemetry Strategy):** How often do we report health?
 * **ISO Domain Mapping:** Explain how this lab satisfies the **OMD** requirements.
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (40 points)
+* [ ] Health resource `/sys/health` implemented (15 pts)
+* [ ] Battery voltage and RSSI reading correct (10 pts)
+* [ ] Dashboard visualization working (15 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+* [ ] OMD domain implementation (Telemetry) (15 pts)
+* [ ] Distinction between Business Data and Telemetry explained (15 pts)
+
+### Analysis (20 points)
+* [ ] ADR-007 (Telemetry Strategy) justification (10 pts)
+* [ ] Piggybacking vs Separate Packet trade-off analysis (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+* [ ] **Data Minimization**: Are we collecting only what is needed for operations?
+* [ ] **Sustainability**: Did we optimize the reporting interval to save battery?

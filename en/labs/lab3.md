@@ -30,8 +30,6 @@ Analysis by Samuel shows we are using **HTTP over JSON**. This is too heavy. The
 
 — Product Team
 
----\
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
@@ -42,13 +40,32 @@ Analysis by Samuel shows we are using **HTTP over JSON**. This is too heavy. The
 
 ---
 
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    subgraph ASD [Application Service Domain]
+        CoAP[CoAP Layer]
+        CBOR[CBOR Encoding]
+    end
+    subgraph Network [Network Layer]
+        UDP[UDP Transport]
+        Thread[Thread / IPv6]
+    end
+    CoAP -->|Uses| UDP
+    CoAP -->|Payload| CBOR
+    UDP -->|Transport| Thread
+
+    style ASD fill:#f9f,stroke:#333,stroke-width:2px
+    style Network fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## 2. Theory Preamble (15 min)
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 3: CoAP & CBOR*
-
-
-
-[Image of CoAP protocol stack]
-
 
 * **CoAP vs HTTP:** CoAP runs over UDP. No 3-way handshake.
 * **CBOR vs JSON:**
@@ -80,3 +97,24 @@ Use Wireshark (or log packet size).
 
 * **ADR-003 (Protocol):** Rationale for CoAP/UDP. Explicitly mention the **Packet Overhead** baseline.
 * **Energy Calculation:** If CoAP saves 50ms of radio time per transmission, how much battery life does that add over 1 year? (See [References](../references.md) for performance baselines).
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (40 points)
+- [ ] CoAP resource `/env/temp` working with CBOR (15 pts)
+- [ ] Observe mechanism functional (push on change) (15 pts)
+- [ ] Packet size comparison (CoAP vs HTTP) (10 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+- [ ] ASD domain definition (Service Contract) (15 pts)
+- [ ] Protocol stack mapping correctly identified (15 pts)
+
+### Analysis (20 points)
+- [ ] ADR-003 (Protocol) justification (10 pts)
+- [ ] Energy saving calculation (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+- [ ] **Sustainability**: Did you verify that "Observe" actually reduces traffic compared to Polling?
+- [ ] **Transparency**: Is the data format (CBOR) documented so others can decode it?

@@ -31,8 +31,6 @@ We have selected **OpenThread** (IPv6 over Low-Power Wireless Personal Area Netw
 
 — Maria
 
----\
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
@@ -43,10 +41,29 @@ We have selected **OpenThread** (IPv6 over Low-Power Wireless Personal Area Netw
 
 ---
 
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    subgraph RAID [Resource Access & Interchange Domain]
+        Leader[Leader Router] <--> Router1[Router]
+        Router1 <--> Router2[Router]
+        Router2 <--> EndDevice[Sleepy End Device]
+    end
+    subgraph SCD [Sensing & Controlling Domain]
+         Sensor[Sensor] --> EndDevice
+    end
+    
+    style RAID fill:#f9f,stroke:#333,stroke-width:2px
+    style SCD fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## 2. Theory Preamble (15 min)
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 2: 6LoWPAN*
-
-
 
 * **The Concept:** 6LoWPAN (IPv6 over Low-Power WPAN).
 * **The Mechanism:** **MLE (Mesh Link Establishment)**. Nodes use "Trickle Timers" to advertise their presence.
@@ -79,3 +96,24 @@ Force a topology where Node A -> Node B -> Node C (3 hops).
 * **ADR-002 (Topology):** Why did we choose Thread (Mesh) over LoRaWAN (Star) for this specific deployment? (Hint: Actuator control requires low latency).
 * **Performance Baseline:** Did the network heal in < 120 seconds?
 * **ISO Reflection:** Map the "Router" and "Leader" roles to the **Functional Viewpoint**.
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (40 points)
+- [ ] Mesh formation successful with custom PANID (10 pts)
+- [ ] Healing time measured and recorded (15 pts)
+- [ ] Latency comparison (1 hop vs 3 hops) completed (15 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+- [ ] Functional Viewpoint analysis (Router/Leader roles) (15 pts)
+- [ ] RAID domain mapping explained (15 pts)
+
+### Analysis (20 points)
+- [ ] ADR-002 (Topology) justification with latency vs range trade-off (10 pts)
+- [ ] First Principles reflection on mesh power consumption (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+- [ ] **Resilience**: Did your healing tests disrupt other groups?
+- [ ] **Resource Usage**: Did you disable the router after testing to save power/spectrum?

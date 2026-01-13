@@ -299,8 +299,6 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ## 10. Evolution Path (Optional Extensions)
 
-Instructors can extend the scenario in future semesters:
-
 ### Version 2: International Expansion
 - New stakeholder: Regulatory Affairs (frequency allocation in EU vs US)
 - New requirement: Localization for Spanish-speaking farmers

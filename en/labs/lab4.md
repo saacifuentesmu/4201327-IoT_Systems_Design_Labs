@@ -29,8 +29,6 @@ I tried to send an "OPEN" command from the HQ console to the valve node.
 
 — Maria
 
----\
-
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
@@ -41,10 +39,29 @@ I tried to send an "OPEN" command from the HQ console to the valve node.
 
 ---
 
+## ISO/IEC 30141 Context
+
+### Visual Domain Mapping
+
+```mermaid
+graph TD
+    subgraph SCD [Sensing & Controlling Domain]
+        Sensor[Sensor] --> MCU
+        MCU --> Actuator[Valve/LED]
+    end
+    subgraph ASD [Application Service Domain]
+        Cloud[Cloud/User] --"Downlink (Command)"--> MCU
+        MCU --"Uplink (Ack)"--> Cloud
+    end
+    
+    style SCD fill:#bbf,stroke:#333,stroke-width:2px
+    style ASD fill:#f9f,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## 2. Theory Preamble (15 min)
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 4: Reliability & Downlink*
-
-
 
 * **Uplink vs Downlink:** Sending data *to* the cloud is easy (Node initiates). Receiving data *from* the cloud is hard (Node is asleep).
 * **Poll Period:** The "Sleepy End Device" must wake up periodically (e.g., every 5s) to ask its parent: "Do you have messages for me?"
@@ -78,3 +95,24 @@ Modify your client to send **CON (Confirmable)** requests.
 
 * **ADR-004 (Latency):** What Poll Period did you choose? Why? (Map to **User Domain** requirements).
 * **Reliability Check:** Screenshot of the CoAP ACK packet in Wireshark.
+
+---
+
+## Grading Rubric (Total: 100 points)
+
+### Technical Execution (40 points)
+- [ ] Actuator resource `/farm/valve` responds to PUT/GET (10 pts)
+- [ ] CON messaging verified with node disconnection test (15 pts)
+- [ ] Poll period tuning experiment completed (15 pts)
+
+### ISO/IEC 30141 Alignment (30 points)
+- [ ] SCD domain (Actuation) validation (15 pts)
+- [ ] Reliability/Feedback loop concept explained (15 pts)
+
+### Analysis (20 points)
+- [ ] ADR-004 (Latency/Poll Period) justification (10 pts)
+- [ ] Idempotency concept explained in context (10 pts)
+
+### Ethics Checkpoint (Mandatory Pass/Fail)
+- [ ] **Safety**: What happens if the valve receives "OPEN" but the network dies before "CLOSE"? (Failsafe design).
+- [ ] **Privacy**: Did you minimize data collection in the Uplink while testing Downlink?
