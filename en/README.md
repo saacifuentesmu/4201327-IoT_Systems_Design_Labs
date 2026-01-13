@@ -86,7 +86,7 @@ Each lab includes:
 | [Lab 7](labs/lab7.md) | Dashboard | UD, ASD | User interface, visualization |
 | [Lab 8](labs/lab8.md) | System Integration | **All 6** | Complete ISO-compliant system |
 
-**Need more technical details?** Each lab has a detailed implementation guide in [labs/implementation/](labs/implementation/)
+**Need more technical details?** Each lab has a detailed implementation guide in [labs/sops/](labs/sops/)
 
 ---
 
@@ -105,7 +105,7 @@ Each lab includes:
 ### Lab Materials
 
 - **[labs/](labs/)** - 8 role-based lab guides (start here each week)
-- **[labs/implementation/](labs/implementation/)** - Detailed technical guides (reference when stuck)
+- **[labs/sops/](labs/sops/)** - Detailed technical guides (reference when stuck)
 
 ---
 
@@ -257,7 +257,7 @@ By the end of this course, you will:
 
 - **Quick lookup**: [references.md](references.md) - CoAP, Thread, ESP-IDF commands
 - **Theory deep-dive**: [5_theory_foundations.md](5_theory_foundations.md) - First-principles explanations
-- **Detailed implementation**: [labs/implementation/](labs/implementation/) - Step-by-step guides
+- **Detailed implementation**: [labs/sops/](labs/sops/) - Step-by-step guides
 - **ISO questions**: [2_iso_architecture.md](2_iso_architecture.md) - Architecture reference
 - **Project context**: [1_project_scenario.md](1_project_scenario.md) - Stakeholder profiles
 - **Ethics & compliance**: [4_ethics_sustainability.md](4_ethics_sustainability.md) - Privacy, GDPR, sustainability

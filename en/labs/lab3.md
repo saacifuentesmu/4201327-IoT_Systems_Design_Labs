@@ -1,4 +1,6 @@
 # Lab 3: Efficient Data Transport (CoAP & CBOR)
+> **Technical Guide:** [SOP-03: Thread/CoAP Basic](sops/sop03_coap_basic.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase:** Application Optimization
 **Duration:** 3 hours

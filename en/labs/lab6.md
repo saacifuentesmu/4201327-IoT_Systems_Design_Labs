@@ -1,4 +1,6 @@
 # Lab 6: Security & Trustworthiness
+> **Technical Guide:** [SOP-06: Security & OTA](sops/sop06_security_ota.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase:** Hardening
 **Duration:** 3 hours

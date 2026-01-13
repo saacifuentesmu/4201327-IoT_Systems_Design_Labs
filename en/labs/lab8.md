@@ -1,4 +1,6 @@
 # Lab 8: Capstone Integration (The "Golden Master")
+> **Technical Guide:** [SOP-08: Consolidation & Hardening](sops/sop08_consolidation.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase:** Production Release
 **Duration:** 2 Weeks (Final Sprint)

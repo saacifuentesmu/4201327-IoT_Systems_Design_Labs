@@ -1,4 +1,6 @@
 # Lab 5: The Border Router (Cloud Connectivity)
+> **Technical Guide:** [SOP-05: Border Router Deployment](sops/sop05_border_router.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase:** Integration
 **Duration:** 3 hours

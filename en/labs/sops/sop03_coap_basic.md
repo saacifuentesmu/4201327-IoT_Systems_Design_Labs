@@ -1,4 +1,4 @@
-# Lab 3 — Thread/CoAP Basic
+# SOP-03: Thread/CoAP Basic
 
 > **Main Lab Guide:** [Lab 3: Efficient Data Transport](../lab3.md)
 > **ISO Domains:** ASD (Application & Service Domain), UD (User Domain)

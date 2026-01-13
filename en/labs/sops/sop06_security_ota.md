@@ -1,4 +1,4 @@
-# Lab 6 — Security & OTA
+# SOP-06: Security & OTA
 
 > **Main Lab Guide:** [Lab 6: Security & Trustworthiness](../lab6.md)
 > **ISO Domains:** RAID (Resource Access), Trustworthiness (Cross-cutting)

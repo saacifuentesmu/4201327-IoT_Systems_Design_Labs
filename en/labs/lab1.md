@@ -1,4 +1,6 @@
 # Lab 1: RF Characterization & Physical Layer
+> **Technical Guide:** [SOP-01: Advanced MAC Layer Tuning](sops/sop01_advanced_mac.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase**: Feasibility Study
 **Duration**: 2-3 hours

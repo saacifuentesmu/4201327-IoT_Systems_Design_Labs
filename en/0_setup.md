@@ -29,6 +29,8 @@ Verify the installation:
 git --version
 ```
 
+> **Linux/macOS Users**: Please refer to the [official Espressif Installation Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32c6/get-started/linux-macos-setup.html) for detailed setup instructions.
+
 ## Part 2: IDE and ESP-IDF
 
 ### 2.1) Install and configure VS Code

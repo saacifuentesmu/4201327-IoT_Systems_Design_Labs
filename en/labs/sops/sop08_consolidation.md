@@ -1,4 +1,4 @@
-# Lab 8 — Consolidation & Hardening (Final Integration)
+# SOP-08: Consolidation & Hardening (Final Integration)
 
 > **Main Lab Guide:** [Lab 8: Capstone Integration](../lab8.md)
 > **ISO Domains:** All Six Domains (System View)

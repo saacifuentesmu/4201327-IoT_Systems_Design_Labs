@@ -1,4 +1,4 @@
-# Lab 2 — 6LoWPAN + Routing & Resilience
+# SOP-02: 6LoWPAN + Routing & Resilience
 
 > **Main Lab Guide:** [Lab 2: 6LoWPAN Mesh Networking](../lab2.md)
 > **ISO Domains:** RAID (Resource Access & Interchange), SCD (Sensing & Controlling Domain)

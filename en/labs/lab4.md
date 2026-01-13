@@ -1,4 +1,6 @@
 # Lab 4: Reliability & Downlink Control
+> **Technical Guide:** [SOP-04: Sensor Integration and Dashboards](sops/sop04_sensor_integration.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase:** Control Logic
 **Duration:** 3 hours

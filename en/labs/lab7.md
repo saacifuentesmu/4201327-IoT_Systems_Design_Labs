@@ -1,4 +1,6 @@
 # Lab 7: Operations & Observability
+> **Technical Guide:** [SOP-07: Telemetry & Dashboards](sops/sop07_telemetry.md)
+
 **GreenField Technologies - SoilSense Project**
 **Phase:** Operations (OMD)
 **Duration:** 3 hours
@@ -27,7 +29,7 @@ Don't just send me "Soil Moisture." Send me "Battery Voltage", "RSSI", and "Upti
 
 — Maria
 
----\
+---
 
 ### Stakeholders Counting On You
 

@@ -1,4 +1,4 @@
-# Lab 4 — Sensor Integration and Dashboards
+# SOP-04: Sensor Integration and Dashboards
 
 > **Main Lab Guide:** [Lab 4: Reliability & Downlink Control](../lab4.md)
 > **ISO Domains:** SCD (Sensing & Controlling), ASD (Application & Service)
