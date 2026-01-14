@@ -1,6 +1,9 @@
 # GreenField Technologies: Project Briefing
+
 **Document Type**: Project Context & Stakeholder Guide
+
 **Audience**: IoT Systems Engineers (Students)
+
 **Purpose**: Provide realistic development scenario for ISO/IEC 30141-aligned learning
 
 ---
@@ -11,8 +14,6 @@
 
 ### Company Profile
 - **Founded**: 2025
-- **Employees**: 15 (4 in engineering)
-- **Funding**: Seed round ($2M)
 - **Market**: Small-scale sustainable farms in temperate climates
 - **Competitors**: Established players focus on large industrial farms; GreenField targets the underserved small farm market
 
@@ -42,9 +43,9 @@ A wireless mesh network of environmental sensors that helps farmers optimize irr
 ### Minimum Viable Product (MVP) Requirements
 1. **10-node sensor network** monitoring soil moisture and temperature
 2. **Self-forming mesh** - farmers just power on devices
-3. **3-month battery life** on coin cells
-4. **Mobile dashboard** showing current conditions and trends
-5. **Alert system** for irrigation scheduling
+3. **2-month battery life** on coin cells
+5. **Mobile dashboard** showing current conditions and trends
+6. **Alert system** for irrigation scheduling
 
 ---
 
@@ -68,12 +69,12 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 ### Your Team
 **Your Partner** (Labs 1-6) / **Your Team** (Labs 7-8)
 - **Labs 1-6**: You work with ONE partner
-  - Share 2× ESP32-C6 boards
+  - Share 3× ESP32-C6 boards
   - Maintain one shared DDR
   - Alternate driver/navigator roles each week
 
 - **Labs 7-8**: Two pairs merge into a team of 4
-  - Build larger mesh network (4+ nodes)
+  - Build larger mesh network (6+ nodes)
   - Integrate different subsystems
   - Combine DDRs into system-level architecture
 
@@ -87,11 +88,11 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 
 | Stakeholder | Role | Primary Concern | Maps to Viewpoint |
 |-------------|------|-----------------|-------------------|
-| **Samuel Cifuentes** | Senior Architect | System correctness, maintainability | Functional, Construction |
-| **James Park** | Product Owner | Customer value, cost targets | Business, Usage |
-| **Maria Santos** | Field Operations Lead | Deployment ease, reliability | Operational (OMD), Trustworthiness |
-| **Alex Chen** | Security Lead | Data privacy, secure communication | Trustworthiness |
-| **Emma Larson** | Customer (Pilot Farmer) | Ease of use, actionable insights | Usage |
+| **Samuel** | Senior Architect | System correctness, maintainability | Functional, Construction |
+| **Gustavo** | Product Owner | Customer value, cost targets | Business, Usage |
+| **Edwin** | Field Operations Lead | Deployment ease, reliability | Operational (OMD), Trustworthiness |
+| **Sebastian** | Security Lead | Data privacy, secure communication | Trustworthiness |
+| **Daniela** | Customer (Pilot Farmer) | Ease of use, actionable insights | Usage |
 
 ---
 
@@ -107,8 +108,8 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 
 **Stakeholder Questions You'll Answer**:
 - Samuel: "What's the link budget? Show me the RF propagation model."
-- James: "Can we achieve 100m range between nodes with this hardware?"
-- Maria: "What happens if a farmer places a node behind a metal barn?"
+- Gustavo: "Can we achieve 100m range between nodes with this hardware?"
+- Edwin: "What happens if a farmer places a node behind a metal barn?"
 
 **Deliverables**:
 - DDR documenting RF characterization (System & Functional viewpoints)
@@ -126,8 +127,8 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 
 **Stakeholder Questions You'll Answer**:
 - Samuel: "How does the system behave when a router node fails?"
-- James: "What's the worst-case latency from sensor to gateway?"
-- Maria: "How long does it take for the network to recover after power loss?"
+- Gustavo: "What's the worst-case latency from sensor to gateway?"
+- Edwin: "How long does it take for the network to recover after power loss?"
 
 **Key Decision Points**:
 - ADR: "CoAP vs MQTT for constrained devices" (you'll justify CoAP)
@@ -149,13 +150,13 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 - Design provisioning workflow
 
 **Stakeholder Questions You'll Answer**:
-- Alex: "How do we prevent sensor spoofing attacks?"
-- James: "What's the cost of encryption on battery life?"
-- Emma (Farmer): "Do I need to configure WiFi credentials on every sensor?"
+- Sebastian: "How do we prevent sensor spoofing attacks?"
+- Gustavo: "What's the cost of encryption on battery life?"
+- Daniela (Farmer): "Do I need to configure WiFi credentials on every sensor?"
 
 **Critical Concerns**:
-- Maria: "Farmers can't be expected to enter 32-character PSKs. How do we make provisioning simple?"
-- Alex: "We need GDPR compliance for EU customers. Where is data stored?"
+- Edwin: "Farmers can't be expected to enter 32-character PSKs. How do we make provisioning simple?"
+- Sebastian: "We need GDPR compliance for EU customers. Where is data stored?"
 
 **Deliverables**:
 - DDR covering RAID and OMD domains
@@ -174,9 +175,9 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 - System-wide testing and documentation
 
 **Stakeholder Questions You'll Answer**:
-- James: "What's the total bill-of-materials cost per node?"
-- Maria: "What's our deployment checklist? What can go wrong in the field?"
-- Emma: "Can I see real-time soil moisture on my phone?"
+- Gustavo: "What's the total bill-of-materials cost per node?"
+- Edwin: "What's our deployment checklist? What can go wrong in the field?"
+- Daniela: "Can I see real-time soil moisture on my phone?"
 - Samuel: "Provide a complete system architecture diagram with all six ISO domains"
 
 **Final Deliverable**: **System Integration Report**
@@ -207,13 +208,13 @@ Different stakeholders care about different aspects of your design:
 **To Samuel (Architect)**: Technical depth, correctness, standards alignment
 - "The mesh routing algorithm uses Trickle timers (RFC 6206) to minimize control traffic..."
 
-**To James (Product)**: Business impact, cost, performance
+**To Gustavo (Product)**: Business impact, cost, performance
 - "By using deep sleep, we extended battery life from 6 weeks to 14 weeks, meeting the 3-month target with margin..."
 
-**To Maria (Operations)**: Reliability, troubleshooting, deployment
+**To Edwin (Operations)**: Reliability, troubleshooting, deployment
 - "If a node fails to join the network, check these 3 things in this order..."
 
-**To Alex (Security)**: Threat mitigation, compliance
+**To Sebastian (Security)**: Threat mitigation, compliance
 - "We use AES-128-CCM (aligned with Thread spec) providing both confidentiality and authenticity..."
 
 ---
@@ -232,9 +233,9 @@ Different stakeholders care about different aspects of your design:
 
 ### Stakeholder Satisfaction
 - ✅ Samuel approves your architecture
-- ✅ James confirms product requirements met
-- ✅ Maria has clear deployment procedures
-- ✅ Alex validates security implementation
+- ✅ Gustavo confirms product requirements met
+- ✅ Edwin has clear deployment procedures
+- ✅ Sebastian validates security implementation
 
 ---
 
@@ -283,13 +284,6 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ## 9. Using This Scenario in Class
 
-### For Instructors
-- **Adopt Samuel's persona**: Review DDRs as a senior architect would, not as a grader
-- **Reference stakeholders**: "What would Maria ask about this design?"
-- **Frame assignments**: "James needs a cost analysis by next week" vs "Lab 3 is due Thursday"
-- **Encourage peer collaboration**: "Check with your fellow engineers" vs "Don't share code"
-
-### For Students
 - **Write DDRs to Samuel**, addressing his technical concerns
 - **Consider all stakeholders** when making design decisions
 - **Use professional language**: "I selected CoAP because..." vs "I had to use CoAP for the assignment"
@@ -318,7 +312,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ## Appendix: Stakeholder Profiles (Detailed)
 
-### Eng. Samuel Cifuentes - Senior IoT Architect
+### Eng. Samuel - Senior IoT Architect
 **Background**: Electronics Engineer, IoT Expert with extensive experience in embedded systems and wireless networks
 **Personality**: Mentoring but rigorous, values learning over perfection
 **Pet peeves**: Hand-waving explanations, copy-paste without understanding
@@ -332,7 +326,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ---
 
-### James Park - Product Owner
+### Gustavo - Product Owner
 **Background**: MBA, former farmer-turned-entrepreneur
 **Personality**: Optimistic, customer-obsessed, pragmatic about tradeoffs
 **Pet peeves**: Over-engineering, missed deadlines, vague estimates
@@ -346,7 +340,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ---
 
-### Maria Santos - Field Operations Lead
+### Edwin - Field Operations Lead
 **Background**: Agricultural engineer, manages pilot deployments
 **Personality**: Detail-oriented, risk-averse, field-tested wisdom
 **Pet peeves**: Solutions that work "in the lab" but fail in the field
@@ -360,7 +354,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ---
 
-### Alex Chen - Security Lead
+### Sebastian - Security Lead
 **Background**: Cybersecurity, previously at industrial control systems company
 **Personality**: Skeptical, threat-model driven, pragmatic about risk
 **Pet peeves**: "Security through obscurity", unpatched vulnerabilities
@@ -374,7 +368,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ---
 
-### Emma Larson - Pilot Customer (Vegetable Farm)
+### Daniela - Pilot Customer (Vegetable Farm)
 **Background**: Third-generation farmer, 20-hectare organic vegetable operation
 **Personality**: Practical, tech-curious but not tech-savvy, budget-conscious
 **Pet peeves**: Complicated setup, data without actionable insights
