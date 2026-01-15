@@ -18,25 +18,25 @@
 
 ### Lab 1: RF Characterization
 *   **To Samuel (Architect):**
-*   **To Maria (Ops):**
+*   **To Edwin (Ops):**
 
 ### Lab 2: 6LoWPAN
 *   **To Samuel:**
 
 ### Lab 3: Thread & CoAP
-*   **To Emma (Customer):**
+*   **To Daniela (Customer):**
 
 ### Lab 4: Sensors & Control
-*   **To Maria:**
+*   **To Edwin:**
 
 ### Lab 5: Border Router
-*   **To Emma:**
+*   **To Daniela:**
 
 ### Lab 6: Security
-*   **To Alex (Security):**
+*   **To Sebastian (Security):**
 
 ### Lab 7: Dashboard
-*   **To James (Product):**
+*   **To Gustavo (Product):**
 
 ### Lab 8: Final Integration
 *   **To All:**

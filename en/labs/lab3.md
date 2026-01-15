@@ -12,13 +12,13 @@
 
 ### Your Mission This Week
 
-**From:** Emma Larson (Pilot Customer) via Product Team
+**From:** Daniela (Pilot Customer) via Product Team
 **To:** Firmware Team
 **Subject:** Batteries dying too fast & Dashboard lag
 
 Hi Team,
 
-Feedback from Emma's farm:
+Feedback from Daniela's farm:
 1.  **Batteries are dead:** The prototypes from last week died in 4 days.
 2.  **Data is slow:** She says the dashboard takes forever to update.
 
@@ -34,7 +34,7 @@ Analysis by Samuel shows we are using **HTTP over JSON**. This is too heavy. The
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
-| **Emma (Farmer)** | "Why do I have to change batteries every week?" | CoAP/UDP removes TCP overhead, saving energy. |
+| **Daniela (Farmer)** | "Why do I have to change batteries every week?" | CoAP/UDP removes TCP overhead, saving energy. |
 | **Cloud Team** | "Why is the data ingress bandwidth so high?" | CBOR compresses the payload, reducing cloud costs. |
 | **ISO 30141 Auditor** | "Is the data interface standard?" | You are defining the **ASD** service contract. |
 

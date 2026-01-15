@@ -32,6 +32,17 @@ This course trains **IoT Systems Architects**, not just embedded developers. Ove
 **3. Learn the Architecture Framework**
 → Review [2_iso_architecture.md](2_iso_architecture.md) - ISO/IEC 30141:2024 overview
 
+### Week 1: Fundamentals
+
+**Module 1: Networking & IoT Introduction**
+→ [Read: 0_networking_recap.md](0_networking_recap.md)
+- Recap: Networking, Internet, IPv4 vs IPv6
+- Introduction to IoT Systems
+- The "Constraint" Triangle
+- First Principles Review
+
+**Note**: The practical Labs (1-8) begin in Week 2.
+
 ---
 
 ## 📚 Course Structure
@@ -134,9 +145,10 @@ Verification that your system meets operational requirements.
 ### 4. Stakeholder Summaries
 Different audiences care about different aspects:
 - **Samuel (Architect)**: Technical depth, ISO alignment
-- **James (Product)**: Cost, performance, business value
-- **Maria (Operations)**: Deployment, troubleshooting
-- **Alex (Security)**: Threat mitigation, compliance
+- **Gustavo (Product)**: Cost, performance, business value
+- **Edwin (Operations)**: Deployment, troubleshooting
+- **Sebastian (Security)**: Threat mitigation, compliance
+- **Daniela (Farmer)**: Test system on field
 
 ---
 

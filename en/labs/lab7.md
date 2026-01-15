@@ -12,7 +12,7 @@
 
 ### Your Mission This Week
 
-**From:** Maria Santos (Field Operations Lead)
+**From:** Edwin (Field Operations Lead)
 **To:** Firmware Team
 **Subject:** Stop flying blind
 
@@ -27,14 +27,14 @@ Don't just send me "Soil Moisture." Send me "Battery Voltage", "RSSI", and "Upti
 
 **Mission:** Implement the **OMD (Operations & Management)** domain logic.
 
-— Maria
+— Edwin
 
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
-| **Maria (Ops)** | "Which nodes need battery replacement?" | You will report `V_BATT` telemetry. |
-| **Emma (Farmer)** | "Is the system working?" | You will build a simple "Green/Red" status light. |
+| **Edwin (Ops)** | "Which nodes need battery replacement?" | You will report `V_BATT` telemetry. |
+| **Daniela (Farmer)** | "Is the system working?" | You will build a simple "Green/Red" status light. |
 | **ISO 30141 Auditor** | "How is the system maintained?" | You are implementing **OMD**. |
 
 ---
@@ -65,8 +65,8 @@ graph TD
 *Reference: [Theory Foundations](../5_theory_foundations.md) > Lab 7: Operations & Observability*
 
 * **Telemetry vs. Business Data:**
-    * *Business Data:* "Soil Moisture is 40%" (For Emma).
-    * *Telemetry:* "Battery is 3.1V, RSSI is -85dBm" (For Maria).
+    * *Business Data:* "Soil Moisture is 40%" (For Daniela).
+    * *Telemetry:* "Battery is 3.1V, RSSI is -85dBm" (For Edwin).
 * **The Cost of Observability:** Sending telemetry costs energy. Don't send it every second. Piggyback it on data packets or send it hourly.
 
 ---

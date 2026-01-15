@@ -2,7 +2,7 @@
 
 > **Main Lab Guide:** [Lab 3: Efficient Data Transport](../lab3.md)
 > **ISO Domains:** ASD (Application & Service Domain), UD (User Domain)
-> **GreenField Context:** Solving Emma's battery drain problem with CoAP/CBOR efficiency
+> **GreenField Context:** Solving Daniela's battery drain problem with CoAP/CBOR efficiency
 
 ## Objectives
 - Implement `/light` (GET/PUT) and `/sensor` (GET mock JSON) endpoints over CoAP on an existing Thread network.

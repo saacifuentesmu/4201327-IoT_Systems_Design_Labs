@@ -19,7 +19,7 @@
 Team,
 
 Right now, our mesh is an island. We can only see the data if we are standing in the field with a laptop.
-Emma (the farmer) needs to check her crops from her phone while she's at the market.
+Daniela (the farmer) needs to check her crops from her phone while she's at the market.
 
 **Mission:** Deploy an **OpenThread Border Router (OTBR)**.
 This device will bridge our IEEE 802.15.4 mesh to the IPv6 Internet (WiFi/Ethernet).
@@ -34,7 +34,7 @@ This device will bridge our IEEE 802.15.4 mesh to the IPv6 Internet (WiFi/Ethern
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
-| **Emma (Farmer)** | "Can I see this on my phone?" | The Border Router connects the Farm to the Cloud. |
+| **Daniela (Farmer)** | "Can I see this on my phone?" | The Border Router connects the Farm to the Cloud. |
 | **Samuel (Architect)** | "How do we translate protocols?" | You are implementing the **Gateway Pattern**. |
 
 ---

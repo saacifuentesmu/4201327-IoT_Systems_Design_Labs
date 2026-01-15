@@ -12,7 +12,7 @@
 
 ### Your Mission This Week
 
-**From:** Maria Santos (Field Operations Lead)
+**From:** Edwin (Field Operations Lead)
 **To:** Firmware Team
 **Subject:** URGENT: Tractor incident & Network gaps
 
@@ -29,13 +29,13 @@ We have selected **OpenThread** (IPv6 over Low-Power Wireless Personal Area Netw
 2.  **Resilience:** If a Router dies, the network must heal in **< 2 minutes**.
 3.  **Latency:** Ops needs to know if the multi-hop latency is too high for real-time valve control.
 
-— Maria
+— Edwin
 
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
-| **Maria (Ops)** | "If a cow steps on a node, does the network survive?" | You will simulate node failure and measure healing time. |
+| **Edwin (Ops)** | "If a cow steps on a node, does the network survive?" | You will simulate node failure and measure healing time. |
 | **Samuel (Architect)** | "Is the hop-count latency acceptable?" | You will measure RTT over 1 vs 3 hops. |
 | **ISO 30141 Auditor** | "How are resources accessed across the domain?" | You are implementing the **RAID** domain (Routing). |
 

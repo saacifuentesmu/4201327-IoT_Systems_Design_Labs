@@ -43,7 +43,7 @@ A wireless mesh network of environmental sensors that helps farmers optimize irr
 ### Minimum Viable Product (MVP) Requirements
 1. **10-node sensor network** monitoring soil moisture and temperature
 2. **Self-forming mesh** - farmers just power on devices
-3. **2-month battery life** on coin cells
+3. **3-month battery life** on coin cells
 5. **Mobile dashboard** showing current conditions and trends
 6. **Alert system** for irrigation scheduling
 
@@ -197,7 +197,7 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 
 ### Documentation Standards
 Samuel expects **professional engineering documentation**, not academic reports:
-- Use ISO/IEC 30141 vocabulary (she's certified in the standard)
+- Use ISO/IEC 30141 vocabulary
 - Justify decisions with quantitative analysis when possible
 - Acknowledge tradeoffs explicitly
 - Reference first principles (physics, protocol RFCs, security best practices)
@@ -275,11 +275,6 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 - ❌ Prescriptive "cookbook" instructions that discourage critical thinking
 - ❌ Single-stakeholder perspective (typical student → instructor dynamic)
 
-### Learning Outcomes Enhanced by Scenario
-- **Technical**: Same protocols, same performance targets as original course
-- **Professional**: Communication skills, documentation, stakeholder management
-- **Architectural**: ISO/IEC 30141 viewpoints feel natural because they map to real stakeholder questions
-
 ---
 
 ## 9. Using This Scenario in Class
@@ -293,17 +288,17 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ## 10. Evolution Path (Optional Extensions)
 
-### Version 2: International Expansion
+### 1: International Expansion
 - New stakeholder: Regulatory Affairs (frequency allocation in EU vs US)
 - New requirement: Localization for Spanish-speaking farmers
 - New domain focus: OMD (managing deployments across regions)
 
-### Version 3: Scale Challenge
+### 2: Scale Challenge
 - Customer: Large greenhouse operation (500 nodes)
 - New concerns: Network capacity planning, centralized vs distributed architecture
 - New viewpoint: Business (cost per hectare vs flat fee)
 
-### Version 4: Post-Deployment
+### 3: Post-Deployment
 - Customer support tickets drive firmware updates
 - OTA update strategy
 - Field failure analysis
@@ -313,10 +308,10 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 ## Appendix: Stakeholder Profiles (Detailed)
 
 ### Eng. Samuel - Senior IoT Architect
-**Background**: Electronics Engineer, IoT Expert with extensive experience in embedded systems and wireless networks
-**Personality**: Mentoring but rigorous, values learning over perfection
-**Pet peeves**: Hand-waving explanations, copy-paste without understanding
-**Catch phrase**: "Show me the numbers" / "Which domain does this belong to?"
+- **Background**: Electronics Engineer, IoT Expert with extensive experience in embedded systems and wireless networks
+- **Personality**: Mentoring but rigorous, values learning over perfection
+- **Pet peeves**: Hand-waving explanations, copy-paste without understanding
+- **Catch phrase**: "Show me the numbers" / "Which domain does this belong to?"
 
 **What he looks for in your DDRs**:
 - Correct use of ISO/IEC 30141 terminology
@@ -327,10 +322,10 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 ---
 
 ### Gustavo - Product Owner
-**Background**: MBA, former farmer-turned-entrepreneur
-**Personality**: Optimistic, customer-obsessed, pragmatic about tradeoffs
-**Pet peeves**: Over-engineering, missed deadlines, vague estimates
-**Catch phrase**: "Will farmers pay for this feature?"
+- **Background**: MBA, former farmer-turned-entrepreneur
+- **Personality**: Optimistic, customer-obsessed, pragmatic about tradeoffs
+- **Pet peeves**: Over-engineering, missed deadlines, vague estimates
+- **Catch phrase**: "Will farmers pay for this feature?"
 
 **What he cares about**:
 - Cost (BOM, development time)
@@ -341,10 +336,10 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 ---
 
 ### Edwin - Field Operations Lead
-**Background**: Agricultural engineer, manages pilot deployments
-**Personality**: Detail-oriented, risk-averse, field-tested wisdom
-**Pet peeves**: Solutions that work "in the lab" but fail in the field
-**Catch phrase**: "How do I troubleshoot this at 6 AM in a muddy field?"
+- **Background**: Agricultural engineer, manages pilot deployments
+- **Personality**: Detail-oriented, risk-averse, field-tested wisdom
+- **Pet peeves**: Solutions that work "in the lab" but fail in the field
+- **Catch phrase**: "How do I troubleshoot this at 6 AM in a muddy field?"
 
 **What she cares about**:
 - Deployment simplicity
@@ -355,10 +350,10 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 ---
 
 ### Sebastian - Security Lead
-**Background**: Cybersecurity, previously at industrial control systems company
-**Personality**: Skeptical, threat-model driven, pragmatic about risk
-**Pet peeves**: "Security through obscurity", unpatched vulnerabilities
-**Catch phrase**: "What's the attack surface?"
+- **Background**: Cybersecurity, previously at industrial control systems company
+- **Personality**: Skeptical, threat-model driven, pragmatic about risk
+- **Pet peeves**: "Security through obscurity", unpatched vulnerabilities
+- **Catch phrase**: "What's the attack surface?"
 
 **What he cares about**:
 - Data confidentiality and integrity
@@ -369,10 +364,10 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 ---
 
 ### Daniela - Pilot Customer (Vegetable Farm)
-**Background**: Third-generation farmer, 20-hectare organic vegetable operation
-**Personality**: Practical, tech-curious but not tech-savvy, budget-conscious
-**Pet peeves**: Complicated setup, data without actionable insights
-**Catch phrase**: "Will this actually help me grow better tomatoes?"
+- **Background**: Third-generation farmer, 20-hectare organic vegetable operation
+- **Personality**: Practical, tech-curious but not tech-savvy, budget-conscious
+- **Pet peeves**: Complicated setup, data without actionable insights
+- **Catch phrase**: "Will this actually help me grow better tomatoes?"
 
 **What she cares about**:
 - Ease of installation (no IT background)

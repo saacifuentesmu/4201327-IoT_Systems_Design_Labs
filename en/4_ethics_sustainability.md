@@ -31,7 +31,7 @@ IoT devices collect **continuous, granular data** about physical spaces and huma
 | Wearables | Heart rate, location | Health inference, stalking |
 | **SoilSense (Your Project)** | Environmental sensors | Could infer farm operations, schedule |
 
-Even "harmless" environmental data can reveal sensitive patterns. Emma's soil moisture readings might tell competitors when she irrigates, what crops she grows, or whether her farm is thriving.
+Even "harmless" environmental data can reveal sensitive patterns. Daniela's soil moisture readings might tell competitors when she irrigates, what crops she grows, or whether her farm is thriving.
 
 ### Key Privacy Risks
 
@@ -62,10 +62,10 @@ Even "harmless" environmental data can reveal sensitive patterns. Emma's soil mo
 ### GreenField Application
 
 **Questions to ask during design:**
-- [ ] Does Emma know exactly what data SoilSense collects?
-- [ ] Can Emma export her data and take it to a competitor?
-- [ ] If GreenField shuts down, can Emma still use her sensors?
-- [ ] Who else has access to Emma's farm data? Under what circumstances?
+- [ ] Does Daniela know exactly what data SoilSense collects?
+- [ ] Can Daniela export her data and take it to a competitor?
+- [ ] If GreenField shuts down, can Daniela still use her sensors?
+- [ ] Who else has access to Daniela's farm data? Under what circumstances?
 
 ---
 
@@ -202,7 +202,7 @@ When facing design decisions, ask these questions:
 
 **Lesson learned**: Third-party data access must be transparent. Users should explicitly consent to each data-sharing relationship.
 
-**GreenField application**: If agricultural agencies want access to SoilSense data, how do we ensure Emma explicitly consents?
+**GreenField application**: If agricultural agencies want access to SoilSense data, how do we ensure Daniela explicitly consents?
 
 ---
 
@@ -240,12 +240,12 @@ When facing design decisions, ask these questions:
 
 **Ethical tensions**:
 - Revenue could help GreenField survive and improve the product
-- Emma never consented to her data being sold
+- Daniela never consented to her data being sold
 - Aggregated data might still reveal individual farm information
 
 **Questions for discussion**:
 1. Is "anonymized" data truly anonymous when farms have known locations?
-2. Should Emma receive a share of revenue from her data?
+2. Should Daniela receive a share of revenue from her data?
 3. What consent mechanism would make this acceptable?
 
 ---
@@ -256,12 +256,12 @@ When facing design decisions, ask these questions:
 
 **Ethical tensions**:
 - Complying might help enforce important environmental regulations
-- Emma uses her data for farm management, not to report to authorities
+- Daniela uses her data for farm management, not to report to authorities
 - Could create chilling effect where farmers avoid using sensors
 
 **Questions for discussion**:
 1. Under what circumstances should GreenField comply?
-2. Should Emma be notified of the request?
+2. Should Daniela be notified of the request?
 3. How does this affect user trust in IoT systems?
 
 ---
@@ -300,7 +300,7 @@ Ethics isn't a separate module—it's woven through your technical work:
 
 In your **Design Decision Record**, include ethical considerations:
 
-**Section 4.5 (Stakeholder Summary - Alex)**: Security and privacy implications of your design choices.
+**Section 4.5 (Stakeholder Summary - Sebastian)**: Security and privacy implications of your design choices.
 
 **Section 5 (First Principles)**: Why your data collection approach is proportionate to the functionality provided.
 

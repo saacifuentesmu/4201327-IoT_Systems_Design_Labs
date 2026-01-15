@@ -2,7 +2,7 @@
 
 > **Main Lab Guide:** [Lab 5: Border Router](../lab5.md)
 > **ISO Domains:** RAID (Resource Access & Interchange), SCD (Sensing & Controlling)
-> **GreenField Context:** Enabling remote access for Maria (Ops) via Internet gateway
+> **GreenField Context:** Enabling remote access for Edwin (Ops) via Internet gateway
 
 ## Objectives
 Deploy an **Edge Gateway** to bridge the IEEE 802.15.4 Mesh to the IPv6 Internet. Validate the **Construction Viewpoint** (Gateway Pattern).

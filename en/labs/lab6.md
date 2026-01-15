@@ -12,7 +12,7 @@
 
 ### Your Mission This Week
 
-**From:** Alex Chen (Security Lead)
+**From:** Sebastian (Security Lead)
 **To:** Firmware Team
 **Subject:** VULNERABILITY DETECTED
 
@@ -20,19 +20,19 @@ I ran a penetration test on the Pilot Farm network. **It failed.**
 
 I was able to:
 1.  Sniff the air and read the exact temperature values (Privacy violation).
-2.  Inject a fake packet telling the irrigation valve to "OPEN", flooding Emma's greenhouse.
+2.  Inject a fake packet telling the irrigation valve to "OPEN", flooding Daniela's greenhouse.
 
 **This is a critical stop-ship issue.**
 We need **Defense in Depth**. You must implement **DTLS (Datagram Transport Layer Security)** to encrypt the CoAP links.
 
-— Alex
+— Sebastian
 
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
-| **Alex (Security)** | "Can an attacker inject fake commands?" | DTLS provides Integrity and Authentication. |
-| **Emma (Farmer)** | "Is my farm data private?" | Encryption ensures Confidentiality. |
+| **Sebastian (Security)** | "Can an attacker inject fake commands?" | DTLS provides Integrity and Authentication. |
+| **Daniela (Farmer)** | "Is my farm data private?" | Encryption ensures Confidentiality. |
 | **ISO 30141 Auditor** | "Have you addressed Trustworthiness?" | You are implementing the **Trustworthiness Viewpoint**. |
 
 ---
@@ -99,7 +99,7 @@ Use the Sniffer.
 
 *Reference: [4_ethics_sustainability.md](../4_ethics_sustainability.md)*
 
-Security is the technical foundation of privacy. Your DTLS implementation protects Emma's data from:
+Security is the technical foundation of privacy. Your DTLS implementation protects Daniela's data from:
 
 | Threat | Without DTLS | With DTLS |
 |--------|-------------|-----------|
@@ -111,9 +111,9 @@ Security is the technical foundation of privacy. Your DTLS implementation protec
 
 1. **Data minimization**: Now that we encrypt data, should we also reduce *what* we collect?
 2. **Regulatory compliance**: How does DTLS help us meet GDPR's "security of processing" requirement?
-3. **User transparency**: Does Emma know her data is encrypted? Should she?
+3. **User transparency**: Does Daniela know her data is encrypted? Should she?
 
-**Remember**: Encryption protects data *in transit*. Consider: Is Emma's data also encrypted *at rest* on the dashboard server?
+**Remember**: Encryption protects data *in transit*. Consider: Is Daniela's data also encrypted *at rest* on the dashboard server?
 
 ---
 

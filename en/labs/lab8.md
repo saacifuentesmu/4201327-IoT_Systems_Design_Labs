@@ -140,8 +140,8 @@ Before declaring your system production-ready, complete this ethical review:
 
 **Privacy & Data**
 - [ ] We documented exactly what data SoilSense collects (DDR Section 11)
-- [ ] Emma can access all her data
-- [ ] Emma can delete her data if she leaves the service
+- [ ] Daniela can access all her data
+- [ ] Daniela can delete her data if she leaves the service
 - [ ] Data retention period is defined and justified
 
 **Sustainability**
@@ -158,7 +158,7 @@ Before declaring your system production-ready, complete this ethical review:
 
 **Answer these questions in your DDR Section 11:**
 
-1. If GreenField Technologies shuts down in 5 years, will Emma's sensors still work? How?
+1. If GreenField Technologies shuts down in 5 years, will Daniela's sensors still work? How?
 
 2. What data could we stop collecting without losing core functionality?
 

@@ -12,7 +12,7 @@
 
 ### Your Mission This Week
 
-**From:** Maria Santos (Field Operations Lead)
+**From:** Edwin (Field Operations Lead)
 **To:** Firmware Team
 **Subject:** The irrigation valve didn't open!
 
@@ -27,13 +27,13 @@ I tried to send an "OPEN" command from the HQ console to the valve node.
 * The valve must eventually get the message, even if it sleeps.
 * We need acknowledgment (ACK) that the valve actually opened.
 
-— Maria
+— Edwin
 
 ### Stakeholders Counting On You
 
 | Stakeholder | Their Question | How This Lab Helps |
 |---|---|---|
-| **Maria (Ops)** | "How do I control a sleeping device?" | Implementing CoAP polling and "Mailbox" patterns. |
+| **Edwin (Ops)** | "How do I control a sleeping device?" | Implementing CoAP polling and "Mailbox" patterns. |
 | **Samuel (Architect)** | "What if the message gets lost?" | Using CoAP **CON** (Confirmable) messaging. |
 | **ISO 30141 Auditor** | "Is the Actuation reliable?" | You are validating the **SCD** (Control) loop. |
 
@@ -86,7 +86,7 @@ Modify your client to send **CON (Confirmable)** requests.
 ### Task C: Tuning the "Poll Period"
 * **Scenario:** Set `POLL_PERIOD` to 10 seconds.
 * **Test:** Send a command. Measure the lag.
-* **Trade-off:** Fast response = High battery usage. Slow response = Frustrated Maria.
+* **Trade-off:** Fast response = High battery usage. Slow response = Frustrated Edwin.
 * **Goal:** Find the "Sweet Spot" (ADR required).
 
 ---

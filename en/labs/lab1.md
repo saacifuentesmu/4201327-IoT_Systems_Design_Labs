@@ -37,8 +37,8 @@ Document your findings in a DDR with proper ISO/IEC 30141 domain mapping. This i
 | Stakeholder | Their Question | How This Lab Helps |
 |-------------|----------------|-------------------|
 | **Samuel (Architect)** | "Can we trust the ESP32-C6 for our mesh network?" | You'll provide measured link budget and PER data |
-| **James (Product)** | "Will 50m node spacing work for a 10-hectare field?" | You'll determine max range at 99% reliability |
-| **Maria (Operations)** | "What if there's WiFi interference from the farmhouse?" | You'll identify the cleanest channel via spectrum scan |
+| **Gustavo (Product)** | "Will 50m node spacing work for a 10-hectare field?" | You'll determine max range at 99% reliability |
+| **Edwin (Operations)** | "What if there's WiFi interference from the farmhouse?" | You'll identify the cleanest channel via spectrum scan |
 
 ---
 
@@ -185,9 +185,9 @@ idf.py -p /dev/ttyUSB0 flash monitor
 
 ---
 
-## Part 2: Spectrum Analysis (Answer Maria's Question)
+## Part 2: Spectrum Analysis (Answer Edwin's Question)
 
-**Context**: Maria needs to know if WiFi from the farmhouse will interfere with sensors.
+**Context**: Edwin needs to know if WiFi from the farmhouse will interfere with sensors.
 
 **Task 2.1**: Perform energy detection scan on channels 11-26.
 
@@ -224,7 +224,7 @@ This scans all channels (0xffff = channels 11-26 in bitmap) for 500ms each.
 - What is the noise floor on your chosen channel?
 - Map this decision to the **PED domain** (you're working around physical interference).
 
-**For Maria** (Stakeholder Communication):
+**For Edwin** (Stakeholder Communication):
 > *Example: "I selected 802.15.4 Channel 15 because it shows the lowest interference (-89 dBm noise floor). This avoids WiFi Channel 1 and 11 commonly used by farmhouse routers. If you see packet loss in the field, first check for new WiFi networks on Channel 6."*
 
 ---
@@ -325,7 +325,7 @@ On Device A:
 **For Samuel** (Technical):
 > *Example: "I measured a reliability threshold of -70 dBm (1% PER). Using the Friis equation with 10 dB fade margin for vegetation, I recommend 15m maximum spacing for 99% reliability."*
 
-**For James** (Business):
+**For Gustavo** (Business):
 > *Example: "For a 10-hectare field (100m × 100m), we'll need approximately 49 nodes in a 7×7 grid at 15m spacing. At $40/node, that's $1,960 for sensor hardware."*
 
 ---
@@ -371,7 +371,7 @@ Update your [DDR Template](../3_deliverables_template.md):
 - Key characteristics: Constrained power, wireless communication, ~15m range
 
 **Section 2**: Stakeholder Communication
-- Complete sections for Samuel and Maria (see examples above)
+- Complete sections for Samuel and Edwin (see examples above)
 
 **Section 3**: ADR-001 - Channel Selection
 - Document which channel you chose and why
@@ -393,7 +393,7 @@ Update your [DDR Template](../3_deliverables_template.md):
 
 ### 2. Performance Report
 
-Create a 1-page summary for James (Product Owner):
+Create a 1-page summary for Gustavo (Product Owner):
 
 **GreenField SoilSense - Lab 1 Performance Report**
 
@@ -413,7 +413,7 @@ Create a 1-page summary for James (Product Owner):
 
 ---
 
-### 3. Quick Reference for Maria
+### 3. Quick Reference for Edwin
 
 Create a troubleshooting guide:
 
@@ -455,8 +455,8 @@ Create a troubleshooting guide:
 - [ ] Question 3 answered with DSSS spreading gain (6 pts)
 
 ### Professional Communication (10 points)
-- [ ] Stakeholder summaries written for Samuel and Maria (5 pts)
-- [ ] Performance report clear and actionable for James (3 pts)
+- [ ] Stakeholder summaries written for Samuel and Edwin (5 pts)
+- [ ] Performance report clear and actionable for Gustavo (3 pts)
 - [ ] Troubleshooting guide practical for field use (2 pts)
 
 ### Ethics Checkpoint (Mandatory Pass/Fail)

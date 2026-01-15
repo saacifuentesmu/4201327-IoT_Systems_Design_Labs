@@ -20,25 +20,25 @@
 
 ### Lab 1: RF Characterization
 *   **To Samuel (Architect):** (e.g., Measured range, selected Channel X because...)
-*   **To Maria (Ops):** (e.g., Interference report...)
+*   **To Edwin (Ops):** (e.g., Interference report...)
 
 ### Lab 2: 6LoWPAN
 *   **To Samuel:** (e.g., Latency measurements...)
 
 ### Lab 3: Thread & CoAP
-*   **To Emma (Customer):** (e.g., Why battery life is better...)
+*   **To Daniela (Customer):** (e.g., Why battery life is better...)
 
 ### Lab 4: Sensors & Control
-*   **To Maria:** (e.g., Reliability of downlink...)
+*   **To Edwin:** (e.g., Reliability of downlink...)
 
 ### Lab 5: Border Router
-*   **To Emma:** (e.g., Remote access status...)
+*   **To Daniela:** (e.g., Remote access status...)
 
 ### Lab 6: Security
-*   **To Alex (Security):** (e.g., Threat model summary...)
+*   **To Sebastian (Security):** (e.g., Threat model summary...)
 
 ### Lab 7: Dashboard
-*   **To James (Product):** (e.g., Battery health monitoring...)
+*   **To Gustavo (Product):** (e.g., Battery health monitoring...)
 
 ### Lab 8: Final Integration
 *   **To All:** (e.g., Final system status...)
