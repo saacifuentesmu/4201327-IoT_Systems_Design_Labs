@@ -31,7 +31,7 @@
 | [📝 Templates](en/3_deliverables_template.md) | DDR and ADR templates for deliverables |
 | [🔍 Quick References](en/references.md) | CoAP, Thread, ESP-IDF cheat sheets |
 | [🧪 Labs 1-8](en/labs/) | Weekly lab guides with role-based context |
-| [📐 Detailed Guides](en/labs/implementacion/) | Step-by-step implementation references |
+| [📐 Detailed Guides](en/labs/sops/) | Step-by-step implementation references (SOPs) |
 
 ---
 
