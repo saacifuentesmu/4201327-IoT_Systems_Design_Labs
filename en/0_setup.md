@@ -122,13 +122,13 @@ Before the first formal lab, perform this minimal test to confirm that ESP-IDF w
 
 1. Open VS Code in your fork directory `4201327-IoT_Systems_Design_Labs`.
 2. Press `Ctrl+Shift+P` to open the command palette.
-3. Search for and run `ESP-IDF: Show Examples` → select `get-started/hello_world`.
+3. Search for and run `ESP-IDF: New Project` → select `{YOUR_IDF_PATH}` → select `ESP-IDF Examples` → select `get-started/blink`.
 4. In the ESP-IDF toolbar, click **ESP-IDF: Set Target** and select `esp32c6`.
 5. Click **ESP-IDF: Build Project**.
-6. Connect the ESP32-C6 and click **ESP-IDF: Flash Device**.
+6. Connect the ESP32-C6 and click **ESP-IDF: Flash Device** (UART).
 7. Click **ESP-IDF: Monitor Device**.
 
-You should see the "Hello world!" message repeatedly in the console, confirming that the environment is configured correctly.
+You should see the "LED ON/OFF" messages repeatedly in the console and the LED blinking, confirming that the environment is configured correctly.
 
 
 ---
