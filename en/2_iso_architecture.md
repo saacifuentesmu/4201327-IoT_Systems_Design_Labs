@@ -11,59 +11,7 @@ This guide introduces the ISO/IEC 30141:2024 standard and explains how it applie
 
 ---
 
-# Week 1: Introduction Lecture
-
-**Duration:** 45-60 minutes
-**Prerequisites:** Basic understanding of embedded systems, networking concepts
-
----
-
-## Lecture Outline
-
-1. **Introduction** (5 min)
-   - Course overview
-   - Why standards matter in IoT
-
-2. **ISO/IEC 30141 Overview** (10 min)
-   - Purpose of the standard
-   - Six viewpoints
-   - Key concepts
-
-3. **Six Functional Domains** (15 min)
-   - PED, SCD, ASD, OMD, UD, RAID
-   - Domain interactions
-
-4. **Mapping to Course Labs** (10 min)
-   - How each lab fits into the architecture
-   - Progressive learning path
-
-5. **Emergent Characteristics** (5 min)
-   - What makes IoT systems unique
-
-6. **Q&A and Course Expectations** (10 min)
-
----
-
-## 1. Introduction (5 minutes)
-
-### Welcome
-
-> "Welcome to IoT Systems Design. This course is different from typical embedded systems courses. We're not just learning how to program microcontrollers—we're learning how to architect **systems** that are composable, scalable, and trustworthy."
-
-### Course Philosophy
-
-**From "Maker" to "Architect"**
-
-| Maker Mindset | Architect Mindset |
-|---------------|-------------------|
-| "Does it work?" | "Why does it work this way?" |
-| "I connected the sensors" | "How do sensors fit into the functional architecture?" |
-| "It blinks!" | "What are the failure modes?" |
-| Focus on implementation | Focus on design decisions |
-
-**We train architects**, not just makers.
-
-### Why Standards Matter
+## Why Standards Matter in IoT
 
 **Scenario**: You build an IoT system for a client.
 
@@ -82,7 +30,7 @@ This guide introduces the ISO/IEC 30141:2024 standard and explains how it applie
 
 ---
 
-## 2. ISO/IEC 30141:2024 Overview (10 minutes)
+## ISO/IEC 30141:2024 Overview
 
 ### What is ISO/IEC 30141?
 
@@ -158,8 +106,7 @@ The standard describes IoT systems from **six complementary viewpoints**:
 
 ---
 
-## 3. Six Functional Domains (15 minutes)
-
+## 3. Six Functional Domains
 The **Functional Viewpoint** (Viewpoint 4) divides IoT systems into **six domains**.
 
 ### Visual Overview
@@ -370,8 +317,7 @@ Data flows through all six domains in ~200-500 ms.
 
 ---
 
-## 4. Mapping to Course Labs (10 minutes)
-
+## 4. Mapping to Course Labs
 ### Lab Progression and Domain Focus
 
 | Lab | Title | Primary Domains | What You Build |
@@ -437,8 +383,7 @@ IoT Component → IoT System → IoT Environment
 
 ---
 
-## 5. Emergent Characteristics (5 minutes)
-
+## 5. Emergent Characteristics
 ### What Makes IoT Systems Special?
 
 ISO/IEC 30141 Section 7 defines **emergent characteristics** — properties that arise from the system as a whole, not individual components.
@@ -488,8 +433,7 @@ Router fails → Mesh detects failure (30s) → Self-heals (re-routes) → No hu
 
 ---
 
-## 6. Q&A and Course Expectations (10 minutes)
-
+## 6. Q&A and Course Expectations
 ### Course Deliverables
 
 1. **DDR (Decision & Design Record)**: Living document tracking your architectural decisions
@@ -619,62 +563,6 @@ RAID: OAuth login, API for third-party apps (MyFitnessPal, Strava)
 
 ---
 
-## Appendix: Visual Aids for Slides
-
-### Slide 1: Course Philosophy
-```
-┌─────────────────────────────────────────────────┐
-│  From "Maker" to "Architect"                    │
-├─────────────────────────────────────────────────┤
-│                                                 │
-│  Maker: "It works!"                             │
-│  Architect: "Why does it work this way?"        │
-│                                                 │
-│  Maker: Focus on implementation                 │
-│  Architect: Focus on design decisions           │
-│                                                 │
-│  This course trains ARCHITECTS.                 │
-└─────────────────────────────────────────────────┘
-```
-
-### Slide 2: Six Viewpoints Overview
-```
-┌────────────────────────────────────────────────┐
-│      ISO/IEC 30141 Six Viewpoints              │
-├────────────────────────────────────────────────┤
-│  1. Foundational     → What is it?            │
-│  2. Business         → Why build it?          │
-│  3. Usage            → Who uses it?           │
-│  4. Functional       → What does it do?       │
-│  5. Trustworthiness  → How is it secure?      │
-│  6. Construction     → How to build it?       │
-└────────────────────────────────────────────────┘
-```
-
-### Slide 3: Six Domains Diagram
-*Use the visual overview diagram from Section 3 above*
-
-### Slide 4: Lab Progression
-```
-┌─────────────────────────────────────────────────┐
-│        Course Lab Progression                   │
-├─────────────────────────────────────────────────┤
-│                                                 │
-│  Labs 1-2:  IoT Component     (SCD)            │
-│  Labs 3-5:  IoT System        (SCD+ASD+RAID)   │
-│  Labs 6-8:  IoT Environment   (All domains)    │
-│                                                 │
-│  → Progressive complexity                       │
-│  → By Lab 8: Complete ISO/IEC 30141 system     │
-└─────────────────────────────────────────────────┘
-```
-
 ---
 
-**Instructor Notes**:
-- Use interactive polls: "Which domain does a temperature sensor belong to?"
-- Show real product examples (Nest thermostat, Fitbit) and map to domains
-- Emphasize **practical value**: "Clients will ask you to explain architecture. ISO/IEC 30141 gives you the vocabulary."
-- Encourage questions throughout (this is foundational material)
-
-**End of Lecture**
+**End of ISO/IEC 30141 Guide**

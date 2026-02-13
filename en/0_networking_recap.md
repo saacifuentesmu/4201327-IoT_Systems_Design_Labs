@@ -14,9 +14,13 @@
 
 **To:** New IoT Systems Engineering Team
 
-**Subject:** Knowledge Alignment
+**Subject:** Knowledge Alignment - Networking Fundamentals
 
-Welcome to the team. Before we start building our precision agriculture mesh network, we need to ensure everyone is aligned on the fundamental technologies we use. We cannot afford architecture errors due to misunderstandings of basic networking principles.
+Welcome to the team! Before we start building our precision agriculture mesh network, we need to ensure everyone is aligned on the fundamental technologies we use.
+
+**Don't worry if some concepts are new**—this module is designed to bridge gaps in networking knowledge. We'll start with basics (what is the Internet?) and build up to IoT-specific concepts (IPv6, mesh networks, constrained devices).
+
+📖 **Tip**: Keep the [glossary.md](glossary.md) open in another tab—it explains every technical term in plain English.
 
 **Objectives**:
 1.  **Architecture**: Understand the difference between *Communication Models* (OSI) and *System Models* (ISO/IEC 30141).
@@ -25,75 +29,79 @@ Welcome to the team. Before we start building our precision agriculture mesh net
 
 ---
 
-## 2. Architectural Frameworks
+## 2. Two Different Lenses: OSI vs ISO/IEC 30141
 
-To build scalable systems, we must distinguish between *how data moves* and *how the system is organized*.
+When building IoT systems, you need **TWO different perspectives**:
 
-### 2.1 The Communication Model (OSI)
-The **OSI Model** describes the flow of data. In IoT, we often simplify this, but the layers remain critical for debugging.
+| Framework | Question | Metaphor |
+|-----------|----------|----------|
+| **OSI Model** | "How does data move?" | Postal system (how mail flows through sorting centers) |
+| **ISO/IEC 30141** | "How is the system organized?" | City map (where buildings are located) |
 
-```mermaid
-graph TD
-    subgraph "Application Layer (Data)"
-        L7[L7: Application <br/> HTTP, MQTT, CoAP]
-    end
-    subgraph "Transport Layer (Reliability)"
-        L4[L4: Transport <br/> TCP, UDP]
-    end
-    subgraph "Network Layer (Routing)"
-        L3[L3: Network <br/> IPv6, IPv4, RPL]
-    end
-    subgraph "Link/Physical (Radio/Wire)"
-        L2[L2: Data Link <br/> MAC, 802.15.4]
-        L1[L1: Physical <br/> 2.4GHz Radio]
-    end
-    
-    L7 --> L4
-    L4 --> L3
-    L3 --> L2
-    L2 --> L1
+**Both are essential** - like needing both a recipe (OSI) and a kitchen layout (ISO 30141) to cook well.
+
+---
+
+### 2.1 OSI Model: The Protocol Stack (Vertical)
+
+**Example: Your BLE sensor sending "23.5°C"**
 
 ```
+┌─────────────────────────────────────┐
+│ L7: Application                     │ ← Your code: "Send temperature: 23.5°C"
+├─────────────────────────────────────┤
+│ L4: Transport (UDP)                 │ ← Break into packets
+├─────────────────────────────────────┤
+│ L3: Network (IPv6)                  │ ← Add destination address
+├─────────────────────────────────────┤
+│ L2: Data Link (BLE)                 │ ← BLE connection
+├─────────────────────────────────────┤
+│ L1: Physical (2.4 GHz Radio)        │ ← The radio you studied yesterday!
+└─────────────────────────────────────┘
+```
 
-### 2.2 The IoT Reference Architecture (ISO/IEC 30141)
+**OSI helps you**: Choose protocols (CoAP vs MQTT), debug (which layer failed?), optimize bandwidth.
 
-While OSI explains protocols, **ISO/IEC 30141** explains the **System Domains**. This is how we structure our actual code and hardware.
+**OSI doesn't tell you**: Where sensors go, who manages the system, how cloud storage works.
 
-* **Sensing & Controlling Domain (The Edge):** Where the physical world is digitized (Sensors, Actuators, Gateways).
-* **Network Domain:** The infrastructure connecting the edge to the digital services.
-* **Operations & Application Domain:** Where the business logic, monitoring, and digital twins reside.
+---
 
-```mermaid
-graph LR
-    subgraph "Physical World"
-        PE(Physical Entity <br/> e.g., The Soil/Crop)
-    end
+### 2.2 ISO/IEC 30141: System Architecture (Horizontal)
 
-    subgraph "ISO/IEC 30141: IoT Reference Architecture"
-        subgraph "Sensing & Controlling Domain"
-            Sens[Sensor]
-            Act[Actuator]
-            GW[Gateway / Edge Node]
-        end
-        
-        subgraph "Network Domain"
-            Net[Connectivity <br/> Thread/IPv6]
-        end
-
-        subgraph "Operations & App Domain"
-            Ops[Operations & <br/> Management]
-            App[Application & <br/> Services]
-        end
-    end
-
-    PE <--> Sens
-    PE <--> Act
-    Sens --> GW
-    GW <--> Net
-    Net <--> Ops
-    Net <--> App
+**Same sensor, different view:**
 
 ```
+┌────────────────────────────────────────────────────────────┐
+│  PED        →    SCD      →   Network  →  Application     │
+│  (Physical)     (Devices)     (Comms)     (Services)       │
+│                                                            │
+│  [Soil]    ←  [Sensor]  →  [Gateway] →  [Cloud/Dashboard] │
+│   23°C         reads        bridges       stores/displays  │
+└────────────────────────────────────────────────────────────┘
+```
+
+**ISO 30141 helps you**: Organize your DDR, communicate with stakeholders, design system boundaries.
+
+**ISO 30141 doesn't tell you**: Which wireless protocol, how packets are formatted, encryption algorithms.
+
+---
+
+### 2.3 Quick Comparison
+
+| Aspect | OSI Model | ISO/IEC 30141 |
+|--------|-----------|---------------|
+| **Direction** | Vertical (layers stacked) | Horizontal (domains side-by-side) |
+| **Answers** | "How does data move?" | "How is the system organized?" |
+| **Example** | "BLE uses PHY → Link → GATT" | "Sensor is in SCD, Dashboard is in UD" |
+| **In your DDR** | Justify protocol choices | Map components to domains |
+
+**Remember**:
+- **OSI** = Layers (1, 2, 3, 4, 7)
+- **ISO 30141** = Domains (PED, SCD, ASD, OMD, UD, RAID)
+
+**You'll use BOTH in Labs 1-8!**
+
+📖 **See [glossary](glossary.md)** for full explanations of layers and domains.
 
 ---
 
@@ -166,7 +174,10 @@ sequenceDiagram
 
 ### IPv6 Examples & Analysis
 
-**IPv6** uses 128-bit addresses, giving us  addresses.
+**IPv6** uses 128-bit addresses, giving us **340 undecillion** addresses (that's 2<sup>128</sup> ≈ 340,282,366,920,938,463,463,374,607,431,768,211,456).
+
+**In practical terms**: Enough to give every grain of sand on Earth its own IP address—and still have plenty left over!
+
 When you run `ip a`, you will see multiple addresses. Here is how to read them:
 
 1. **Global Unicast (The Goal)**: `2800:e2:807f:f60d...`
@@ -268,9 +279,11 @@ python3 -m http.server 8000
 
 ---
 
-## 6. The "Constraint" Triangle
+## 6. The "Constraint" Triangle (Why IoT is Different)
 
-In this course, you will realize that IoT engineering is the art of compromise. Unlike the IT world (Servers), the OT world (IoT) is defined by limits.
+**Key insight**: IoT engineering is the art of working within limits.
+
+Unlike traditional software development (where you can add more RAM or CPU), IoT devices operate under strict constraints. This fundamentally changes how we design systems.
 
 ```mermaid
 graph TD
@@ -280,9 +293,24 @@ graph TD
 
 ```
 
-1. **Energy**: We sleep 99% of the time.
-2. **Memory**: Code must be optimized for size.
-3. **Bandwidth**: We send bytes, not 4K video.
+### The Three Constraints
+
+1. **Energy** ⚡
+   - **Your laptop**: Plugged into wall power, can run 24/7
+   - **IoT sensor**: Tiny battery that must last months or years
+   - **Impact**: Devices sleep 99% of the time, waking only to take measurements
+
+2. **Memory** 💾
+   - **Your laptop**: 8-16 GB RAM, 500+ GB storage
+   - **ESP32-C6**: 512 KB RAM, 4 MB flash storage
+   - **Impact**: Code must be optimized for size, can't use heavy libraries
+
+3. **Bandwidth** 📡
+   - **Your laptop**: WiFi at 100+ Mbps, can stream 4K video
+   - **IoT sensor**: 250 kbps radio, sends tiny packets
+   - **Impact**: We send bytes (temperature reading: "23.5°C"), not multimedia
+
+**Example**: This is why we use CoAP instead of HTTP, CBOR instead of JSON, and UDP instead of TCP—every byte and every millisecond of radio time costs battery power.
 
 ---
 

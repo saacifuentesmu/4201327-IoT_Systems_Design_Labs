@@ -6,31 +6,41 @@
 
 ## Welcome!
 
-This course trains **IoT Systems Architects**, not just embedded developers. Over 8 labs, you'll build a complete Thread mesh network system while learning the ISO/IEC 30141:2024 reference architecture.
+This course teaches you to **design complete IoT systems**, not just write code for microcontrollers. Over 8 hands-on labs, you'll build a real wireless sensor network—from radio signals to cloud dashboards—while learning how professional engineers document and make design decisions.
+
+**What you'll build**: A network of battery-powered sensors that talk wirelessly to each other and report data to a mobile app. Think: smart farm monitoring, but you'll understand every layer from the radio waves to the user interface.
 
 ### What Makes This Course Different?
 
 | Traditional Embedded Course | This Course |
 |-----------------------------|-------------|
 | "Make it blink" | "Why does it work this way?" |
-| Copy-paste code | Understand first principles |
-| Lab reports | Professional architecture documentation |
+| Copy-paste code | Understand the principles behind the code |
+| Lab reports | Professional engineering documentation |
 | Individual components | Complete system integration |
+| Focus on coding | Focus on design decisions + coding |
 
 ---
 
 ## 🚀 Getting Started
 
+**New to IoT?** Start here! This section walks you through preparation before Lab 1.
+
+📖 **Unfamiliar terms?** Bookmark the [**Glossary**](glossary.md) - it explains every technical term used in this course in plain English.
+
 ### Week 0: Preparation
 
-**1. Set Up Your Environment**
+**1. Set Up Your Environment** ⚙️
 → Follow [0_setup.md](0_setup.md) to install ESP-IDF and VS Code
+*What this is*: Installing the software tools you'll use to program your IoT devices
 
-**2. Understand the Project Context**
+**2. Understand the Project Context** 🌾
 → Read [1_project_scenario.md](1_project_scenario.md) - You'll work at **GreenField Technologies**
+*What this is*: A realistic company scenario that gives context to your work (you're building a smart farming system)
 
-**3. Learn the Architecture Framework**
+**3. Learn the Architecture Framework** 📐
 → Review [2_iso_architecture.md](2_iso_architecture.md) - ISO/IEC 30141:2024 overview
+*What this is*: An international standard for organizing IoT systems (think of it as a professional "blueprint language")
 
 ### Week 1: Fundamentals
 
@@ -82,22 +92,39 @@ Each lab includes:
 - ✅ **Project context** - Email from stakeholders with this week's mission
 - ✅ **Theory** - First-principles explanations (the "why")
 - ✅ **Tasks** - Hands-on implementation
-- ✅ **Deliverables** - DDR updates, performance measurements
+- ✅ **Deliverables** - Documentation updates, performance measurements
 
 **Lab guides:** [labs/](labs/)
 
-| Lab | Title | ISO Domains | What You Learn |
-|-----|-------|-------------|---------------|
-| [Lab 1](labs/lab1.md) | RF Characterization | SCD | IEEE 802.15.4 radio, link budgets |
-| [Lab 2](labs/lab2.md) | 6LoWPAN & IPv6 | SCD | IP over constrained networks |
-| [Lab 3](labs/lab3.md) | CoAP & CBOR | ASD | Efficient data transport |
-| [Lab 4](labs/lab4.md) | Sensor Integration | ASD, SCD | Complete sensor-to-cloud path |
-| [Lab 5](labs/lab5.md) | Border Router | SCD, RAID | Gateway between domains |
-| [Lab 6](labs/lab6.md) | Security & OTA | OMD, RAID | Encryption, firmware updates |
-| [Lab 7](labs/lab7.md) | Dashboard | UD, ASD | User interface, visualization |
-| [Lab 8](labs/lab8.md) | System Integration | **All 6** | Complete ISO-compliant system |
+| Lab | Title | What You'll Actually Do |
+|-----|-------|------------------------|
+| [Lab 1](labs/lab1.md) | **Testing Your Wireless Radio** | Measure how far your devices can communicate and what blocks the signal |
+| [Lab 2](labs/lab2.md) | **Internet Connectivity for Tiny Devices** | Get your sensors talking using IPv6 (Internet addresses) |
+| [Lab 3](labs/lab3.md) | **Efficient Data Transfer** | Design a lightweight protocol to send sensor readings |
+| [Lab 4](labs/lab4.md) | **Connecting Real Sensors** | Read temperature/moisture from physical sensors and send data over the network |
+| [Lab 5](labs/lab5.md) | **Gateway to the Internet** | Build a bridge connecting your sensor network to WiFi/Internet |
+| [Lab 6](labs/lab6.md) | **Security & Updates** | Encrypt your data and update device firmware wirelessly |
+| [Lab 7](labs/lab7.md) | **Mobile Dashboard** | Create a user interface to visualize sensor data |
+| [Lab 8](labs/lab8.md) | **Complete System** | Integrate everything into one working system |
 
-**Need more technical details?** Each lab has a detailed implementation guide in [labs/sops/](labs/sops/)
+<details>
+<summary><b>📚 Technical Details (Click to expand)</b></summary>
+
+| Lab | Technical Focus | ISO Domains* | Protocols/Concepts |
+|-----|----------------|-------------|-------------------|
+| Lab 1 | RF Characterization | SCD | IEEE 802.15.4 radio, link budgets |
+| Lab 2 | 6LoWPAN & IPv6 | SCD | IP over constrained networks |
+| Lab 3 | CoAP & CBOR | ASD | Efficient data transport |
+| Lab 4 | Sensor Integration | ASD, SCD | Complete sensor-to-cloud path |
+| Lab 5 | Border Router | SCD, RAID | Gateway between domains |
+| Lab 6 | Security & OTA | OMD, RAID | Encryption, firmware updates |
+| Lab 7 | Dashboard | UD, ASD | User interface, visualization |
+| Lab 8 | System Integration | **All 6** | Complete ISO-compliant system |
+
+*ISO Domains explained in [2_iso_architecture.md](2_iso_architecture.md)
+</details>
+
+**Need step-by-step guides?** Each lab has a detailed implementation guide in [labs/sops/](labs/sops/)
 
 ---
 
@@ -152,13 +179,25 @@ Different audiences care about different aspects:
 
 ---
 
-## 🏗️ ISO/IEC 30141:2024 Architecture
+## 🏗️ Architecture Framework (ISO/IEC 30141:2024)
 
-The course is built around the ISO/IEC 30141:2024 IoT Reference Architecture.
+**In simple terms**: Just like a building has a blueprint, IoT systems have an architecture standard. We use **ISO/IEC 30141:2024**—an international framework that helps us organize and talk about IoT systems professionally.
 
-### Six Functional Domains
+**Why this matters to you**: When you finish this course, you'll be able to discuss your work using the same language that professional IoT engineers use worldwide.
 
-Your system spans six functional domains:
+### Six Functional Domains (The Building Blocks)
+
+Think of your IoT system as having six main areas of responsibility. Don't worry about memorizing these now—you'll learn them as you build:
+
+**In plain English**:
+1. **Physical stuff** (sensors in soil)
+2. **Sensor devices** (reading temperature/moisture)
+3. **Applications** (processing the data)
+4. **Operations** (keeping everything running)
+5. **User interfaces** (dashboards for farmers)
+6. **Security & data exchange** (protecting information)
+
+**Technical view** (you'll understand this by Week 2):
 
 ```
 PED (Physical Entity Domain)
@@ -267,6 +306,7 @@ By the end of this course, you will:
 
 ## 🆘 Need Help?
 
+- **📖 Unfamiliar terms?**: [glossary.md](glossary.md) - Every technical term explained in plain English
 - **Quick lookup**: [references.md](references.md) - CoAP, Thread, ESP-IDF commands
 - **Theory deep-dive**: [5_theory_foundations.md](5_theory_foundations.md) - First-principles explanations
 - **Detailed implementation**: [labs/sops/](labs/sops/) - Step-by-step guides

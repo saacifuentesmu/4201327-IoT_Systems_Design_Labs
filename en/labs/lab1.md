@@ -1,9 +1,27 @@
-# Lab 1: RF Characterization & Physical Layer
-> **Technical Guide:** [SOP-01: Advanced MAC Layer Tuning](sops/sop01_advanced_mac.md)
+# Lab 1: Testing Your Wireless Radio
 
 **GreenField Technologies - SoilSense Project**
 **Phase**: Feasibility Study
 **Duration**: 2-3 hours
+
+---
+
+## 📌 What You'll Do Today (TL;DR)
+
+**In plain English**: Test how far your ESP32-C6 devices can talk to each other using their built-in radio.
+
+**Your tasks**:
+1. **Find the quietest radio channel** (like finding a quiet FM radio station)
+2. **Measure signal strength** at different distances (1m, 5m, 10m, 20m...)
+3. **Determine maximum reliable range** (how far apart can sensors be on a farm?)
+
+**Why this matters**: Before building a sensor network, you need to know if the hardware actually works in real-world conditions. Can two sensors 50 meters apart communicate reliably? That's what you'll find out today.
+
+**What you'll learn**: Basic radio concepts (signal strength, interference, range testing) and how to document your findings professionally.
+
+📖 **New to wireless/radio concepts?** Check the [glossary](../glossary.md) for terms like RSSI, PER, link budget, etc.
+
+> **Advanced Technical Guide:** For deeper exploration after you complete the basics, see [SOP-01: Advanced MAC Layer Tuning](sops/sop01_advanced_mac.md)
 
 ---
 
@@ -32,86 +50,63 @@ Document your findings in a DDR with proper ISO/IEC 30141 domain mapping. This i
 
 ---
 
-### Stakeholders Counting On You
+### Who's Asking For This Data?
 
-| Stakeholder | Their Question | How This Lab Helps |
-|-------------|----------------|-------------------|
-| **Samuel (Architect)** | "Can we trust the ESP32-C6 for our mesh network?" | You'll provide measured link budget and PER data |
-| **Gustavo (Product)** | "Will 50m node spacing work for a 10-hectare field?" | You'll determine max range at 99% reliability |
-| **Edwin (Operations)** | "What if there's WiFi interference from the farmhouse?" | You'll identify the cleanest channel via spectrum scan |
+**Samuel (your mentor)** needs proof that the ESP32-C6 radio is good enough for this project.
+- **His question**: "Can we trust the ESP32-C6 for our sensor network?"
+- **What he wants**: Measured data (not vendor specifications)
+- **You'll provide**: Signal strength measurements, packet loss rates, channel selection reasoning
 
----
-
-## ISO/IEC 30141:2024 Context
-
-### Domains Addressed in This Lab
-
-**Primary Domain**: **PED (Physical Entity Domain)**
-- The "air" between sensor nodes is part of PED
-- RF propagation, interference, path loss are physical constraints
-
-**Secondary Domain**: **SCD (Sensing and Controlling Domain)**
-- The ESP32-C6 radio (IEEE 802.15.4 transceiver)
-- Antenna characteristics
-
-### Viewpoints
-
-**Primary Viewpoint**: **Foundational**
-- Answering: "What is an IoT device at the physical layer?"
-- Understanding: Resource constraints (power, processing, communication range)
-
-**Secondary Viewpoint**: **Construction**
-- Hands-on: Building and deploying ESP32-C6 hardware
-- Understanding: How physical layer choices affect higher layers
-
-### Visual Domain Mapping
-
-```mermaid
-graph TD
-    subgraph PED [Physical Entity Domain]
-        Air[RF Medium / Air]
-        Interference[WiFi Signals / Noise]
-    end
-
-    subgraph SCD [Sensing & Controlling Domain]
-        Antenna[Antenna]
-        Radio[IEEE 802.15.4 Radio]
-        MCU[ESP32-C6 MCU]
-    end
-
-    Air <-->|Propagation| Antenna
-    Interference -->|Noise| Antenna
-    Antenna <-->|Signal| Radio
-    Radio <-->|Data| MCU
-```
+**Translation**: Samuel wants to see that you understand *why* things work, not just that you followed instructions. Show your reasoning!
 
 ---
 
 ## Learning Objectives
 
-By the end of this lab, you will:
+By the end of this lab, you will be able to:
 
-1. **Technical Skills**:
-   - Configure ESP32-C6 IEEE 802.15.4 radio
-   - Measure RSSI (Received Signal Strength Indicator)
-   - Calculate packet error rate (PER)
-   - Perform spectrum analysis to detect interference
+1. **Hands-On Radio Testing**:
+   - Turn on the ESP32-C6 radio and make two devices talk to each other
+   - Measure how strong the wireless signal is (RSSI) 📶
+   - Test how many messages get lost at different distances (packet loss)
+   - Find which radio channel has the least interference
 
-2. **Architectural Thinking** (ISO/IEC 30141):
-   - Map components to PED and SCD domains
-   - Understand how physical constraints propagate to system design
-   - Apply link budget calculations (first principles)
+2. **Understanding the "Why"**:
+   - Explain why signal gets weaker as distance increases (it's physics!)
+   - Understand why we use this specific radio technology (IEEE 802.15.4) instead of WiFi
+   - Calculate the maximum distance sensors can be placed apart
 
-3. **Professional Practice**:
-   - Write ADR documenting channel selection
-   - Produce performance baseline report for stakeholders
-   - Communicate findings to technical and non-technical audiences
+3. **Professional Documentation**:
+   - Write your first Architecture Decision Record (ADR) explaining your channel choice
+   - Create a simple performance report for non-technical stakeholders
+   - Document your findings in a way that other engineers can use
+
+**Don't worry if you've never worked with wireless before** - we'll guide you through each step!
 
 ---
 
-## First Principles: Why 802.15.4?
+## Background: Why This Radio Technology?
 
-*Read this 5-minute primer before starting lab work. Samuel expects you to understand the "why," not just follow instructions.*
+**Simple version**: We're using IEEE 802.15.4 radio (not WiFi) because sensor batteries need to last months, not hours.
+
+**The constraint**: GreenField's sensors must run on 2× AA batteries for **3 months**. WiFi uses too much power and would drain batteries in days.
+
+### Quick Comparison
+
+| Technology | Power Usage | Range | Battery Life* | Why Not Use It? |
+|----------|----------|----------|-------|----------|
+| **WiFi** | Very High (200 mA) | 100m | ~1 week | Kills batteries too fast |
+| **Bluetooth** | Medium (50 mA) | 10m | ~1 month | Too short range |
+| **802.15.4** ✅ | Low (20 mA) | 100m+ | **3+ months** | Perfect fit! |
+
+*Assuming periodic sensor readings, not continuous transmission
+
+**Bottom line**: IEEE 802.15.4 is the "Goldilocks" solution - just enough range, just enough power efficiency.
+
+<details>
+<summary><b>🔬 Advanced: Energy Budget Math & O-QPSK Modulation (Click to expand)</b></summary>
+
+*For students who want to understand the deeper physics and math - not required for lab completion*
 
 ### The Fundamental Constraint: Battery Life
 
@@ -123,15 +118,6 @@ GreenField's product requirement: **3-month battery life on 2× AA batteries (30
 - Average power budget: 32,400 J / 7,776,000 s = **4.2 mW** (1.4 mA @ 3V)
 
 **Problem**: WiFi transmission costs ~200 mA. Even at 1% duty cycle, that's 2 mA average - we're over budget!
-
-### Why IEEE 802.15.4 Wins
-
-| Protocol | TX Power | RX Power | Range | Why Not? |
-|----------|----------|----------|-------|----------|
-| **WiFi (802.11n)** | 200 mA | 50 mA | 100m | Power budget exceeded |
-| **Bluetooth Classic** | 50 mA | 30 mA | 10m | Too short range |
-| **BLE** | 10 mA | 10 mA | 50m | Not designed for mesh |
-| **802.15.4** ✅ | 20 mA | 20 mA | 100m+ | Low power + mesh support |
 
 ### Why O-QPSK Modulation?
 
@@ -145,6 +131,10 @@ GreenField's product requirement: **3-month battery life on 2× AA batteries (30
 **Impact on battery**: 2× amplifier efficiency = 2× battery life.
 
 **What you'll observe in this lab**: O-QPSK spreading codes (DSSS - Direct Sequence Spread Spectrum) provide 10 dB processing gain, making the signal robust to interference.
+
+📖 **See [glossary](../glossary.md)** for definitions of O-QPSK, DSSS, and modulation.
+
+</details>
 
 ---
 
@@ -185,11 +175,15 @@ idf.py -p /dev/ttyUSB0 flash monitor
 
 ---
 
-## Part 2: Spectrum Analysis (Answer Edwin's Question)
+## Part 2: Find the Quietest Radio Channel
 
-**Context**: Edwin needs to know if WiFi from the farmhouse will interfere with sensors.
+**In plain English**: Like scanning for a clear FM radio station, you'll find which wireless channel has the least interference.
 
-**Task 2.1**: Perform energy detection scan on channels 11-26.
+**Why this matters**: WiFi routers, microwaves, and Bluetooth all use the same 2.4 GHz frequency band. You need to find a "quiet" channel where your sensors won't get drowned out by interference.
+
+📖 **Terms**: See [glossary](../glossary.md) for *spectrum*, *interference*, *channel*, *RSSI*
+
+**Task 2.1**: Scan all available channels to measure background noise.
 
 On one ESP32-C6, enter these commands:
 
@@ -203,16 +197,25 @@ This scans all channels (0xffff = channels 11-26 in bitmap) for 500ms each.
 ```
 | Ch | RSSI |
 +----+------+
-| 11 | -78  |
+| 11 | -78  |  ← More noise (WiFi interference)
 | 12 | -82  |
 | 13 | -85  |
 | 14 | -87  |
-| 15 | -89  | ← Quietest channel
+| 15 | -89  |  ← Quietest channel! ✅
 | 16 | -84  |
 ...
 ```
 
-**Task 2.2**: Identify interference sources.
+**How to read this**:
+- **RSSI** = Received Signal Strength Indicator (measured in dBm)
+- **Lower numbers** (more negative) = quieter = better for your sensors
+- **-89 dBm** is quieter than **-78 dBm**
+
+**What you're looking for**: The channel with the **lowest** (most negative) RSSI = least interference.
+
+📖 **See [glossary](../glossary.md)** for *RSSI*, *dBm*, *noise floor*
+
+**Task 2.2**: Understand where interference comes from.
 
 **802.15.4 channel mapping to WiFi**:
 - WiFi Channel 1 → 802.15.4 Channels 11-14
@@ -229,11 +232,33 @@ This scans all channels (0xffff = channels 11-26 in bitmap) for 500ms each.
 
 ---
 
-## Part 3: Link Budget & Range Testing (Answer Samuel's Question)
+## Part 3: Range Testing - How Far Can Devices Talk?
 
-**Context**: Samuel needs empirical data on maximum range for mesh planning.
+**In plain English**: You'll measure signal strength at different distances to find the maximum reliable range.
 
-### Background: The Link Budget Equation
+**Context**: Samuel needs real-world data on how far apart sensors can be placed.
+
+**Your goal**: Find the distance where too many messages start getting lost (packet loss > 1%).
+
+### Background: What Is "Link Budget"?
+
+**Simple explanation**: Link budget is just accounting for signal strength from transmitter to receiver.
+
+**Think of it like shouting across a field**:
+- **Transmit power**: How loud you shout
+- **Antenna gain**: Using a megaphone (amplifies your voice)
+- **Path loss**: Sound gets quieter as distance increases
+- **RSSI** (Received Signal Strength): How loud it sounds when it reaches the other person
+
+**Formula** (don't worry about memorizing this):
+```
+RSSI = Transmit Power + Antenna Gains - Path Loss
+```
+
+**What matters for this lab**: The further apart devices are, the weaker the signal (RSSI) becomes. At some distance, the signal becomes too weak and messages get lost.
+
+<details>
+<summary><b>📐 Advanced: Friis Transmission Equation & Math (Click to expand)</b></summary>
 
 **Friis Transmission Equation**:
 ```
@@ -252,35 +277,41 @@ PL (dB) = 20 log₁₀(d) + 20 log₁₀(f) + 32.45
 ```
 For 2.45 GHz at 10m: PL ≈ 60 dB
 
-**Your goal**: Find the distance where RSSI drops below the threshold for 99% packet delivery.
+**Interpretation**: Every time you double the distance, you lose 6 dB of signal strength.
+
+</details>
 
 ---
 
-### Task 3.1: Point-to-Point Link Establishment
+### Task 3.1: Make Two Devices Talk to Each Other
 
-**On Device A** (Router):
+**Goal**: Get Device A and Device B connected so you can test signal strength.
+
+**On Device A** (first device):
 ```bash
 > dataset init new
-> dataset channel 15         # Use your selected channel
+> dataset channel 15         # Use your selected channel from Part 2
 > dataset commit active
 > ifconfig up
 > thread start
 > state
 ```
 
-Wait until you see `leader` or `router`.
+Wait until you see `leader` (Device A is now ready and waiting for Device B).
 
-**On Device B** (End Device):
+**On Device B** (second device):
 ```bash
-> dataset channel 15
-> dataset panid 0xabcd        # Match Device A
+> dataset channel 15         # Must match Device A's channel!
+> dataset panid 0xabcd        # Network ID (can be any hex value)
 > dataset commit active
 > ifconfig up
 > thread start
 > state
 ```
 
-Should show `child` (connected to Device A).
+Should show `child` (Device B has connected to Device A successfully ✅).
+
+**What just happened?** You created a simple two-device network. Device A is the coordinator, Device B joined it. Think of it like Device A creating a WiFi hotspot and Device B connecting to it.
 
 **Task 3.2**: Verify connectivity with ping.
 
@@ -300,27 +331,46 @@ On Device A:
 
 ---
 
-### Task 3.3: Range vs RSSI Test
+### Task 3.3: Test Signal Strength at Different Distances
+
+**Goal**: Find out how far apart sensors can be while still communicating reliably.
 
 **Procedure**:
-1. Start with devices 1m apart
-2. Record RSSI from ping output
-3. Move Device B to 5m, 10m, 20m, 30m, 40m, 50m
-4. At each distance, send 100 pings and calculate **Packet Error Rate (PER)**
+1. Start with devices **1 meter apart** (baseline measurement)
+2. Use the `ping` command to send messages and **record the RSSI** (signal strength)
+3. Move Device B further away: **5m, 10m, 20m, 30m...** (use measuring tape)
+4. At each distance, send **100 pings** and count how many fail
 
-**For your DDR** (Performance Baseline):
+**What you're measuring**:
+- **RSSI**: Signal strength (higher = better, less negative)
+- **PER** (Packet Error Rate): Percentage of messages that get lost
+
+📖 **See [glossary](../glossary.md)** for *RSSI*, *PER*, *packet loss*
+
+**Record your results in a table like this**:
 
 | Distance (m) | RSSI (dBm) | Packets Sent | Packets Lost | PER (%) |
 |--------------|------------|--------------|--------------|---------|
-| 1 | -45 | 100 | 0 | 0% |
+| 1 | -45 | 100 | 0 | 0% | ← Very close, perfect signal
 | 5 | -55 | 100 | 0 | 0% |
-| 10 | -65 | 100 | 1 | 1% |
+| 10 | -65 | 100 | 1 | 1% | ← Starting to see packet loss
 | 20 | -72 | 100 | 3 | 3% |
-| 30 | -78 | 100 | 10 | 10% |
+| 30 | -78 | 100 | 10 | 10% | ← Too far! Unreliable
 
-**Analysis**:
-- **Reliability threshold**: RSSI where PER < 1% (e.g., -70 dBm)
-- **Maximum range**: Distance at reliability threshold (e.g., 15-20m in this example)
+**How to calculate PER** (Packet Error Rate):
+```
+PER = (Packets Lost / Packets Sent) × 100%
+Example: (10 lost / 100 sent) × 100% = 10%
+```
+
+**What you're looking for**:
+- **Reliability threshold**: The RSSI value where packet loss stays below 1%
+- **Maximum reliable range**: How far apart devices can be before losing >1% of messages
+
+**In this example**:
+- Reliable up to ~15m (RSSI stays above -70 dBm)
+- At 20m, too many packets are lost (3% failure rate)
+- **Recommendation**: Don't place sensors more than 15m apart
 
 **For Samuel** (Technical):
 > *Example: "I measured a reliability threshold of -70 dBm (1% PER). Using the Friis equation with 10 dB fade margin for vegetation, I recommend 15m maximum spacing for 99% reliability."*
@@ -330,86 +380,167 @@ On Device A:
 
 ---
 
-## Part 4: First Principles Analysis (For Samuel)
+## Part 4: Understanding the "Why" (Reflections for Samuel)
 
-**Task 4.1**: Answer these questions in your DDR (Section 5 - First Principles Reflections).
+Samuel wants you to think deeper than just collecting data. Answer these questions in your DDR to show you understand the underlying principles.
 
-### Question 1: Why does RSSI decrease with distance?
+**Task 4.1**: Answer these three questions (don't just copy these answers - explain in your own words!)
 
-**Expected analysis**:
-- Electromagnetic waves spread spherically (inverse square law)
-- Power density decreases as 1/r²
-- Path loss increases 20 dB per decade of distance
+### Question 1: Why does signal strength (RSSI) get weaker as distance increases?
 
-### Question 2: Why do we need >10 dB margin above receiver sensitivity?
+**In plain English**: Think about a light bulb. The further you move away, the dimmer it appears. Why?
 
-**Expected analysis**:
-- Receiver sensitivity: ~-100 dBm (minimum detectable signal)
-- But we need RSSI > -70 dBm for <1% PER. Why the 30 dB gap?
-- **Fading**: Obstacles, reflections, interference cause signal variations
-- **Noise floor**: Background RF noise limits SNR
-- **Margin**: 10 dB fade margin + 10 dB SNR requirement + 10 dB implementation loss = 30 dB
+**The physics**: Radio waves spread out in all directions (like a sphere). As the sphere gets bigger, the same amount of energy is spread over a larger area. This is called the **inverse square law** - double the distance, signal strength drops by 75%.
 
-### Question 3: How does O-QPSK spreading provide interference resilience?
+**Your answer should mention**: Electromagnetic waves spreading, power density decreasing, path loss.
 
-**Expected analysis**:
-- DSSS spreads signal across 2 MHz (vs 250 kbps data rate)
-- Processing gain: 10 × log₁₀(2000 kHz / 250 kHz) ≈ 9 dB
-- Narrow-band interference (like WiFi) affects only part of spread spectrum
-- Correlation at receiver recovers signal even with partial spectrum jamming
+📖 **See [glossary](../glossary.md)** for *path loss*, *inverse square law*, *free-space propagation*
+
+---
+
+### Question 2: Why isn't -100 dBm strong enough for reliable communication?
+
+**The puzzle**: The ESP32-C6 receiver can technically detect signals as weak as -100 dBm. But in your testing, you probably found you need RSSI > -70 dBm for <1% packet loss. Why the 30 dB difference?
+
+**Hint**: Think about obstacles (trees, walls), other wireless devices creating noise, and signal variations.
+
+**Your answer should explain**:
+- **Fading**: Signal bounces off objects, creating weaker "copies"
+- **Noise floor**: Background interference from WiFi, microwaves, etc.
+- **Safety margin**: Need extra signal strength to handle worst-case conditions
+
+**Formula**: Minimum RSSI = Receiver Sensitivity + Fade Margin + SNR Requirement
+
+📖 **See [glossary](../glossary.md)** for *fade margin*, *SNR (Signal-to-Noise Ratio)*, *receiver sensitivity*
+
+---
+
+### Question 3 (Advanced): How does the radio fight interference?
+
+**Context**: WiFi and your sensors share the 2.4 GHz band. How can your sensor still work when a WiFi router is nearby?
+
+**The answer**: 802.15.4 uses a clever trick called **spread spectrum** (DSSS). Instead of sending data on one narrow frequency, it spreads it across a wider range. Think of it like whispering your message across 100 people instead of shouting through 1 person - even if a few people are distracted (interference), the message still gets through.
+
+**Technical detail**: Spreading provides ~9 dB of "processing gain," making the signal more robust.
+
+*(This question is optional for students new to wireless - focus on Questions 1 and 2 first)*
+
+📖 **See [glossary](../glossary.md)** for *spread spectrum*, *DSSS*, *O-QPSK*
+
+---
+
+## Understanding the ISO/IEC 30141 Framework
+
+**Now that you've done the hands-on work**, let's map what you did to the professional architecture framework (ISO/IEC 30141:2024).
+
+**Why this matters**: When you talk to other IoT engineers or write professional documentation, everyone uses this common language. It's like learning the official terms for things you've already experienced.
+
+### Domains You Worked With Today
+
+**In plain English, you tested**:
+1. **The air between devices** (radio waves traveling through space)
+2. **The ESP32-C6 hardware** (radio chip, antenna, processor)
+
+**In ISO/IEC 30141 language**:
+
+| What You Tested | ISO Domain | Why It's Classified This Way |
+|-----------------|------------|------------------------------|
+| Radio waves, interference, signal loss | **PED** (Physical Entity Domain) | The electromagnetic field is a physical phenomenon |
+| ESP32-C6 radio, antenna | **SCD** (Sensing & Controlling Domain) | The devices that sense or control physical entities |
+
+### Visual Mapping
+
+```mermaid
+graph TD
+    subgraph PED [Physical Entity Domain]
+        Air[RF Medium / Air]
+        Interference[WiFi Signals / Interference]
+    end
+
+    subgraph SCD [Sensing & Controlling Domain]
+        Antenna[Antenna]
+        Radio[802.15.4 Radio]
+        MCU[ESP32-C6 Processor]
+    end
+
+    Air <-->|Propagation| Antenna
+    Interference -->|Noise| Antenna
+    Antenna <-->|Signal| Radio
+    Radio <-->|Data| MCU
+
+    style PED fill:#e1f5ff
+    style SCD fill:#fff4e1
+```
+
+**For your DDR** (Section 4 - Architectural Mapping):
+- List each component (ESP32-C6, antenna, air/RF medium)
+- Assign it to the correct domain (PED or SCD)
+- Justify why (1-2 sentences)
+
+**Example**:
+> "The ESP32-C6's 802.15.4 radio belongs to the **SCD (Sensing & Controlling Domain)** because it's the communication subsystem that enables sensing devices to exchange data (per ISO/IEC 30141 Section 8.3)."
+
+📖 **See** [2_iso_architecture.md](../2_iso_architecture.md) for detailed explanations of all six domains.
 
 ---
 
 ## Deliverables
 
-### 1. DDR Update (Due: End of Week 1)
+### 1. DDR (Design Decision Record) Update
 
-Update your [DDR Template](../3_deliverables_template.md):
+**What is a DDR?** A living document that tracks all your architectural decisions throughout the course. Think of it as your engineering notebook.
 
-**Section 1**: Fill in Foundational Viewpoint
-- What is your IoT device? (ESP32-C6 with 802.15.4 radio)
-- Key characteristics: Constrained power, wireless communication, ~15m range
+**Where to start**: Use the [DDR Template](../3_deliverables_template.md) provided.
 
-**Section 2**: Stakeholder Communication
-- Complete sections for Samuel and Edwin (see examples above)
+**What to update after Lab 1**:
 
-**Section 3**: ADR-001 - Channel Selection
-- Document which channel you chose and why
-- Reference PED domain (interference from physical environment)
+| Section | What to Write | Example |
+|---------|---------------|---------|
+| **Section 1**: Foundational Viewpoint | Describe your IoT device | "ESP32-C6 with 802.15.4 radio, battery-powered, max range ~15m" |
+| **Section 2**: Stakeholder Communication | Summarize findings for Samuel | See examples in Part 3 (Answer Samuel's Question) |
+| **Section 3**: ADR-001 | Explain channel selection | "Selected Channel 15 because noise floor was -89 dBm..." |
+| **Section 4**: Domain Mapping | List components and their ISO domains | "ESP32-C6 radio → SCD; Air → PED" |
+| **Section 5**: First Principles | Answer the 3 questions from Part 4 | Explain inverse square law, fade margin, etc. |
+| **Section 10**: Performance Baselines | Paste your range testing table | Distance vs RSSI vs PER data |
 
-**Section 4**: Domain Mapping
-- Map ESP32-C6 components to SCD
-- Map air/RF propagation to PED
+**Don't overthink this!** The DDR is iterative - you'll improve it each week. For Lab 1, just get something written down.
 
-**Section 5**: First Principles (answer 3 questions above)
-
-**Section 10**: Performance Baselines (create table from Task 3.3)
-
-**SOP Integration (Mandatory)**:
-- Include findings from [SOP-01](sops/sop01_advanced_mac.md) (Experiments A, B, C) in your DDR.
-- Document the "Paranoid Radio" and "Ghost Packet" results in the **Experimental Log** section.
+**Optional Advanced Exploration**:
+- If you completed [SOP-01: Advanced MAC Layer Tuning](sops/sop01_advanced_mac.md), include those findings in an "Advanced Experiments" section of your DDR
+- This is optional - focus on the core lab tasks first!
 
 ---
 
-### 2. Performance Report
+### 2. One-Page Performance Summary
 
-Create a 1-page summary for Gustavo (Product Owner):
+**What is this?** A concise report for non-technical stakeholders (like the Product Owner) who don't need all the technical details.
+
+**Format**: Fill in the blanks below with your actual measurements:
+
+---
 
 **GreenField SoilSense - Lab 1 Performance Report**
 
-**Objective**: Validate ESP32-C6 radio for agricultural sensor network
+**Objective**: Test if ESP32-C6 radio works for farm sensor networks
 
 **Key Findings**:
-- ✅ Maximum range: ___m at 99% reliability (RSSI > ___ dBm)
-- ✅ Recommended node spacing: ___m (includes 10 dB fade margin)
-- ✅ Selected channel: 802.15.4 Channel ___ (cleanest spectrum)
-- ⚠️ Risk: WiFi interference detected on channels ___ (avoid these)
+- ✅ Maximum reliable range: **___m** (packet loss < 1% when RSSI > ___ dBm)
+- ✅ Recommended sensor spacing: **___m** (includes safety margin for vegetation/obstacles)
+- ✅ Best radio channel: **802.15.4 Channel ___** (least interference: ___ dBm noise floor)
+- ⚠️ Risk: WiFi interference detected on channels ___ (avoid deploying sensors near these)
 
 **Impact on Product**:
-- For 10-hectare deployment: ___ nodes required
-- Estimated hardware cost: ___ nodes × $40 = $___
+- For a 10-hectare farm field: approximately **___ sensor nodes** required
+- Estimated hardware cost: ___ nodes × $40/node = **$___**
 
-**Recommendation**: [Proceed / Need more testing / Switch platforms]
+**Recommendation**: [Choose one]
+- ✅ **Proceed** - ESP32-C6 meets requirements
+- ⚠️ **Need more testing** - Explain what concerns remain
+- ❌ **Switch platforms** - Explain why ESP32-C6 isn't suitable
+
+---
+
+**Keep it simple!** Use bullet points, not paragraphs. Gustavo wants numbers and clear recommendations.
 
 ---
 

@@ -8,6 +8,20 @@
 
 ---
 
+## 📌 TL;DR (Quick Summary)
+
+**Your role**: You're a Junior IoT Systems Engineer at GreenField Technologies (a fictional startup)
+
+**Your project**: Build a wireless sensor network for small farms to monitor soil conditions
+
+**Your deliverables**: Professional engineering documentation (DDRs and ADRs), not traditional lab reports
+
+**Your mentor**: Eng. Samuel Cifuentes, who expects you to understand the "why" behind your design choices
+
+**Why this matters**: This scenario gives you real-world context for the technical work you'll do in Labs 1-8.
+
+---
+
 ## 1. Company Background
 
 **GreenField Technologies** is a fictional agricultural technology startup founded in 2025. The company's mission is to make precision agriculture accessible to small and medium-scale farms (5-50 hectares) through affordable IoT sensor networks.
@@ -52,7 +66,9 @@ A wireless mesh network of environmental sensors that helps farmers optimize irr
 ## 3. Your Role: IoT Systems Engineer
 
 ### Position Description
-You are a **Junior IoT Systems Engineer** on the product development team. Your primary responsibility is designing and implementing the sensor network firmware and architecture.
+You are a **Junior IoT Systems Engineer** on the product development team.
+
+**In simple terms**: You design and build the sensor network—from programming the devices to documenting your architectural decisions. You're not just writing code; you're making design choices and explaining *why* you made them.
 
 **Team Structure:**
 - **Labs 1-6**: Work in **pairs** (2 students)
@@ -84,107 +100,152 @@ You are a **Junior IoT Systems Engineer** on the product development team. Your 
 - Collaborate on infrastructure (border router, cloud integration)
 - Compare performance benchmarks
 
-### Your Stakeholders (Viewpoint Owners)
+### Your Primary Mentor
 
-| Stakeholder | Role | Primary Concern | Maps to Viewpoint |
-|-------------|------|-----------------|-------------------|
-| **Samuel** | Senior Architect | System correctness, maintainability | Functional, Construction |
-| **Gustavo** | Product Owner | Customer value, cost targets | Business, Usage |
-| **Edwin** | Field Operations Lead | Deployment ease, reliability | Operational (OMD), Trustworthiness |
-| **Sebastian** | Security Lead | Data privacy, secure communication | Trustworthiness |
-| **Daniela** | Customer (Pilot Farmer) | Ease of use, actionable insights | Usage |
+**Eng. Samuel Cifuentes** (Senior IoT Architect) - Your technical reviewer
+- **What he reviews**: Your Architecture Decision Records (ADRs) and Design Decision Record (DDR)
+- **What he cares about**: Understanding the "why" behind your choices, not just the "how"
+- **His style**: Mentoring but rigorous—expects professional engineering documentation
+- **His favorite question**: "Which ISO domain does this belong to?"
+
+**In practice**: After each lab, you'll update your DDR and Samuel will provide feedback during class sessions. Think of him as your technical manager who wants you to succeed but expects quality work.
+
+### Other Stakeholders (You'll Meet Them in Later Labs)
+
+As your project progresses, you'll need to consider different perspectives from other team members at GreenField Technologies. You'll be introduced to them when their expertise becomes relevant:
+
+- **Gustavo** (Product Owner) - Cares about cost and customer value
+- **Edwin** (Field Operations Lead) - Cares about deployment and reliability
+- **Sebastian** (Security Lead) - Cares about data protection
+- **Daniela** (Pilot Customer) - The farmer who will actually use your system
+
+**Why introduce them gradually?** In real engineering projects, you don't interact with all stakeholders at once. You'll learn to think from their perspectives as their concerns become relevant to your work.
+
+<details>
+<summary><b>📋 Full Stakeholder Reference (Click to expand)</b></summary>
+
+| Stakeholder | Role | Primary Concern | When They Matter Most |
+|-------------|------|-----------------|----------------------|
+| **Samuel** | Senior Architect | Technical correctness, ISO alignment | Every lab |
+| **Gustavo** | Product Owner | Customer value, cost targets | Labs 1, 4, 7-8 |
+| **Edwin** | Field Operations Lead | Deployment ease, reliability | Labs 5-8 |
+| **Sebastian** | Security Lead | Data privacy, secure communication | Labs 6-8 |
+| **Daniela** | Customer (Pilot Farmer) | Ease of use, actionable insights | Labs 7-8 |
+
+</details>
 
 ---
 
 ## 4. Project Phases (Mapped to Labs)
 
 ### Phase 1: Feasibility & Prototyping (Labs 1-2)
+
+**In plain English**: Does the hardware actually work for farms? How far can devices talk to each other?
+
 **Context**: The hardware team selected ESP32-C6. You need to validate it works in real farm environments.
 
 **Your Tasks**:
-- Characterize the 802.15.4 radio performance (PED domain)
-- Determine maximum node spacing for reliable communication
-- Measure power consumption baseline
+- Test the radio: How far can it transmit? What blocks the signal?
+- Determine spacing: How far apart can we place sensors on a farm?
+- Measure power use: Will batteries last long enough?
 
-**Stakeholder Questions You'll Answer**:
-- Samuel: "What's the link budget? Show me the RF propagation model."
-- Gustavo: "Can we achieve 100m range between nodes with this hardware?"
-- Edwin: "What happens if a farmer places a node behind a metal barn?"
+**Questions You'll Answer**:
+- Samuel: "What's the link budget? Show me the RF propagation model." *(Translation: Prove mathematically that the signal is strong enough)*
+- Gustavo: "Can we achieve 100m range between nodes with this hardware?" *(Translation: Will this be good enough for farmers?)*
+- Edwin: "What happens if a farmer places a node behind a metal barn?" *(Translation: What are the failure modes?)*
 
 **Deliverables**:
-- DDR documenting RF characterization (System & Functional viewpoints)
-- ADR: "Why we chose channel 15 for mesh operation"
+- DDR section documenting your radio testing results
+- ADR: "Why we chose channel 15 for mesh operation" (your first decision record!)
+
+**New concepts you'll learn**: RF characterization, link budgets, IEEE 802.15.4 → See [glossary.md](glossary.md)
 
 ---
 
 ### Phase 2: Network Architecture (Labs 3-4)
+
+**In plain English**: How do devices talk to each other and send data efficiently?
+
 **Context**: Hardware is validated. Now design the mesh network topology and application protocol.
 
 **Your Tasks**:
-- Implement OpenThread mesh networking (SCD domain)
-- Design CoAP API for sensor data retrieval (ASD domain)
-- Test network healing behavior
+- Build the mesh network: Devices that relay messages for each other
+- Design the data format: How sensors report measurements
+- Test resilience: What happens when a device fails?
 
-**Stakeholder Questions You'll Answer**:
-- Samuel: "How does the system behave when a router node fails?"
-- Gustavo: "What's the worst-case latency from sensor to gateway?"
-- Edwin: "How long does it take for the network to recover after power loss?"
+**Questions You'll Answer**:
+- Samuel: "How does the system behave when a router node fails?" *(Translation: Prove your network is resilient)*
+- Gustavo: "What's the worst-case latency from sensor to gateway?" *(Translation: Is it fast enough for real-time monitoring?)*
+- Edwin: "How long does it take for the network to recover after power loss?" *(Translation: Will farmers get frustrated waiting?)*
 
 **Key Decision Points**:
-- ADR: "CoAP vs MQTT for constrained devices" (you'll justify CoAP)
-- ADR: "Polling vs push for sensor updates"
+- ADR: "CoAP vs MQTT for constrained devices" (you'll learn why CoAP wins for battery-powered sensors)
+- ADR: "Polling vs push for sensor updates" (should gateway ask for data, or should sensors send it automatically?)
 
 **Deliverables**:
-- DDR with sequence diagrams showing data flows (Functional viewpoint)
-- Performance report: Network healing time, message latency
-- ADRs for protocol choices
+- DDR section with diagrams showing how data flows through your system
+- Performance measurements: Network healing time, message latency
+- ADRs explaining your protocol choices
+
+**New concepts you'll learn**: Thread mesh, CoAP, CBOR → See [glossary.md](glossary.md)
 
 ---
 
 ### Phase 3: Integration & Security (Labs 5-6)
+
+**In plain English**: Connecting your sensor network to the Internet and making it secure
+
 **Context**: Pilot customer identified. Need cloud integration and data protection before field deployment.
 
 **Your Tasks**:
-- Implement border router for Internet connectivity (RAID domain)
-- Add DTLS encryption for sensor data (Trustworthiness viewpoint)
-- Design provisioning workflow
+- Build the gateway: Connect your mesh network to WiFi and the Internet
+- Add encryption: Protect sensor data from attackers
+- Design setup process: How do farmers configure devices without technical expertise?
 
-**Stakeholder Questions You'll Answer**:
-- Sebastian: "How do we prevent sensor spoofing attacks?"
-- Gustavo: "What's the cost of encryption on battery life?"
-- Daniela (Farmer): "Do I need to configure WiFi credentials on every sensor?"
+**Questions You'll Answer**:
+- Sebastian: "How do we prevent sensor spoofing attacks?" *(Translation: Can an attacker inject fake data?)*
+- Gustavo: "What's the cost of encryption on battery life?" *(Translation: Does security hurt our 3-month battery goal?)*
+- Daniela (Farmer): "Do I need to configure WiFi credentials on every sensor?" *(Translation: Is this easy enough for non-technical users?)*
 
 **Critical Concerns**:
-- Edwin: "Farmers can't be expected to enter 32-character PSKs. How do we make provisioning simple?"
+- Edwin: "Farmers can't be expected to enter 32-character passwords. How do we make provisioning simple?"
 - Sebastian: "We need GDPR compliance for EU customers. Where is data stored?"
 
 **Deliverables**:
-- DDR covering RAID and OMD domains
-- STRIDE threat model
+- DDR sections on security and gateway architecture
+- Threat model: What attacks are possible and how you mitigate them
 - ADR: "Pre-shared keys vs certificate-based authentication"
-- Provisioning workflow diagram (Usage viewpoint)
+- Provisioning workflow: Step-by-step setup process
+
+**New concepts you'll learn**: Border routers, DTLS encryption, provisioning, STRIDE → See [glossary.md](glossary.md)
 
 ---
 
 ### Phase 4: Deployment Readiness (Labs 7-8)
+
+**In plain English**: Putting it all together—does the complete system work?
+
 **Context**: Pilot deployment scheduled in 4 weeks. Final integration and validation required.
 
 **Your Tasks**:
-- Integrate with cloud dashboard (UD domain)
-- Implement complete sleep/wake cycle for 3-month battery life
-- System-wide testing and documentation
+- Build the dashboard: User interface showing sensor data in real-time
+- Optimize power: Make batteries last 3+ months
+- System testing: Verify everything works together
+- Create deployment guide: Instructions for installing sensors on real farms
 
-**Stakeholder Questions You'll Answer**:
-- Gustavo: "What's the total bill-of-materials cost per node?"
-- Edwin: "What's our deployment checklist? What can go wrong in the field?"
-- Daniela: "Can I see real-time soil moisture on my phone?"
-- Samuel: "Provide a complete system architecture diagram with all six ISO domains"
+**Questions You'll Answer**:
+- Gustavo: "What's the total bill-of-materials cost per node?" *(Translation: Can we afford to manufacture this?)*
+- Edwin: "What's our deployment checklist? What can go wrong in the field?" *(Translation: How do we troubleshoot problems?)*
+- Daniela: "Can I see real-time soil moisture on my phone?" *(Translation: Does this actually help me farm better?)*
+- Samuel: "Provide a complete system architecture diagram with all six ISO domains" *(Translation: Show me the big picture)*
 
 **Final Deliverable**: **System Integration Report**
-- All six viewpoints analyzed
-- Complete domain mapping (PED → SCD → ASD → OMD → UD → RAID)
-- Performance verification against all baselines
-- Deployment runbook for field operations
+- Complete architecture: All components working together
+- All six ISO viewpoints: Analyzed and documented
+- Performance verification: Meets all targets (battery life, range, latency, etc.)
+- Deployment guide: Step-by-step instructions for field installation
+
+**New concepts you'll learn**: Dashboards, system integration, deployment planning → See [glossary.md](glossary.md)
 
 ---
 
@@ -261,23 +322,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ---
 
-## 8. Pedagogical Intent
-
-### What This Scenario Adds
-1. **Context for viewpoints**: Each viewpoint maps to a real stakeholder with distinct concerns
-2. **Motivation for rigor**: Samuel (instructor) expects professional documentation because that's what industry requires
-3. **Tradeoff awareness**: Stakeholder conflicts force you to balance competing requirements
-4. **Portfolio value**: Deliverables resemble real work products
-
-### What This Scenario Avoids
-- ❌ High-pressure military/defense framing (Option 5 style)
-- ❌ Abstract academic exercises disconnected from application
-- ❌ Prescriptive "cookbook" instructions that discourage critical thinking
-- ❌ Single-stakeholder perspective (typical student → instructor dynamic)
-
----
-
-## 9. Using This Scenario in Class
+## 8. Using This Project Context
 
 - **Write DDRs to Samuel**, addressing his technical concerns
 - **Consider all stakeholders** when making design decisions
@@ -286,26 +331,7 @@ While GreenField Technologies is fictional, the scenario is grounded in reality:
 
 ---
 
-## 10. Evolution Path (Optional Extensions)
-
-### 1: International Expansion
-- New stakeholder: Regulatory Affairs (frequency allocation in EU vs US)
-- New requirement: Localization for Spanish-speaking farmers
-- New domain focus: OMD (managing deployments across regions)
-
-### 2: Scale Challenge
-- Customer: Large greenhouse operation (500 nodes)
-- New concerns: Network capacity planning, centralized vs distributed architecture
-- New viewpoint: Business (cost per hectare vs flat fee)
-
-### 3: Post-Deployment
-- Customer support tickets drive firmware updates
-- OTA update strategy
-- Field failure analysis
-
----
-
-## Appendix: Stakeholder Profiles (Detailed)
+## 9. Stakeholder Profiles (Detailed)
 
 ### Eng. Samuel - Senior IoT Architect
 - **Background**: Electronics Engineer, IoT Expert with extensive experience in embedded systems and wireless networks
