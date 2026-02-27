@@ -177,7 +177,14 @@ sequenceDiagram
 
 ## ESP32-C6 Firmware Code Modifications
 
-The following code modifications must be made to `main/simple_server_example_main.c` to implement the Sensing and Actuating capabilities for Lab 1.
+The following code modifications must be made to `main/main.c` to implement the Sensing and Actuating capabilities for Lab 0.
+
+### 0. Build System Setup
+
+**`main/CMakeLists.txt`** — add `json` and `driver` to the requires list:
+```cmake
+set(requires esp-tls nvs_flash esp_netif esp_http_server json driver)
+```
 
 ### 1. Required Includes & Definitions
 Add these to the top of the file, below the existing `#include` statements.
