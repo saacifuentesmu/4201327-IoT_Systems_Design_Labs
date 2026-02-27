@@ -36,6 +36,7 @@
     5. **Latent Capabilities:** Potential functions not currently active or provisioned.
 
 ![ISO/IEC 30141 IoT Component Pattern Block Diagram](img/IoT_component.png)
+![ISO/IEC 30141 IoT System Pattern Block Diagram](img/iot_system.png)
 
 ---
 
