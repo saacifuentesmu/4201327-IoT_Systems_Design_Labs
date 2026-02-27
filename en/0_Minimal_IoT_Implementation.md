@@ -108,19 +108,9 @@ graph LR
 
 ```bash
 ~/Documents/4201327-IoT_Systems_Design_Labs/tools$ python3 dashboard.py 
-===================================================
- Thread/CoAP Dashboard Initialized
- Target Edge Node IP: fd11:22:33:0:0:0:0:1
- Listening on: http://0.0.0.0:5000/
-===================================================
-
+[*] Dashboard running. Target ESP32 IP: 10.71.203.63
  * Serving Flask app 'dashboard'
- * Debug mode: on
-===================================================
- Thread/CoAP Dashboard Initialized
- Target Edge Node IP: fd11:22:33:0:0:0:0:1
- Listening on: http://0.0.0.0:5000/
-===================================================
+ * Debug mode: off
 ```
 
 ## Exercise Step 2: Sensing Implementation
