@@ -1,195 +1,155 @@
 """
-IoT Systems Design - Lab Dashboard
-Application and Service Domain (ASD) Server bridging to a Thread/CoAP Edge Node
+IoT Systems Design - Lab Dashboard (Wi-Fi / HTTP Version)
+Application and Service Domain (ASD) Server
 """
 
 from flask import Flask, render_template_string, request, jsonify
-import subprocess
-import json
+import requests
 import logging
 
 app = Flask(__name__)
-
-# Suppress default Flask logging to keep the console clean for CoAP debug output
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-# --- Network Configuration (Interface Capability) ---
-# Configure the IPv6 address of the Thread node (obtain via 'ipaddr' in the ESP CLI)
-NODE_IP = "fd11:22:33:0:0:0:0:1"  
-COAP_PORT = 5683
-
-# --- CoAP Subprocess Handlers ---
+# --- Network Configuration ---
+# replace this with the IPv4 address their ESP32 gets from the Wi-Fi router
+ESP32_IP = "192.168.1.100"  
 
 def get_sensor_data():
-    """
-    Sensing Capability: Polls the edge node via CoAP GET.
-    """
+    """Sensing Capability: Polls the ESP32 via HTTP GET."""
     try:
-        print(f"[CoAP GET] Requesting /sensor from {NODE_IP}...")
-        result = subprocess.run([
-            "python", "tools/coap_client.py",
-            "--host", NODE_IP, "get", "/sensor"
-        ], capture_output=True, text=True, timeout=5)
-        
-        if result.returncode == 0:
-            # Attempt to parse the stdout as JSON
-            try:
-                data = json.loads(result.stdout.strip())
-                return data
-            except json.JSONDecodeError:
-                # Fallback if the CoAP client returns raw text instead of JSON
-                return {"raw_value": result.stdout.strip()}
-        else:
-            print(f"[ERROR] CoAP GET Failed: {result.stderr}")
-            return {"error": "Node unreachable"}
-            
-    except subprocess.TimeoutExpired:
-        print("[ERROR] CoAP GET Timeout. Is the Thread node active?")
-        return {"error": "Timeout"}
-    except Exception as e:
-        print(f"[ERROR] Subprocess error: {e}")
-        return {"error": "Internal Error"}
+        # Assuming the ESP32 serves JSON at this endpoint
+        response = requests.get(f"http://{ESP32_IP}/api/sensor", timeout=2)
+        if response.status_code == 200:
+            return response.json()
+        return {"error": f"HTTP {response.status_code}"}
+    except requests.exceptions.RequestException:
+        return {"error": "Node Unreachable"}
 
 def control_light(state):
-    """
-    Actuating Capability: Sends a command to the edge node via CoAP PUT.
-    """
+    """Actuating Capability: Sends command to ESP32 via HTTP POST."""
     try:
-        print(f"[CoAP PUT] Sending /light -> {state} to {NODE_IP}...")
-        result = subprocess.run([
-            "python", "tools/coap_client.py",
-            "--host", NODE_IP, "put", "/light", str(state)
-        ], capture_output=True, text=True, timeout=5)
-        
-        if result.returncode == 0:
-            return True
-        else:
-            print(f"[ERROR] CoAP PUT Failed: {result.stderr}")
-            return False
-            
-    except subprocess.TimeoutExpired:
-        print("[ERROR] CoAP PUT Timeout.")
-        return False
-    except Exception as e:
-        print(f"[ERROR] Subprocess error: {e}")
+        payload = {"state": state}
+        response = requests.post(f"http://{ESP32_IP}/api/control", json=payload, timeout=2)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
         return False
 
 # --- Frontend User Domain (UD) ---
-
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Lab: Thread & CoAP Dashboard</title>
+    <title>IoT Lab: Wi-Fi Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #f4f4f9; color: #333; padding: 2rem; max-width: 600px; margin: 0 auto; }
+        body { font-family: system-ui, sans-serif; background-color: #f4f4f9; padding: 2rem; max-width: 800px; margin: 0 auto; color: #333; }
         .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
-        h1 { font-size: 1.25rem; border-bottom: 2px solid #0056b3; padding-bottom: 0.5rem; margin-top: 0; }
-        .data-point { font-size: 2rem; font-weight: bold; color: #0056b3; margin: 0.5rem 0; font-family: monospace; }
-        .btn-group { display: flex; gap: 1rem; }
-        .btn { flex: 1; padding: 0.75rem; font-size: 1rem; border: none; border-radius: 4px; cursor: pointer; color: white; transition: opacity 0.2s; }
-        .btn:hover { opacity: 0.9; }
+        .btn-group { display: flex; gap: 1rem; margin-top: 1rem; }
+        .btn { flex: 1; padding: 1rem; font-size: 1rem; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; }
         .btn-on { background-color: #28a745; }
         .btn-off { background-color: #dc3545; }
-        .badge { background: #e9ecef; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-family: monospace; }
+        .status { font-family: monospace; font-size: 0.9rem; color: #666; }
     </style>
 </head>
 <body>
-    <h2>IoT Systems Design Lab</h2>
-    <p>Target Node: <span class="badge">{{ node_ip }}</span> (Thread/IPv6)</p>
+    <h2>IoT Systems Design Lab: Minimal Implementation</h2>
+    <p class="status">Target Node: {{ esp_ip }} (Wi-Fi/HTTP)</p>
 
     <div class="card">
-        <h1>Sensing Capability (CoAP GET /sensor)</h1>
-        <div class="data-point" id="sensor-data">Loading...</div>
-        <p style="font-size: 0.8rem; color: #666;" id="status-text">Initializing connection...</p>
+        <h3>Sensing Capability (Live Telemetry)</h3>
+        <canvas id="telemetryChart" height="100"></canvas>
+        <p class="status" id="conn-status">Waiting for data...</p>
     </div>
 
     <div class="card">
-        <h1>Actuating Capability (CoAP PUT /light)</h1>
+        <h3>Actuating Capability (LED Control)</h3>
         <div class="btn-group">
-            <button class="btn btn-on" onclick="controlLight(1)">Turn ON (1)</button>
-            <button class="btn btn-off" onclick="controlLight(0)">Turn OFF (0)</button>
+            <button class="btn btn-on" onclick="controlLight(1)">Turn ON</button>
+            <button class="btn btn-off" onclick="controlLight(0)">Turn OFF</button>
         </div>
     </div>
 
     <script>
-        // Asynchronous polling to replace <meta refresh>
-        function fetchSensorData() {
-            fetch('/api/sensor')
-                .then(response => response.json())
-                .then(data => {
-                    const display = document.getElementById('sensor-data');
-                    const status = document.getElementById('status-text');
-                    
-                    if (data.error) {
-                        display.innerText = "ERR";
-                        status.innerText = "Error: " + data.error;
-                        status.style.color = "red";
-                    } else {
-                        // Formats the JSON payload for display
-                        display.innerText = JSON.stringify(data);
-                        status.innerText = "Connected. Live data stream active.";
-                        status.style.color = "green";
-                    }
-                })
-                .catch(err => console.error("Polling error:", err));
+        // Initialize Chart.js
+        const ctx = document.getElementById('telemetryChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    borderColor: '#0056b3',
+                    data: [],
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: { animation: false, scales: { y: { beginAtZero: false } } }
+        });
+
+        function updateChart(temp) {
+            const time = new Date().toLocaleTimeString();
+            chart.data.labels.push(time);
+            chart.data.datasets[0].data.push(temp);
+            if (chart.data.labels.length > 20) { // Keep last 20 data points
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update();
         }
 
-        // Send actuation command asynchronously
+        function fetchSensorData() {
+            fetch('/api/sensor')
+                .then(res => res.json())
+                .then(data => {
+                    const status = document.getElementById('conn-status');
+                    if (data.error) {
+                        status.innerText = "Error: " + data.error;
+                        status.style.color = "red";
+                    } else if (data.temperature) {
+                        status.innerText = "Connected. Live data stream active.";
+                        status.style.color = "green";
+                        updateChart(data.temperature);
+                    }
+                });
+        }
+
         function controlLight(state) {
             fetch('/api/control', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({state: state})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.status !== 'ok') {
-                    alert("Failed to route command to Thread node.");
-                }
+            }).then(res => res.json()).then(data => {
+                if(data.status !== 'ok') alert("Failed to route command to ESP32.");
             });
         }
 
-        // Start polling every 2 seconds
-        setInterval(fetchSensorData, 2000);
-        fetchSensorData(); // Initial fetch
+        // Poll every 1.5 seconds
+        setInterval(fetchSensorData, 1500);
     </script>
 </body>
 </html>
 '''
 
 # --- Flask Routes ---
-
 @app.route('/')
-def dashboard():
-    """Serves the frontend UI."""
-    return render_template_string(HTML_TEMPLATE, node_ip=NODE_IP)
+def index():
+    return render_template_string(HTML_TEMPLATE, esp_ip=ESP32_IP)
 
 @app.route('/api/sensor', methods=['GET'])
-def api_get_sensor():
-    """Endpoint for the frontend to retrieve cached/live sensor data."""
-    data = get_sensor_data()
-    return jsonify(data)
+def api_sensor():
+    return jsonify(get_sensor_data())
 
 @app.route('/api/control', methods=['POST'])
-def api_control_light():
-    """Endpoint for the frontend to send actuation commands."""
-    payload = request.get_json()
-    state = payload.get('state', 0)
-    
-    success = control_light(state)
-    if success:
+def api_control():
+    state = request.json.get('state', 0)
+    if control_light(state):
         return jsonify({'status': 'ok'}), 200
-    else:
-        return jsonify({'status': 'error', 'message': 'CoAP PUT failed'}), 502
+    return jsonify({'status': 'error'}), 502
 
 if __name__ == '__main__':
-    print("===================================================")
-    print(" Thread/CoAP Dashboard Initialized")
-    print(f" Target Edge Node IP: {NODE_IP}")
-    print(f" Listening on: http://0.0.0.0:5000/")
-    print("===================================================\n")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    print(f"[*] Dashboard running. Target ESP32 IP: {ESP32_IP}")
+    app.run(host='0.0.0.0', port=5000)
