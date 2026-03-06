@@ -128,6 +128,45 @@ graph LR
 
 **Action:** Install and start Mosquitto on your workstation.
 
+### Windows
+
+1. Download the Mosquitto installer from [mosquitto.org/download](https://mosquitto.org/download/) (choose the **Win64** `.exe` installer).
+2. Run the installer. When prompted, check the option to **install as a service**.
+3. After installation, Mosquitto's default directory is `C:\Program Files\mosquitto\`.
+
+**Configure for local network access:** By default, Mosquitto 2.x only accepts connections from `localhost`. We need to allow connections from the ESP32 on the Wi-Fi network.
+
+Open `C:\Program Files\mosquitto\mosquitto.conf` in a text editor (run as Administrator) and add these two lines at the end:
+
+```
+listener 1883
+allow_anonymous true
+```
+
+**Start/Restart the service:**
+```cmd
+:: Open a Command Prompt as Administrator
+net stop mosquitto
+net start mosquitto
+```
+
+> **Alternative:** You can also start/stop the service from the Windows Services panel (`services.msc`), look for "Mosquitto Broker".
+
+**Quick Test:** Open **two** Command Prompt windows:
+```cmd
+:: Terminal 1: Subscribe
+"C:\Program Files\mosquitto\mosquitto_sub" -h localhost -t "test/hello"
+
+:: Terminal 2: Publish
+"C:\Program Files\mosquitto\mosquitto_pub" -h localhost -t "test/hello" -m "Hello from MQTT!"
+```
+
+You should see the message appear in Terminal 1. This confirms the broker is working.
+
+> **Firewall:** If the ESP32 cannot connect to the broker, ensure Windows Firewall allows inbound connections on **TCP port 1883**. You can add a rule via: *Windows Defender Firewall → Advanced Settings → Inbound Rules → New Rule → Port → TCP 1883 → Allow*.
+
+### Linux (Ubuntu/Debian)
+
 ```bash
 # Ubuntu/Debian
 sudo apt install mosquitto mosquitto-clients
