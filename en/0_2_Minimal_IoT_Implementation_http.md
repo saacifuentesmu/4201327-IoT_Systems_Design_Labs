@@ -2,7 +2,7 @@
 
 **Course:** IoT Systems Design  
 **Target Hardware:** ESP32-C6 (Wi-Fi 6, Bluetooth 5, Zigbee/Thread)  
-**Target Software:** Python (`tools/dashboard.py`)  
+**Target Software:** Python (`tools/dashboard_http.py`)  
 **Standard Reference:** ISO/IEC 30141:2024  
 
 ---
@@ -102,12 +102,12 @@ graph LR
 
 **Objective:** Initialize the Application and Service Domain (ASD).
 
-**Action:** Execute python tools/dashboard.py on your workstation.
+**Action:** Execute python tools/dashboard_http.py on your workstation.
 
 **Under the Hood:** Spins up a local server and provisions an Application Interface Capability listening for edge devices.
 
 ```bash
-~/Documents/4201327-IoT_Systems_Design_Labs/tools$ python3 dashboard.py 
+~/Documents/4201327-IoT_Systems_Design_Labs/tools$ python3 dashboard_http.py 
 [*] Dashboard running. Target ESP32 IP: 10.71.203.63
  * Serving Flask app 'dashboard'
  * Debug mode: off
@@ -303,7 +303,7 @@ Now that the ESP32-C6 is running the modified firmware and connected to your loc
 ### Step 1: Link the IP Address
 1. Look at the ESP-IDF monitor terminal. After the Wi-Fi connection is established, the ESP32-C6 will print its IP address. 
    *(Example: `I (2450) simple_server: IPv4 address: 192.168.1.100`)*
-2. Open your `dashboard.py` file.
+2. Open your `dashboard_http.py` file.
 3. Locate the network configuration section at the top of the script and replace the default IP with your board's actual IP address:
 ```python
    # --- Network Configuration ---
@@ -316,7 +316,7 @@ Now that the ESP32-C6 is running the modified firmware and connected to your loc
 1. Open a new terminal on your computer (do not close the ESP-IDF monitor, so you can watch the incoming requests).
 2. Run the dashboard script:
 ```bash
-python dashboard.py
+python dashboard_http.py
 
 ```
 
