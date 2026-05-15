@@ -17,17 +17,23 @@ cd lab03
 idf.py set-target esp32c6
 ```
 
-The default flags from the `ot_cli` example are fine — OpenThread / FTD / CLI on, IPv6 on. No `menuconfig` changes are required, but Node B needs **one header edit** to expose `coap observe` on the CLI (see callout below).
+The default flags from the `ot_cli` example are fine — OpenThread / FTD / CLI on, IPv6 on. No `menuconfig` changes are required. Node B needs **one extra compile flag** added to the project's top-level `CMakeLists.txt` to expose `coap observe` on the CLI (see callout below).
 
-> **Two CoAP stacks are in play, and neither is a `menuconfig` toggle.** OpenThread's built-in CoAP API powers the `coap` CLI sub-command on Node B; it ships enabled by default in ESP-IDF v5.1+ via OpenThread's compile-time config (`OPENTHREAD_CONFIG_COAP_API_ENABLE=1` in the OpenThread component's `openthread-core-esp32x-ftd-config.h`). **libcoap** powers the server in `coap_demo.c` on Node A and is added as a managed component via `idf_component.yml`.
+> **Two CoAP stacks are in play, and neither is a `menuconfig` toggle.**
 >
-> **`coap observe` is a separate flag and is OFF by default.** The OT CLI only registers the `observe` sub-command when `OPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE=1`. Without it, `coap observe ...` returns `Error 35: InvalidCommand`. Open the **same header** where `OPENTHREAD_CONFIG_COAP_API_ENABLE` is defined (`components/openthread/openthread/src/core/config/coap.h`, or override via `openthread-core-esp32x-ftd-config.h`) and add right next to it:
+> 1. **OT CLI's `coap` sub-command (Node B)** comes from OpenThread itself, gated by `OPENTHREAD_CONFIG_COAP_API_ENABLE`. Upstream OpenThread defaults this to `0`, but Espressif's IDF overlay (`components/openthread/private_include/openthread-core-esp32x-ftd-config.h`) flips it to `1` for every ESP-IDF project. That's why basic `coap get` / `coap post` "just work" without you doing anything. The companion flag `OPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE` is **not** flipped by the overlay — it stays `0`, so `coap observe ...` returns `Error 35: InvalidCommand`.
+> 2. **libcoap (Node A)** powers the server in `coap_demo.c` and is pulled in as a managed component via `idf_component.yml`. Adding `espressif/coap` to dependencies fetches *that* library; it has nothing to do with the OT CLI on Node B.
 >
-> ```c
-> #define OPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE 1
+> **The clean way to enable Observe on Node B** — do *not* edit any header inside `~/.espressif/.../components/openthread/`. Those headers belong to ESP-IDF, get clobbered on upgrade, and silently affect every other project on your machine. Instead, override the macro project-locally by adding **one line** to your project's top-level `CMakeLists.txt` (the one next to `main/`, not the one inside `main/`), right after the `include(...)` line:
+>
+> ```cmake
+> cmake_minimum_required(VERSION 3.16)
+> include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+> idf_build_set_property(COMPILE_OPTIONS "-DOPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE=1" APPEND)
+> project(lab03)
 > ```
 >
-> Then `idf.py fullclean && idf.py build flash monitor` on Node B. Do this once, before §6.
+> This adds the define to **every** component's compile line, so the `#ifndef` guard in OpenThread's `coap.h` picks it up before the default `0` is set. Then `idf.py fullclean && idf.py build flash monitor` on Node B. Do this once, before §6. Same line on every team's laptop — no per-machine drift.
 
 Open `main/idf_component.yml` and add `espressif/coap` to the existing `dependencies:` block:
 
@@ -294,11 +300,11 @@ Compare this against the HTTP equivalent for the same payload (see the [lecture'
 | Symptom | Fix |
 |---|---|
 | `coap get` returns `4.04 Not Found` | The CLI strips the leading `/`; the resource is registered as `env/temp`. Path on the wire and registration must match. |
-| `coap observe ...` returns `Error 35: InvalidCommand` | OT CLI was built without `OPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE`. Add the `#define ... 1` next to the CoAP API flag in the header (see §1 callout), then `fullclean` + rebuild Node B. |
+| `coap observe ...` returns `Error 35: InvalidCommand` | OT CLI was built without `OPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE`. Add the `idf_build_set_property(COMPILE_OPTIONS "-DOPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE=1" APPEND)` line to the project's top-level `CMakeLists.txt` (see §1 callout), then `fullclean` + rebuild Node B. Do **not** edit headers inside ESP-IDF itself. |
 | `coap observe` returns 2.05 once and never again | `coap_resource_set_get_observable(..., 1)` must be called **before** `coap_add_resource`. |
 | Notifications stop arriving | Node B left the network. Re-run `coap observe ...`. |
 | Build error: `'coap_pdu_t' has no member named 'code'` | Tutorial code is libcoap-2. Use the v3 accessors in §3 above. |
-| `coap` not in `help` output | OpenThread was built without `OPENTHREAD_CONFIG_COAP_API_ENABLE` (rare on ESP-IDF v5.1+; default is on). Update ESP-IDF, or set the define in the OpenThread component's `openthread-core-esp32x-ftd-config.h`. |
+| `coap` not in `help` output | OpenThread was built without `OPENTHREAD_CONFIG_COAP_API_ENABLE` (rare on ESP-IDF v5.1+; Espressif's overlay sets it by default). If missing, add `idf_build_set_property(COMPILE_OPTIONS "-DOPENTHREAD_CONFIG_COAP_API_ENABLE=1" APPEND)` to the project's top-level `CMakeLists.txt`, same pattern as the Observe flag. |
 | `state` stays `detached` on Node B | PANID / channel / network key mismatch. Re-paste `dataset active -x` from Node A; never type by hand. |
 
 ---
