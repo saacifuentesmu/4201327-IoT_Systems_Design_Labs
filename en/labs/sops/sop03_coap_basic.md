@@ -92,18 +92,27 @@ Paste verbatim. Complete server: CBOR encoding by hand, Observe push, 0.5 °C th
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include <math.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
 #include "esp_random.h"
+#include "esp_timer.h"
 
 #include "coap3/coap.h"
 
 static const char *TAG = "coap_demo";
 #define COAP_PORT 5683
 
+// Observe freshness: send a notification at least every MAX_AGE_S seconds even
+// if the value didn't move, so clients don't time out on RFC 7641 §3.4 staleness.
+// Default libcoap Max-Age is 60 s; we publish 60 explicitly and heartbeat at 45.
+#define ENV_TEMP_MAX_AGE_S    60u
+#define ENV_TEMP_HEARTBEAT_S  45u
+
 static float g_current_temp = 24.5f;
 static float g_last_notified_temp = 24.5f;
+static int64_t g_last_notify_us = 0;
 static coap_resource_t *g_env_temp_resource = NULL;
 
 // CBOR encoder for {"t": <float16>} — six bytes.
@@ -150,25 +159,48 @@ static void hnd_env_temp_get(coap_resource_t *resource,
                     coap_encode_var_safe(encoded, sizeof(encoded),
                                           COAP_MEDIATYPE_APPLICATION_CBOR),
                     encoded);
+    coap_add_option(response, COAP_OPTION_MAXAGE,
+                    coap_encode_var_safe(encoded, sizeof(encoded),
+                                          ENV_TEMP_MAX_AGE_S),
+                    encoded);
     coap_add_data(response, len, buf);
 
     ESP_LOGI(TAG, "GET /env/temp -> %.2f C (6 B CBOR)", g_current_temp);
 }
 
-// Drives Observe notifications. Mocks a slowly drifting sensor;
-// in Lab 4 this is replaced by the real ADC reading.
+// Drives Observe notifications. Mocks a sensor as a slow sine (±1 °C, 60 s
+// period) plus small noise — predictable enough that students see notifications
+// every ~15 s, random enough that no two runs are identical. Lab 4 swaps this
+// for a real ADC reading.
+//
+// Two notification triggers, both required:
+//   (a) value moved by more than 0.5 °C since the last notification (the lesson)
+//   (b) heartbeat: more than ENV_TEMP_HEARTBEAT_S since the last notification
+//       (RFC 7641 §3.4 — without this, clients time out on Max-Age and cancel)
 static void temp_update_task(void *arg)
 {
     coap_context_t *ctx = (coap_context_t *)arg;
-    while (1) {
-        float delta = ((float)(esp_random() % 1000) / 1000.0f - 0.5f) * 0.6f;   // ±0.3
-        if ((esp_random() % 10) == 0) delta += (esp_random() & 1) ? 1.5f : -1.5f;
-        g_current_temp += delta;
+    const float baseline = 24.5f;
+    const float amp_c    = 1.0f;
+    const float period_s = 60.0f;
+    g_last_notify_us = esp_timer_get_time();
 
-        float diff = fabsf(g_current_temp - g_last_notified_temp);
-        if (diff > 0.5f) {
-            ESP_LOGI(TAG, "Δ=%.2f C exceeds threshold; notifying observers", diff);
+    while (1) {
+        float t_s   = (float)esp_timer_get_time() / 1e6f;
+        float noise = ((float)(esp_random() % 1000) / 1000.0f - 0.5f) * 0.2f;  // ±0.1
+        g_current_temp = baseline + amp_c * sinf(2.0f * (float)M_PI * t_s / period_s) + noise;
+
+        float diff       = fabsf(g_current_temp - g_last_notified_temp);
+        int64_t since_us = esp_timer_get_time() - g_last_notify_us;
+        bool threshold   = diff > 0.5f;
+        bool heartbeat   = since_us > (int64_t)ENV_TEMP_HEARTBEAT_S * 1000000;
+
+        if (threshold || heartbeat) {
+            ESP_LOGI(TAG, "notify (%s): T=%.2f C, Δ=%.2f C, %llds since last",
+                     threshold ? "threshold" : "heartbeat",
+                     g_current_temp, diff, since_us / 1000000);
             g_last_notified_temp = g_current_temp;
+            g_last_notify_us     = esp_timer_get_time();
             if (g_env_temp_resource) coap_resource_notify_observers(g_env_temp_resource, NULL);
         }
 
@@ -302,6 +334,7 @@ Compare this against the HTTP equivalent for the same payload (see the [lecture'
 | `coap get` returns `4.04 Not Found` | The CLI strips the leading `/`; the resource is registered as `env/temp`. Path on the wire and registration must match. |
 | `coap observe ...` returns `Error 35: InvalidCommand` | OT CLI was built without `OPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE`. Add the `idf_build_set_property(COMPILE_OPTIONS "-DOPENTHREAD_CONFIG_COAP_OBSERVE_API_ENABLE=1" APPEND)` line to the project's top-level `CMakeLists.txt` (see §1 callout), then `fullclean` + rebuild Node B. Do **not** edit headers inside ESP-IDF itself. |
 | `coap observe` returns 2.05 once and never again | `coap_resource_set_get_observable(..., 1)` must be called **before** `coap_add_resource`. |
+| `coap observe` gets first notification, then silence ~60 s, then timeout/cancel | RFC 7641 §3.4 staleness: client cancels after `Max-Age` (default 60 s) elapses without a new notification. Server must send a heartbeat notification within that window even if the value hasn't moved — see the `heartbeat` branch in `temp_update_task` and the `COAP_OPTION_MAXAGE` advertised in `hnd_env_temp_get`. If you removed either, restore both. |
 | Notifications stop arriving | Node B left the network. Re-run `coap observe ...`. |
 | Build error: `'coap_pdu_t' has no member named 'code'` | Tutorial code is libcoap-2. Use the v3 accessors in §3 above. |
 | `coap` not in `help` output | OpenThread was built without `OPENTHREAD_CONFIG_COAP_API_ENABLE` (rare on ESP-IDF v5.1+; Espressif's overlay sets it by default). If missing, add `idf_build_set_property(COMPILE_OPTIONS "-DOPENTHREAD_CONFIG_COAP_API_ENABLE=1" APPEND)` to the project's top-level `CMakeLists.txt`, same pattern as the Observe flag. |
@@ -332,4 +365,4 @@ python tools/dashboard_coap.py --log /tmp/nodeB.log
 
 Open `http://localhost:5000`. Same Chart.js view as Labs 0 / 0.5; the stats card shows the live notification count and how many polls a 1 Hz client would have spent over the same window.
 
-**Why we keep this optional in Lab 3:** the goal of this lab is to understand the full stack from the CLI — `coap get`, the raw `a16174f9...` bytes, the `notifying observers` log line. Once those are clear, a graphical view adds polish but no insight. We bring the dashboard back as a first-class artifact in Lab 6, where it pairs naturally with secured CoAP (DTLS).
+**Why we keep this optional in Lab 3:** the goal of this lab is to understand the full stack from the CLI — `coap get`, the raw `a16174f9...` bytes, the `notify (threshold|heartbeat)` log lines. Once those are clear, a graphical view adds polish but no insight. We bring the dashboard back as a first-class artifact in Lab 6, where it pairs naturally with secured CoAP (DTLS).

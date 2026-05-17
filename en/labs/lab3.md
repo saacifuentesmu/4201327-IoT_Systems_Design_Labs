@@ -99,7 +99,7 @@ The firmware is provided in full — [SOP-03 §1–§5](sops/sop03_coap_basic.md
 
 ### Task B — Observe vs polling
 - Run `coap observe` for ≥ 5 minutes.
-- **Count** notifications received (from the server log: `Δ=... exceeds threshold; notifying observers`); compare to the GETs a 1 Hz polling client would have made over the same window (= seconds elapsed).
+- **Count** notifications received (from the server log: `notify (threshold|heartbeat): T=... C, Δ=... C, ...`). Distinguish the two: **threshold** notifications are the ones the lesson is about (sent because the value moved); **heartbeat** notifications are the freshness keep-alive that prevents client-side `Max-Age` timeout (RFC 7641 §3.4) and would still happen if nothing changed. Report both counts. Compare to the GETs a 1 Hz polling client would have made over the same window (= seconds elapsed).
 - **Evidence:** server log + the ratio (notifications / polls-avoided).
 
 ### Task C — Efficiency audit (the headline number)
