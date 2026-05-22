@@ -43,7 +43,7 @@ graph TD
     style Net fill:#bbf,stroke:#333
 ```
 
-**Mostly ASD, with a foot in SCD.** The Thread mesh + UDP transport from Lab 2 stay where they were (SCD's communication subsystem). What you add today — the URI `/env/temp`, the CBOR data contract, the Observe interaction pattern — is squarely **ASD**. Lab 5's Border Router is what later bridges this ASD contract to **RAID** for outside consumers.
+**Mostly ASD, with a foot in SCD.** The Thread mesh + UDP transport from Lab 2 stay where they were (SCD's communication subsystem). What you add today — the URI `/env/temp`, the CBOR data contract, the Observe interaction pattern — is squarely **ASD**. Lab 5's Border Router is an SCD-hosted IoT gateway that extends this ASD contract outward to the access network; **RAID** (access management + interchange to outside consumers) lights up later, in Lab 6 (DTLS) and Lab 7 (dashboard API).
 
 **Functional / management plane separation (ISO §6.2.2.3.3):** CoAP carries application data; Thread MLE handles routing and leader election. Independent — you can swap CoAP for MQTT-SN without touching MLE.
 

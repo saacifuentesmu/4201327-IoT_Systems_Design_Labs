@@ -99,7 +99,7 @@ Ask the class: *"If IPv6 needs 40 bytes just for the header, and we have ~100 by
 
 Draw the Functional viewpoint boxes on the board. Lab 1 was about the PED↔SCD boundary (radio waves, hardware). Lab 2 moves one step up the stack — the mesh itself lives inside **SCD**, and stable IPv6 addressing starts to touch **ASD (Application & Service Domain)** because that's how applications in later labs will reach devices.
 
-> **Where RAID comes in**: RAID (Resource Access & Interchange) is where *external* consumers reach the IoT system through APIs and brokers. That's Lab 5 (Border Router), not today. Write RAID on the board in gray so students can see the full domain stack, and mark where we are today vs. where we're going.
+> **Where RAID comes in**: RAID (Resource Access & Interchange) is where *external* consumers reach the IoT system through *authenticated* APIs and brokers — access management + interchange subsystem (Table A.3 prose). Lab 5's Border Router is the *plumbing* that makes outside reach possible (it's an SCD-hosted IoT gateway per Figure A.5), but RAID itself doesn't light up until **Lab 6** (DTLS as access management) and **Lab 7** (dashboard as interchange). Write RAID on the board in gray and keep it gray for three more labs.
 
 ### Functional roles — the table we'll fill today
 

@@ -336,7 +336,7 @@ The first puzzle previews channel utilization at fleet scale — the "fix one kn
 
 > *"Our sensors and actuators all live on the Thread mesh. The dashboard runs on a phone over Wi-Fi. How does CoAP cross that boundary, and what changes about the contracts we've written?"*
 
-Preview: the **Border Router** is the diagram for Lab 5. The networking pattern (Table A.4 — proximity / access / services / user networks) becomes the dominant lens; we stop climbing the domain ladder and start drawing pipes through the four networks. RAID (which has been gray on the board since Lab 1) finally lights up.
+Preview: the **Border Router** is the diagram for Lab 5. Two paired ISO Annex A patterns become the dominant lens — **Table A.3** (enterprise system pattern: names the "IoT gateway" with its six functions) and **Table A.4** (enterprise networking pattern: proximity / access / services / user networks). We stop climbing the domain ladder and start drawing pipes through the four networks. RAID (gray on the board since Lab 1) stays gray for one more lab — per Figure A.5 the Border Router is an SCD-hosted IoT gateway, *not* a RAID device. RAID lights up in **Lab 6** (DTLS as access management) and **Lab 7** (dashboard as interchange).
 
 ---
 

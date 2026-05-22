@@ -124,7 +124,7 @@ The ASD contract you write today is the same contract the dashboard team, the OT
 
 ### Where this is *not* — RAID
 
-RAID (Resource Access & Interchange) is where outside consumers — phones, clouds, third-party integrators — reach the IoT system through public APIs. CoAP today is *internal* to the Thread mesh. The Border Router (Lab 5) is what bridges CoAP↔HTTP for RAID. Mark RAID on the board in gray again so students see the gap they're filling.
+RAID (Resource Access & Interchange) is where outside consumers — phones, clouds, third-party integrators — reach the IoT system through *authenticated* APIs. CoAP today is *internal* to the Thread mesh. The Border Router (Lab 5) makes the mesh routable to the outside, but per Figure A.5 the Border Router itself is an **SCD-hosted IoT gateway**, not a RAID device. RAID proper lights up in **Lab 6** (DTLS as access management) and **Lab 7** (dashboard's exposed API as interchange subsystem). Mark RAID on the board in gray again so students see the gap — and note the gap is two labs away, not one.
 
 ### Functional/Management plane separation (ISO §6.2.2.3.3)
 
@@ -332,7 +332,7 @@ Students have now shipped working code in all three. Put the comparison table on
 
 The takeaway is not "CoAP wins." The takeaway is **constraints pick the protocol**:
 
-1. The dashboard team in Lab 5 will probably keep using HTTP/MQTT on the Wi-Fi side — that's fine. The Border Router translates at the boundary. RAID is exactly the domain that does this kind of bridging.
+1. The dashboard team in Lab 5 will probably keep using HTTP/MQTT on the Wi-Fi side — that's fine. The Border Router bridges *networks* at the boundary (proximity ↔ access; Table A.4). An *application-layer* CoAP↔HTTP proxy is a separate device that lives behind the Border Router — that's where RAID-style brokering happens, and it shows up in Lab 7.
 2. CoAP is the right choice on the radio side because the radio is the battery, and HTTP/MQTT both keep the radio on for orders of magnitude longer per reading.
 3. **Observe is CoAP's answer to MQTT subscribe** — same idea (push-when-changed instead of poll), no broker required.
 

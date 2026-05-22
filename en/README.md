@@ -127,8 +127,8 @@ Each lab includes:
 | Lab 2 | 6LoWPAN & IPv6 | SCD | IP over constrained networks |
 | Lab 3 | CoAP & CBOR | ASD | Efficient data transport |
 | Lab 4 | Sensor Integration | ASD, SCD | Complete sensor-to-cloud path |
-| Lab 5 | Border Router | SCD, RAID | Gateway between domains |
-| Lab 6 | Security & OTA | OMD, RAID | Encryption, firmware updates |
+| Lab 5 | Border Router | SCD (IoT gateway) | Gateway between proximity and access networks |
+| Lab 6 | Security & OTA | OMD, RAID | Encryption (access management), firmware updates |
 | Lab 7 | Dashboard | UD, ASD | User interface, visualization |
 | Lab 8 | System Integration | **All 6** | Complete ISO-compliant system |
 

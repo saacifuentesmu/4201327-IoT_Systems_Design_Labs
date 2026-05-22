@@ -342,8 +342,8 @@ Data flows through all six domains in ~200-500 ms.
 | **Lab 2** | 6LoWPAN & IPv6 | SCD | IPv6 over constrained networks |
 | **Lab 3** | Thread Mesh Networking | SCD, ASD | Self-healing mesh |
 | **Lab 4** | CoAP Application Protocol | ASD, RAID | RESTful API for IoT |
-| **Lab 5** | Thread Border Router | SCD, RAID | Gateway connecting domains |
-| **Lab 6** | Security & OTA | OMD, RAID | Device lifecycle management |
+| **Lab 5** | Thread Border Router | SCD (IoT gateway, per Fig. A.5) | Gateway connecting proximity and access networks |
+| **Lab 6** | Security & OTA | OMD, RAID | DTLS as access management; device lifecycle |
 | **Lab 7** | Dashboard | UD, ASD | Human-machine interface |
 | **Lab 8** | Integration | **All** | Complete system |
 
