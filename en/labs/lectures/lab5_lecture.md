@@ -2,7 +2,7 @@
 
 **Duration**: 40 min (delivered before the hands-on lab)
 
-**Audience**: Students about to run Lab 5 (OpenThread Border Router on ESP32-S3 + ESP32-C6 RCP)
+**Audience**: Students about to run Lab 5 (OpenThread Border Router — host = ESP32 *or* ESP32-S3, paired with an ESP32-C6 as RCP)
 
 **Pairs with**: [lab5.md](../lab5.md)
 
@@ -15,7 +15,7 @@
 By the end of the lecture, students should be able to:
 
 1. Redraw the SoilSense system using the **two paired patterns from Annex A** of ISO/IEC 30141:2024 — *enterprise system pattern* (Table A.3 / Figure A.5: entities + IoT gateway) and *enterprise networking pattern* (Table A.4 / Figure A.6: proximity / access / services / user) — and locate where the OTBR sits in each.
-2. Explain why the OTBR is **two physical boards** (S3 + C6 RCP) and what each one contributes.
+2. Explain why the OTBR is **two physical boards** (Wi-Fi-only host + 802.15.4-only RCP) and what each one contributes.
 3. Trace an IPv6 packet from a mesh node to the public internet, naming the **two address translations** that happen: SLAAC-on-the-mesh (the global-prefix advertisement) and **NAT64** (`64:ff9b::/96`).
 4. Reason about the **single-OTBR failure mode** — what survives, what doesn't — and articulate the "local-first" property of the SoilSense design.
 5. Switch lenses: explain why ISO/IEC 30141 has more than the six Functional domains, and why "the Border Router is RAID" is *actually wrong* per Figure A.5 (the standard places "IoT gateway" inside **SCD**, not RAID — RAID hosts access management + interchange, which lights up in Labs 6–7).
@@ -122,24 +122,24 @@ The naive expectation: "buy a board with Wi-Fi *and* Thread, run OTBR on it." Th
 
 ```
    ┌──────────────────────────────┐        ┌────────────────────┐
-   │  Host (ESP32-S3)             │        │  RCP (ESP32-C6)    │
+   │  Host (ESP32 / ESP32-S3)     │        │  RCP (ESP32-C6)    │
    │                              │ UART   │                    │
    │  - OpenThread Border Router  │ Spinel │  - 802.15.4 PHY    │
-   │  - NAT64 daemon              │ <───>  │  - 802.15.4 MAC    │
-   │  - Web UI                    │ 460800 │  - Just a "modem"  │
+   │  - NAT64 (software)          │ <───>  │  - 802.15.4 MAC    │
+   │  - `ot` CLI (mgmt surface)   │ 460800 │  - Just a "modem"  │
    │  - Wi-Fi / Ethernet driver   │        │  - No CoAP, no app │
    │                              │        │                    │
    │  Wi-Fi  <──>  AP             │        │  Radio  <──>  Mesh │
    └──────────────────────────────┘        └────────────────────┘
         ^                                       ^
         │                                       │
-        IPv6 + NAT64 + DHCPv6-PD                IEEE 802.15.4 frames
+        IPv6 + NAT64 + RA                       IEEE 802.15.4 frames
 ```
 
 Three things students should leave with:
 
-1. **The RCP is dumb on purpose.** It has no CoAP stack, no IP stack, no application logic. It hands raw 802.15.4 frames up over Spinel/UART and the host does everything else. This means upgrading the host's OTBR is easy (it's the S3's firmware); the RCP almost never changes.
-2. **The host's CPU does the IPv6 work.** 6LoWPAN decompression, mesh route lookup, NAT64 translation, web UI — all on the S3. The C6 just transmits/receives bytes.
+1. **The RCP is dumb on purpose.** It has no CoAP stack, no IP stack, no application logic. It hands raw 802.15.4 frames up over Spinel/UART and the host does everything else. This means upgrading the host's OTBR is easy (it's the host's firmware); the RCP almost never changes.
+2. **The host's CPU does the IPv6 work.** 6LoWPAN decompression, mesh route lookup, NAT64 translation, Router Advertisement on the Wi-Fi side — all on the host. The RCP-C6 just transmits/receives bytes.
 3. **One device, from the network's point of view.** The mesh sees one Thread node (the OTBR); the Wi-Fi AP sees one Wi-Fi client (the OTBR). The fact that there are two MCUs inside is an *implementation detail* of how Espressif builds the OTBR appliance. A Raspberry Pi 4 + USB-attached `ot_rcp` is the same architecture, different host. So is the official `openthread/otbr-sel-ci` Docker image.
 
 > **First-principles question to drop:** *"Why doesn't the RCP just run an IP stack itself and forward via TCP/UDP to the host?"* Expected: latency through the link (Spinel/UART is microseconds; TCP framing would add milliseconds and dropped-packet recovery), and the upgrade story (NCP-mode RCPs *do* run an IP stack; they're harder to update because the host can't see what's wrong). RCP mode is the architecturally cleanest split and what Thread Group standardized on.
@@ -204,7 +204,7 @@ Node A wants to reach 8.8.8.8 (Google DNS, IPv4).
 
 The NAT table maps `(IPv6 src, port) ↔ (IPv4 src, port)` — same idea as a home router's NAT44, just with an extra protocol-conversion step.
 
-**Latency cost of NAT64:** ~5–20 ms on a Raspberry Pi-class OTBR; usually invisible on the S3 too. The dominant cost is the **Wi-Fi RTT to the upstream and the 802.15.4 latency to the node**, not the translation itself.
+**Latency cost of NAT64:** ~5–20 ms on a Raspberry Pi-class OTBR; usually invisible on an ESP32-class host too. The dominant cost is the **Wi-Fi RTT to the upstream and the 802.15.4 latency to the node**, not the translation itself.
 
 > **First-principles question to drop:** *"NAT64 lets IPv6 reach IPv4. What about the reverse — could an IPv4-only phone reach our IPv6-only sensor?"* Expected: not directly. You'd need **464XLAT** (CLAT on the phone side) or a CoAP↔HTTP proxy that terminates IPv6 on one side and IPv4 on the other. This is exactly why most "IoT cloud" architectures put a real HTTP/MQTT broker on the access side instead of trying to make end-to-end IPv6 work — a topic we'll come back to in Lab 7.
 
@@ -231,7 +231,7 @@ What grew: the **link-layer + IPv6 headers** expanded because Wi-Fi doesn't have
 
 ### Part A: What happens when the OTBR dies
 
-Kill the OTBR (pull power on the S3) and ask what survives:
+Kill the OTBR (pull power on the host, or `ot thread stop`) and ask what survives:
 
 | What still works | Why |
 |---|---|
@@ -243,7 +243,7 @@ Kill the OTBR (pull power on the S3) and ask what survives:
 |---|---|
 | Daniela's phone reaching `/env/temp` | The Proximity↔Access boundary is gone. |
 | Node A → `ping 64:ff9b::8.8.8.8` | NAT64 lived on the OTBR. |
-| The OTBR web UI / topology view | Obviously. |
+| The BR's `ot` CLI / `ot child table` view | Obviously — the host is off. |
 | New nodes joining via OTBR-side commissioning | But existing dataset works; you can re-commission from an in-mesh Joiner. |
 
 This is the **local-first property** of SoilSense: **the system degrades gracefully** when the off-mesh path disappears. That's not an accident; it's a consequence of choosing Thread + CoAP. The valve isn't waiting for the cloud to tell it to open — the cloud is just a viewer.
@@ -279,7 +279,7 @@ Two observations students should leave with:
 
 Walk through [lab5.md](../lab5.md) at high speed:
 
-1. **Task A — OTBR bring-up.** RCP flash, ot_br host flash with Wi-Fi credentials in menuconfig, web UI password set, network formed. Re-commission Lab 3 / Lab 4 nodes with `dataset clear; dataset set active <hex>`. [SOP-05 §1–§4](../sops/sop05_border_router.md#1-flash-the-radio-co-processor-rcp).
+1. **Task A — OTBR bring-up.** RCP flash, ot_br host flash, then from the host's `ot` CLI: `ot wifi connect` → `ot dataset init new` → `ot ifconfig up` → `ot thread start` → `ot br init 1 1`. Then re-commission Lab 3 / Lab 4 nodes with `dataset clear; dataset set active <hex>`. [SOP-05 §1–§4](../sops/sop05_border_router.md#1-flash-the-radio-co-processor-rcp).
 2. **Task B — Global prefix verification.** Run `ipaddr` on Node A and Node V; confirm two non-link-local addresses. The new one with the OTBR's prefix is what makes the mesh reachable.
 3. **Task C — Three latency numbers.** Reproduce the Lab 3 in-mesh baseline, hit the same `/env/temp` from your laptop via the global address, and ping `64:ff9b::8.8.8.8` from Node A. Fill the three-row table. The delta is the headline.
 
@@ -287,9 +287,9 @@ Walk through [lab5.md](../lab5.md) at high speed:
 
 - **Web UI password first.** The OTBR is now on your Wi-Fi. Default credentials = anyone on the AP can reform your network.
 - **The "third C6" is a separate board** — you can't repurpose Node A, B, or V into an RCP without losing their CoAP servers. Budget for the fifth board in advance.
-- **Wi-Fi at 5 GHz only will not work.** The S3 is 2.4 GHz. If your AP is dual-band, force the S3 onto the 2.4 GHz SSID.
+- **Wi-Fi at 5 GHz only will not work.** ESP32, S3, and C6 are all 2.4 GHz. If your AP is dual-band, force the host onto the 2.4 GHz SSID — or run a phone hotspot at 2.4 GHz.
 - **`dataset clear` before `dataset set active`** when moving nodes from the Lab 2/3 mesh to the OTBR-formed mesh. Otherwise the old PANID conflicts.
-- **The OTBR's web UI is a development tool.** It's HTTP, not HTTPS; it does no authentication beyond the form password. Lab 6 puts DTLS on the CoAP side; the web UI stays HTTP — production OTBRs typically expose it only on a wired management VLAN.
+- **The IDF `ot_br` example has no web UI.** Management is the `ot` CLI on the host's serial console — same paradigm as Labs 2–4. (Distributions that *do* ship a web UI — Raspberry Pi `otbr-web`, the separate `esp-thread-br` SDK — exist, and we mention them once for context. They are not used in this lab.) Lab 6 adds DTLS on the CoAP side; the management surface here remains "whoever holds the USB cable" — fine for the lab, a production gap to flag in the DDR.
 
 ### The puzzles to seed
 
@@ -316,7 +316,7 @@ Preview: the lens shifts *again* — from networking pattern to the **Trustworth
 - [ ] Domain ladder → A.3 + A.4 pattern pair transition explained explicitly (segment 1). Don't let students think Labs 1–4 were "wrong."
 - [ ] Table A.3 "IoT gateway" quote on the board verbatim; the five-of-six function mapping table walked through.
 - [ ] Four-network chart (Proximity / Access / Services / User) drawn on the board with the OTBR straddling Proximity/Access.
-- [ ] Two-board OTBR architecture sketch (S3 host + C6 RCP + Spinel/UART) drawn out.
+- [ ] Two-board OTBR architecture sketch (Wi-Fi-only host + C6 RCP + Spinel/UART) drawn out.
 - [ ] SLAAC walk: prefix advertisement → node gets second IPv6 → `ipaddr` shows both.
 - [ ] NAT64 worked example: `64:ff9b::0808:0808` ↔ `8.8.8.8`.
 - [ ] Byte diagram showing identical CBOR payload on both sides of the OTBR.
