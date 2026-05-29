@@ -1,23 +1,27 @@
-# SOP-06: Security & OTA
+# SOP-06: DTLS (CoAPS) & Secure OTA
 
-> **Main Lab Guide:** [Lab 6: Security & Trustworthiness](../lab6.md)
-> **ISO Domains:** RAID (Resource Access), Trustworthiness (Cross-cutting)
-> **GreenField Context:** Fixing Edward's penetration test findings - stopping attackers from flooding Daniela's greenhouse
-> **Ethics:** See [Ethics & Sustainability Guide](../../4_ethics_sustainability.md) for privacy implications
+> **Main Lab Guide:** [Lab 6: Securing the Channel — DTLS & the Trustworthiness Viewpoint](../lab6.md)
+> **Lecture:** [lab6_lecture.md](../lectures/lab6_lecture.md)
+> **ISO lens:** Trustworthiness viewpoint (§6.6, cross-cutting) realised as the RAID access-management control (Figure A.5)
+> **GreenField Context:** Fixing Edward's penetration test findings — stopping an attacker from sniffing soil data and injecting a forged "OPEN valve" into Daniela's greenhouse
 
 ## Objectives
-- Basic threat model (assets, threats, initial controls).
-- Implement DTLS (CoAPS) for encrypted CoAP communication.
-- Integrate MCUboot and image signing.
-- Perform v1 → v2 update (visible change: version in log).
-- Document secure update pipeline.
+
+**Part A — DTLS (the graded lab):**
+- Basic STRIDE threat model (assets, threats, controls) — Lab 6 Task A.
+- Upgrade the Lab 3 `/env/temp` server to CoAPS (DTLS/PSK) on port 5684 — Task B.
+- Verify plain CoAP (5683) is locked out and the wrong PSK fails the handshake — Task B.
+- Confirm the payload is encrypted on the air and measure the handshake cost — Task C.
+
+**Part B — Secure OTA (optional stretch, not graded):**
+- Integrate MCUboot and image signing; perform a signed v1 → v2 update. Pairs with Lab 8's supplemental management concerns.
 
 ## Context
-This implementation guide provides step-by-step technical instructions for DTLS encryption and secure OTA updates with MCUboot. It complements the [main lab guide](../lab6.md) which covers the STRIDE threat model, DTLS theory, and ethics of security decisions.
+This implementation guide provides step-by-step technical instructions. **Part A is the body of Lab 6** — the firmware paste for the CoAPS server, the three client tests, and the handshake-timing measurement. **Part B is an optional stretch** (secure OTA with MCUboot); it is not on the Lab 6 rubric and can be skipped. It complements the [main lab guide](../lab6.md), which covers the STRIDE model, the Trustworthiness §6.6 audit, and the ethics of security decisions. The work happens on your **Lab 3 `/env/temp` server (Node A)**; the Lab 2 mesh, the Lab 4 valve, and the Lab 5 OTBR stay as they were.
 
 ---
 
-## Part A: DTLS Implementation (CoAPS)
+## Part A: DTLS Implementation (CoAPS) — the graded lab
 
 ### 1. Basic Threat Model
 
@@ -169,14 +173,18 @@ static void log_dtls_handshake_time(coap_session_t *session)
 }
 ```
 
-**For your DDR:**
-- Measure handshake time (should be < 3 seconds)
-- Compare packet size: CoAP vs CoAPS
-- Energy impact: DTLS adds ~200-300ms radio time per handshake
+**For your DDR (Lab 6 Task C table):**
+- Measure handshake time (target < 3 s) — first connect only.
+- Compare per-reading bytes: plain CoAP (Lab 3 baseline) vs CoAPS record overhead.
+- Energy impact: DTLS adds ~200–300 ms radio time **per handshake**. Multiply by RX current (≈ 75 mA) for the per-handshake energy, then divide by readings-per-session — this is why session reuse, not per-reading handshakes, is what keeps DTLS affordable on a battery node.
+
+> **Session-reuse policy.** Establish one DTLS session and reuse it across many CoAP exchanges. If you tear down and re-handshake per reading, the handshake energy dominates and the battery math from Lab 3/4 breaks. Hold the session open for the lifetime of the Observe registration.
 
 ---
 
-## Part B: Secure OTA Updates
+## Part B: Secure OTA Updates (optional stretch — not graded)
+
+> **This part is a stretch goal.** It is not on the Lab 6 rubric. Secure firmware update is revisited as a Lab 8 supplemental concern. Attempt it only after Tasks A–C are complete. It pairs naturally with DTLS because both answer "who is allowed to change this device," but it is independent of the graded work.
 
 ### 1. Create Project from ESP-IDF Example
 
