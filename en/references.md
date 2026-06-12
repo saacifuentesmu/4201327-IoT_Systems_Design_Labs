@@ -594,21 +594,21 @@ python tools/ota_server.py
 
 #### 4. End-to-End Test Suite (`tools/test_e2e.py`)
 
-Automated testing script for system validation.
+Automated testing script for system validation. Run it from a laptop outside the mesh (every passing test also proves the Border Router path), using each node's global address.
 
 ```bash
-# Test single node
-python tools/test_e2e.py fd00::1234
+# Test Node A (/env/temp server) only
+python tools/test_e2e.py <node_a_global_ipv6>
 
-# Test with border router
-python tools/test_e2e.py fd00::1234 fd00::100
+# Also test the SED valve node (/act/valve)
+python tools/test_e2e.py <node_a_global_ipv6> <valve_global_ipv6>
 ```
 
 **Features**:
-- Connectivity tests
-- Latency measurements
-- Error injection (invalid endpoints, bad payloads)
-- Success/failure metrics
+- Security posture (plaintext lockout, DTLS right/wrong PSK via `coap-client`)
+- Telemetry contract check (Lab 7 CBOR keys)
+- Valve actuation round-trip and error injection (unknown path, bad payload)
+- Stress run + burst (rate-limit detection), success/latency metrics
 
 **Used in**: Lab 8
 
